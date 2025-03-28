@@ -1,0 +1,239 @@
+---
+title: "New York Times Articles"
+subtitle: ""
+format:
+    html: 
+      toc: true
+      code-fold: true
+editor_options: 
+  chunk_output_type: console
+---
+
+
+```{r global.options, include=FALSE}
+testing = F
+
+library(modelsummary)
+library(marginaleffects)
+library(fixest)
+library(tidyverse)
+library(magrittr)
+library(knitr)
+library(kableExtra)
+library(here)
+library(ggrepel)
+
+knitr::opts_chunk$set(echo = T, # code is folded 
+                      cache = F, # CACHE 
+                      fig.width = 4.5, 
+                      fig.height = 3.5,
+                      split = T,
+                      fig.align = 'center', 
+                      fig.path='figs/',
+                      fig.retina = 6,
+                      warning = F, 
+                      message = F)
+
+# inline numbers round to 2, comma at thousands
+inline <- function(x) {
+  if (is.na(as.numeric(x))) {
+    return (x)
+    } else
+        return (as.numeric(x) |> 
+                 round(2) |>
+                 format(big.mark=",") 
+        )
+}
+
+knitr::knit_hooks$set(inline = inline)
+
+# plot defaults 
+library(ggplot2); theme_set(
+      theme_minimal() + 
+        theme(
+          # FOR AJPS
+          panel.grid = element_blank(),
+          legend.position = "bottom",
+          # END FOR AJPS 
+          panel.border  = element_blank(),
+          panel.grid.major.x = element_blank())
+                            )
+  options(
+    ggplot2.continuous.color = "cividis",
+    ggplot2.continuous.fill = "cividis"
+  )
+  scale_color_discrete <- function(...)
+    scale_color_viridis_d(..., direction = -1)
+  scale_fill_discrete <- function(...)
+    scale_fill_viridis_d(..., direction = -1)
+  
+# html table formatting
+kablebox <- . %>%  
+  head(100) %>%
+  knitr::kable() %>% 
+  kable_styling() %>% 
+  scroll_box(height = "200px")
+
+kablebox_long <- . %>% 
+  head(100) %>% 
+  knitr::kable() %>% 
+  kable_styling() %>% 
+  scroll_box(height = "500px")
+```
+
+
+
+#TODO 
+
+- [ ] 
+
+
+```{r data}
+
+directory <- here::here("data", "ProQuest") 
+
+agencies <- list.files(directory, full.names = F) |> str_remove("_.*") |> unique()
+
+term <- "racial"
+agency <- "DOC"
+
+# term function 
+make_term_data <- function(agency, term){
+
+path1 <- here::here(directory, paste(agency, term, "2005_2025.csv", sep = "_")) 
+
+d <- read_csv(path1) |>
+  mutate(year = str_extract(Date, "[0-9]{4}") |> as.numeric(),
+         agency = agency, 
+         term = term) |> 
+  count(agency, year, term, name =  "term_count")
+
+} 
+
+# total function 
+make_total_data <- function(agency){
+
+path1 <- here::here(directory, paste(agency, "2005_2025.csv", sep = "_")) 
+
+d <- read_csv(path1) |>
+  mutate(year = str_extract(Date, "[0-9]{4}") |> as.numeric(),
+         agency = agency) |>
+  count(agency, year, name = "total")
+} 
+
+
+term_counts <- map_dfr(agencies, .f = make_term_data, term = "racial")
+
+term_counts |> filter(is.na(year))
+term_counts |> filter(agency == "DOS")
+
+term_counts %<>% drop_na(year)
+
+total_counts <- map_dfr(agencies, .f = make_total_data)
+
+total_counts |> filter(is.na(year))
+
+total_counts %<>%  drop_na(year)
+
+nyt <- full_join(term_counts, total_counts) |>
+  mutate(ratio = (term_count/total),
+         term = replace_na(term, "racial"),
+         term_count = tidyr::replace_na(term_count, 0)
+         ) |> 
+# add covariates 
+  mutate(president = case_when(
+    year > 2004 & year < 2009 ~ "Bush2",
+    year > 2008 & year < 2013 ~ "Obama",
+    year > 2012 & year < 2017 ~ "Obama2",
+    year > 2016 & year < 2021 ~  "Trump",
+    year > 2020 & year < 2025 ~ "Biden",
+    year > 2024 & year < 2029 ~ "Trump2" )) |>  
+  filter(year > 2004,
+         year < 2025) 
+
+
+save(nyt, file = here::here("data", "nyt.rda"))
+```
+
+
+```{r trends-nyt, fig.width=7, fig.height=6}
+# trends-nyt
+nyt |> 
+  ggplot() +
+  aes(x = year, 
+      y = term_count, 
+      color = president) +
+  geom_point() +
+  labs(title = paste0('Articles Mentioning a Federal Agency and "', term,'"'),
+       y = "NYT Mentions",
+       x = "",
+       color = "") +
+  geom_smooth(#method = "lm",
+              se = F) +
+  facet_wrap("agency",
+             scales = "free_y",
+             ) + 
+  scale_color_viridis_d(option = 9, end = .8) + 
+  theme_bw()
+
+nyt |> 
+  ggplot() +
+  aes(x = year, 
+      y = ratio, 
+      color = president) +
+  geom_point() +
+  labs(title = paste0('Articles Mentioning a Federal Agency and "', term,'"'),
+       y = "Share of NYT Articles",
+       x = "",
+       color = "") +
+  geom_smooth(#method = "lm",
+              se = F) +
+  facet_wrap("agency",
+             scales = "free_y") + 
+  scale_color_viridis_d(option = 9, end = .8) + 
+  theme_bw()
+```
+
+
+## Total 
+
+
+```{r trends-nyt-total, fig.width=3.5, fig.height=2.5}
+# trends-nyt-total
+
+nyt_total <- nyt |>
+  group_by(year, president) |> 
+  summarise(term_count = sum(term_count),
+            total = sum(total) ) |> 
+  mutate(ratio = term_count/total)
+
+nyt_total |> 
+  ggplot() +
+  aes(x = year, 
+      y = term_count, 
+      color = president) +
+  geom_point() +
+  labs(title = paste0('Articles Mentioning a Federal Agency and "', term,'"'),
+       y = "NYT Mentions",
+       x = "",
+       color = "") +
+  geom_smooth(#method = "lm",
+              se = F) + 
+  scale_color_viridis_d(option = 9, end = .8) + 
+  theme_bw()
+
+nyt_total |> 
+  ggplot() +
+  aes(x = year, 
+      y = ratio, 
+      color = president) +
+  geom_point() +
+  labs(title = paste0('Share of Articles Mentioning a Federal Agency and "', term,'"'),
+       y = "Share of NYT Articles",
+       x = "",
+       color = "") +
+  geom_smooth(#method = "lm",
+              se = F) +
+  scale_color_viridis_d(option = "inferno", end = .8) + 
+  theme_bw()
+```

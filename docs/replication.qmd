@@ -1,0 +1,1007 @@
+---
+title: "Replication Code and Robustness Checks"
+subtitle: ""
+format:
+    html: 
+      toc: true
+      code-fold: true
+editor_options: 
+  chunk_output_type: console
+---
+
+
+```{r global.options, include=FALSE}
+testing = F
+
+library(modelsummary)
+library(marginaleffects)
+library(fixest)
+library(tidyverse)
+library(magrittr)
+library(knitr)
+library(kableExtra)
+library(here)
+library(ggrepel)
+
+knitr::opts_chunk$set(echo = T, # code is folded 
+                      cache = F, # CACHE 
+                      fig.width = 4.5, 
+                      fig.height = 3.5,
+                      split = T,
+                      fig.align = 'center', 
+                      fig.path='figs/',
+                      fig.retina = 6,
+                      warning = F, 
+                      message = F)
+
+# inline numbers round to 2, comma at thousands
+inline <- function(x) {
+  if (is.na(as.numeric(x))) {
+    return (x)
+    } else
+        return (as.numeric(x) |> 
+                 round(2) |>
+                 format(big.mark=",") 
+        )
+}
+
+knitr::knit_hooks$set(inline = inline)
+
+# plot defaults 
+library(ggplot2); theme_set(
+      theme_minimal() + 
+        theme(
+          # FOR AJPS
+          #panel.grid = element_blank(),
+          #legend.position = "bottom",
+          # END FOR AJPS 
+          panel.border  = element_blank(),
+          panel.grid.major.x = element_blank())
+                            )
+options(
+  ggplot2.continuous.colour = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
+  scale_color_discrete <- function(...)
+    scale_color_viridis_d(..., option = "inferno", begin = .2, end = .8, direction = 1)
+  scale_fill_discrete <- function(...)
+    scale_fill_viridis_d(..., option = "inferno", begin = .2, end = .8, direction = 1)
+  
+# html table formatting
+kablebox <- . %>%  
+  head(100) %>%
+  knitr::kable() %>% 
+  kable_styling() %>% 
+  scroll_box(height = "200px")
+
+kablebox_long <- . %>% 
+  head(100) %>% 
+  knitr::kable() %>% 
+  kable_styling() %>% 
+  scroll_box(height = "500px")
+```
+
+
+
+#TODO 
+
+- [ ] 
+
+
+
+```{r means}
+# Regression table formatting for AJPS 
+modelsummary_AJPS <- function(models, notes = "", center_rows = 1, ...){
+  modelsummary::modelsummary(models,  
+             # Custom sig stars for AJPS 
+             stars = c('†' = .1, '*' = .05, '**' = .01), 
+             # Align coefficients by decimal for AJPS 
+             align = paste0("l", paste0(rep("d", length(models)), collapse = "")), 
+             add_rows = rows,               
+             coef_map = cm, 
+             gof_map = gm, 
+             output = "tinytable",
+             notes = notes) |>
+    # bold header, hline bottom, aligned center
+    tinytable::style_tt(i = 0:1, bold = T, line = "b",  align = "c") |>
+    # stats aligned center 
+    tinytable::style_tt(i = center_rows, align = "c") |> 
+    # row labels left
+    tinytable::style_tt(j = 1, align = "l")
+} 
+
+# modelsummary <- modelsummary_AJPS
+
+save(modelsummary_AJPS,
+     file = here::here("data", "modelsummary_AJPS.rda"))
+```
+
+
+
+```{r cm}
+# directory to store model objects 
+if (!dir.exists(here::here("models"))) {dir.create(here::here("models"))}
+
+
+# Coef Map
+cm = c("Perceived Ideology" = "Perceived ideology",
+       "log(total_staff)" = "Log(Total Staff)",
+        "log(annual_budget_usd)" = "Log(Budget)", 
+       "Agency" = "Agency",
+       "department_agency_acronym", "Agency",
+       "Num.Obs." = "Observations"
+       )
+
+# FORMATTING FOR AJPS 
+cmAJPS <- cm |> str_to_sentence()
+names(cmAJPS) <- names(cm)
+cm <- cmAJPS
+# END FORMATTING FOR AJPS 
+
+# set fixed effects mapping 
+setFixest_dict(cm)
+
+format_n <- function(x) format(round(x, 3), big.mark=",") # this works
+f <- function(x) stringr::str_replace(x, "[A-z]", "✓") #FIXME not sure why this is not working
+
+gm <- list(
+  list("raw" = "nobs", "clean" = "Observations", "fmt" = format_n)
+)
+
+load(here::here("data", "crosswalk.rda"))
+```
+
+# Data
+
+## Project 2025 
+
+"mfl_data"
+
+```{r }
+#| fig-width: 5
+#| fig-height: 5
+#| layout-ncol: 1
+#| label: mfl_data
+
+load(here::here("data", "p2025_Race, etc..rda") ) 
+
+kablebox(p2025)
+
+# https://stats.stackexchange.com/questions/46418/why-is-the-square-root-transformation-recommended-for-count-data
+# https://www.nature.com/articles/npre.2010.4136.1.pdf
+p2025 %<>% mutate(year = 2024,
+                  agency = str_remove(department_agency_acronym, "_.*") ,
+                  total = paragraphs, 
+                  n = ifelse(n > total, total, n)) 
+
+
+p2025_depts <- p2025 %>%
+  filter(str_detect(department_agency_acronym, "_") ) 
+
+
+p2025_depts <- p2025 %>%
+  filter(agency %in% p2025_depts$agency ) 
+
+
+p2025_ind <- p2025 |> filter(# subagencies or independent 
+  str_detect(department_agency_acronym, "_") | !agency %in% p2025_depts$agency)
+
+
+p2025_depts %<>% 
+  # total per department 
+  group_by(agency) %>% 
+            mutate(total = sum(total, na.rm = T),
+                  n = sum(n, na.rm = T) ) %>% 
+  ungroup() %>% 
+  filter(department_agency_acronym == agency)
+
+
+
+p2025 <-  full_join(p2025_depts, p2025_ind) %>% 
+  mutate(MFL_n = n,
+                  MFL_percent = n/total,
+         # standardize variance of counts
+                  n =  sqrt(n),
+                  total = sqrt(total),
+         # normalize mean 0, sd 1
+                  MFL_norm = (n - mean(n, na.rm = T))/sd(n, na.rm = T),
+                  percent = n/total,
+                  MFL_percent_norm =  (percent - mean(percent, na.rm = T))/sd(percent, na.rm = T))  %>%
+  select(year, agency, department_agency_acronym, 
+         MFL_n,  MFL_percent,
+         MFL_norm, MFL_percent_norm)
+
+p2025 %<>% left_join(crosswalk)
+
+# p2025 |> count(department_agency_acronym, sort = T)
+
+p2025 |> 
+  filter(agency == department_agency_acronym) |> 
+  drop_na(department) |> 
+  ggplot() + 
+  aes(x = MFL_n, 
+      y = reorder(department, MFL_n) 
+      ) + 
+  geom_col() + 
+  labs(x = "Racialzed Words per Section", 
+       y = "")
+```
+
+## NYT 
+
+"nyt_data"
+
+```{r}
+#| fig-width: 5.5
+#| fig-height: 4
+#| layout-ncol: 1
+#| label: nyt_data
+
+
+load(here::here("data", "nyt.rda") ) 
+
+# corrections (diff between regulations.gov and canonical crosswalk)
+nyt %<>% mutate(agency = agency |> 
+                  str_replace("FERC", "DOE_FERC") |>
+                str_replace("TREAS", "Treasury"),
+                department_agency_acronym = agency,
+                agency = str_remove(agency, "_.*"))
+
+n_nyt_articles <- sum(nyt$total)
+n_nyt_agencies <- length(unique(nyt$department_agency_acronym))
+
+
+kablebox(nyt)
+
+#FIXME BRING BACK A BY-YEAR VERSION AT SOME POINT 
+nyt %<>% 
+  group_by(department_agency_acronym, agency) %>% 
+  summarise(total = sum(total, na.rm = T),
+            term_count = sum(term_count, na.rm = T)) %>%
+  ungroup() %>% 
+  mutate(
+    total = sqrt(total), 
+    NYT_n = term_count,
+                n = sqrt(term_count),
+                NYT_norm = (n - mean(n))/sd(n),
+                  percent = n/total,
+                  NYT_percent_norm =  (percent - mean(percent))/sd(percent)) %>%
+  select(agency, NYT_n, NYT_norm, NYT_percent_norm, department_agency_acronym) %>% 
+  ungroup()
+
+
+nyt %<>% left_join(crosswalk)
+
+nyt |> 
+  filter(agency == department_agency_acronym) |> 
+  drop_na(department) |> 
+  ggplot() + 
+  aes(x = NYT_n, 
+      y = reorder(department, NYT_n) ) + 
+  geom_col() + 
+  labs(x = "Articles with Racialzed Words, 2005-2024", 
+       y = "")
+```
+
+```{r join}
+d <- full_join(nyt,
+               p2025) |> distinct()
+
+```
+
+"hist"
+
+```{r}
+#| fig-width: 2
+#| fig-height: 1
+#| layout-ncol: 2
+#| label: hist
+
+
+ggplot(d) +
+  aes(x = MFL_norm) + 
+  geom_histogram()
+
+ggplot(d) +
+  aes(x = MFL_percent_norm) + 
+  geom_histogram()
+
+
+ggplot(d) +
+  aes(x = NYT_norm) + 
+  geom_histogram()
+
+ggplot(d) +
+  aes(x = NYT_percent_norm) + 
+  geom_histogram()
+
+
+```
+
+
+
+## Comparing Racialization Measures
+
+"nyt_v_2025"
+
+
+
+```{r}
+#| label: nyt_v_2025
+#| fig-width: 5
+#| fig-height: 5
+#| layout-ncol: 2
+
+max_x = max(d$MFL_norm, na.rm = T)
+max_y = max(d$NYT_norm, na.rm = T)
+min_x = min(d$MFL_norm, na.rm = T)
+min_y = min(d$NYT_norm, na.rm = T)
+
+d |> 
+  ggplot() + 
+  aes(x = MFL_norm, 
+      y = NYT_norm,
+      label = department_agency_acronym) + 
+    geom_line(aes(y = MFL_norm), color = "red")  + 
+  annotate(x = min_x, y = max_y, geom = "text", 
+           label = 'More Racialized in NYT', color = "red", hjust = 0) + 
+  annotate(x = max_x, y = min_y, geom = "text", 
+           label = 'More Racialized in MFL', color = "red", hjust = 1) + 
+  #geom_smooth(method = "lm") + 
+  geom_point() +    geom_label_repel(size =3,force_pull = 10, alpha = .5)  + 
+  labs(title = "Racialized Attention",
+       x = "Scaled Mandate for Leadership (Project 2025) Mentions",
+       y = "Scaled NYT Articles")
+
+
+
+max_x = max(d$MFL_percent_norm, na.rm = T)
+max_y = max(d$NYT_percent_norm, na.rm = T)
+min_x = min(d$MFL_percent_norm, na.rm = T)
+min_y = min(d$NYT_percent_norm, na.rm = T)
+
+d |> 
+  ggplot() + 
+  aes(x = MFL_percent_norm, 
+      y = NYT_percent_norm,
+      label = department_agency_acronym) + 
+    geom_line(aes(y = MFL_percent_norm), color = "red")  + 
+  annotate(x = min_x, y = max_y, geom = "text", 
+           label = 'More Racialized in NYT', color = "red", hjust = 0) + 
+  annotate(x = max_x, y = min_y, geom = "text", 
+           label = 'More Racialized in MFL', color = "red", hjust = 1) +  
+  # geom_smooth(method = "lm") + 
+  geom_point() +    geom_label_repel(size =3,force_pull = 10, alpha = .5)  + 
+  labs(title = "Racialized Attention as a Share of Total",
+       x = "Scaled Share of Mandate for Leadership (Project 2025)",
+       y = "Scaled Share of NYT Articles")
+
+
+nyt_v_2025_cor <- cor.test(d$MFL_percent_norm, d$NYT_percent_norm)
+
+
+nut_v_2025_cor
+```
+
+
+
+## Combined 
+
+(At the moment, just NYT and Project 2025)
+
+```{r}
+d %<>% group_by(department_agency_acronym) %>% 
+  mutate(racialization = sum(MFL_percent_norm, NYT_percent_norm, 
+                                   na.rm = T) / 2)
+```
+
+### Least racialized 
+```{r}
+d %>% distinct(department_agency_acronym, racialization) %>% arrange(racialization) %>% kablebox()
+```
+
+### Most racialized
+
+```{r}
+d %>% distinct(department_agency_acronym, racialization) %>% arrange(-racialization) %>% kablebox()
+```
+
+
+## Perceived Ideology 
+
+```{r}
+load( here::here("data", "rcl_ideology_estimates.rda") )
+
+d %<>% full_join(rcl_ideology_estimates) %>% 
+  rename(perceived_ideology_estimate = X.ideo_rating.)
+```
+
+"ideo_v_score"
+
+```{r}
+#| label: ideo_v_score
+#| fig-width: 6
+#| fig-height: 5
+#| layout-ncol: 1
+
+max_y = max(d$racialization, na.rm = T)
+
+d |> 
+  ggplot() + 
+  aes(x = perceived_ideology_estimate, 
+      y = racialization,
+      label = department_agency_acronym) + 
+    #geom_line(aes(y = perceived_ideology_estimate), color = "red")  + 
+  annotate(x = max_x, y = max_y, geom = "text", label = 'Racialized\n"Conservative"', color = "red", hjust = 1) + 
+    annotate(x =-2, y = max_y, geom = "text", label = 'Racialized\n"Liberal"', color = "red", hjust = 0) + 
+  geom_vline(xintercept = 0, color = "gray60", linetype = "dashed") +
+    geom_hline(yintercept = 0, color = "gray60", linetype = "dashed") +
+geom_smooth(method = "lm") + 
+  #geom_smooth(method = "lm") + 
+  geom_point() +    geom_label_repel(size =3,force_pull = 10, alpha = .5)  + 
+  labs(title = "",
+       x = "Perceived Ideology",
+       y = "Racialization Score")
+
+
+
+d |> 
+  ggplot() + 
+  aes(x = abs(perceived_ideology_estimate), 
+      y = racialization,
+      label = department_agency_acronym) + 
+    #geom_line(aes(y = perceived_ideology_estimate), color = "red")  + 
+  annotate(x =0, y = max_y, geom = "text", label = 'Racialized\n"Moderate"', color = "red", hjust = 0) + 
+    annotate(x =2, y = max_y, geom = "text", label = 'Racialized\n"Ideological"', color = "red", hjust = 1) + 
+  geom_vline(xintercept = 0, color = "gray60", linetype = "dashed") +
+    geom_hline(yintercept = 0, color = "gray60", linetype = "dashed") +
+geom_smooth(method = "lm") + 
+  #geom_smooth(method = "lm") + 
+  geom_point() +    geom_label_repel(size =3, force_pull = 10, alpha = .5)  + 
+  labs(title = "",
+       x = "Perceived Ideological Distance from Center",
+       y = "Racialization Score")
+```
+
+
+### Ideology v Project 2025 
+
+"ideo_v_2025"
+
+```{r}
+#| label: ideo_v_2025
+#| fig-width: 5
+#| fig-height: 5
+#| layout-ncol: 2
+
+max_y = max(d$MFL_norm, na.rm = T)
+
+d |> 
+  ggplot() + 
+  aes(x = perceived_ideology_estimate, 
+      y = MFL_norm,
+      label = department_agency_acronym) + 
+    #geom_line(aes(y = perceived_ideology_estimate), color = "red")  + 
+  annotate(x =2, y = max_y, geom = "text", 
+           label = 'Racialized\n"Conservative"', color = "red", hjust = 1) + 
+    annotate(x =-2, y = max_y, geom = "text", 
+             label = 'Racialized\n"Liberal"', color = "red", hjust = 0) +   #geom_smooth(method = "lm") + 
+  geom_point() +    
+  geom_label_repel(size =3,force_pull = 10, alpha = .5)  + 
+  labs(title = "Racialized Attention",
+       x = "Perceived Ideology",
+       y = "Count of Racialized Terms in Project 2025")
+
+max_y = max(d$MFL_percent_norm, na.rm = T)
+
+
+d |> 
+  ggplot() + 
+  aes(x = perceived_ideology_estimate, 
+      y = MFL_percent_norm,
+      label = department_agency_acronym) + 
+    #geom_line(aes(y = perceived_ideology_estimate), color = "red")  + 
+  annotate(x =2, y =2, geom = "text", label = 'Racialized\n"Conservative"', color = "red", hjust = 1) + 
+    annotate(x =-2, y =2, geom = "text", label = 'Racialized\n"Liberal"', color ="red", hjust = 0) +   # geom_smooth(method = "lm") + 
+  geom_point() +    geom_label_repel(size =3,force_pull = 10, alpha = .5)  + 
+  labs(title = "Racialized Attention as a Share of Total",
+       x = "Perceived Ideology",
+       y = "Racialized Share of Project 2025 Sentences")
+
+```
+
+
+### Ideology v NYT 
+
+"ideo_v_nyt"
+
+```{r}
+#| label: ideo_v_nyt
+#| fig-width: 5
+#| fig-height: 5
+#| layout-ncol: 2
+
+max_y = max(d$NYT_percent_norm, na.rm = T)
+
+d |> 
+  ggplot() + 
+  aes(x = perceived_ideology_estimate, 
+      y = NYT_norm,
+      label = department_agency_acronym) + 
+    #geom_line(aes(y = perceived_ideology_estimate), color = "red")  + 
+  annotate(x =2, y= max_y, geom = "text", 
+           label = 'Racialized\n"Conservative"', color = "red", hjust = 1) + 
+    annotate(x =-2, y = max_y, geom = "text", 
+             label = 'Racialized\n"Liberal"', color = "red", hjust = 0) +   #geom_smooth(method = "lm") + 
+  geom_point() +    
+  geom_label_repel(size =3,force_pull = 10, alpha = .5)  + 
+  labs(title = "Racialized Attention",
+       x = "Perceived Ideology",
+       y = "NYT Articles with Racial Language")
+
+max_y = max(d$NYT_percent_norm, na.rm = T)
+
+d |> 
+  ggplot() + 
+  aes(x = perceived_ideology_estimate, 
+      y = NYT_percent_norm,
+      label = department_agency_acronym) + 
+    #geom_line(aes(y = perceived_ideology_estimate), color = "red")  + 
+  annotate(x =2, y = max_y, geom = "text", label = 'Racialized\n"Conservative"', color = "red", hjust = 1) + 
+    annotate(x =-2, y = max_y, geom = "text", label = 'Racialized\n"Liberal"', color = "red", hjust = 0) +   # geom_smooth(method = "lm") + 
+  geom_point() +    geom_label_repel(size =3,force_pull = 10, alpha = .5)  + 
+  labs(title = "Racialized Attention as a Share of Total",
+       x = "Perceived Ideology",
+       y = "Share of NYT Articles with Racial Language")
+
+```
+
+
+### DOGE Layoff data from Adam Bonica 
+
+"doge"
+
+```{r}
+#| label: doge
+#| fig-width: 7
+#| fig-height: 5
+#| layout-ncol: 2
+
+load(here::here("data", "bonica.rda"))
+
+names(bonica)<-names(bonica) |> tolower()
+
+
+bonica<-bonica |> 
+  mutate(doge_layoffs= as.logical(doge_layoffs),
+         targeted_for_dismantling= as.logical(targeted_for_dismantling))  |> 
+  mutate(agency = department_agency_acronym |> str_remove("_.*"))
+
+doge_plot <- function(data){
+  
+  data |> 
+  filter(total_staff>1000) |> #, total_staff<10^6)
+#create scatter plot with vertical line at zero perceived ideology  
+ggplot() +
+       aes(x = perceived_ideology_estimate, 
+           y = total_staff) +
+  # Add grid lines
+  geom_hline(yintercept = c(1000, 10000, 100000, 1000000), 
+             color = "gray90", linetype = "dashed") +
+  geom_vline(xintercept = 0, color = "gray60", linetype = "dashed") +
+  # Add agency acronyms colored according to DOGE layoff variable
+  geom_text_repel(aes(label = agency,
+                color = doge_layoffs), 
+            size=3)+ 
+  # Scale transformations
+  scale_y_log10(breaks = c(1000, 10000, 100000, 1000000),
+                labels = scales::comma) +
+  scale_x_continuous(breaks = seq(-2, 2, 1)) +
+  theme_minimal()+
+  theme(
+      plot.title = element_text(face = "bold", size = 16),
+      plot.subtitle = element_text(size = 14),
+      plot.caption = element_text(size = 10, hjust = 0))+
+  # Custom colors
+  # scale_color_manual(values = c("gray60", "red"),
+  #                    name = "Layoff Status",
+  #                    labels = c("No Layoffs", "Layoffs")) +
+  # Labels
+  labs(title = "Empirical Evidence of Ideological Targeting",
+       subtitle = "Agencies seen as liberal are significantly more likely to face layoffs.",
+       x = "Perceived Ideological Leaning\n(← More Liberal | More Conservative →)",
+       y = "Agency Size (Number of Staff)",
+       color = "DOGE Layoffs",
+       caption = "Note: Analysis includes only agencies with 500+ staff members. Ideology estimates are based on survey responses from 1,500+ federal executives rating agencies
+policy views as liberal to conservative across both Democratic and Republican administrations.
+Source: Richardson, Clinton, & Lewis (2018). Elite Perceptions of Agency Ideology and Workforce Skill. The Journal of Politics 80(1).") 
+} 
+
+
+doge_plot(bonica |> mutate(agency = department_agency_acronym) )
+
+# summarized at dep level 
+doge_plot(bonica |> group_by(agency) |> 
+            summarise(perceived_ideology_estimate = mean(perceived_ideology_estimate),
+                      total_staff = sum(total_staff),
+                      annual_budget_usd = sum(annual_budget_usd),
+                      doge_layoffs = sum(doge_layoffs) >0 ))
+
+
+
+
+# 
+# b2 <- bonica |> group_by(agency) |> 
+#             summarise(perceived_ideology_estimate = mean(perceived_ideology_estimate),
+#                       total_staff = sum(total_staff),
+#                       annual_budget_usd = sum(annual_budget_usd),
+#                       doge_layoffs = ifelse(sum(doge_layoffs) >0, "Targeted", "Not Targeted" ))
+
+b <- bonica |> mutate(doge_layoffs = ifelse(doge_layoffs >0, "Targeted", "Not Targeted" )) |> 
+  rename(perceived_ideology_estimate_bonica = perceived_ideology_estimate)
+
+if(testing){
+  anti_join(b, d) |> distinct(agency, department_agency_acronym)  # in bonica, not in our data
+anti_join(d, b)  |> distinct(agency, department_agency_acronym)# in our data, not in bonica
+} 
+```
+
+"by_staff"
+
+```{r}
+#| fig-width: 7
+#| fig-height: 5
+#| layout-ncol: 2
+#| label: by_staff
+
+d %<>% full_join(b)
+
+# NYT by staff an layoffs 
+ggplot(d) +
+       aes(x = NYT_percent_norm, 
+           y = total_staff) +
+  # Add grid lines
+  geom_hline(yintercept = c(1000, 10000, 100000, 1000000), 
+             color = "gray90", linetype = "dashed") +
+  geom_vline(xintercept = 0, color = "gray60", linetype = "dashed") +
+  # Add agency acronyms colored according to DOGE layoff variable
+  geom_text_repel(aes(label = department_agency_acronym,
+                color = doge_layoffs), 
+            size=3)+ 
+
+  # Scale transformations
+  scale_y_log10(breaks = c(1000, 10000, 100000, 1000000),
+                labels = scales::comma) +
+  scale_x_continuous(breaks = seq(-2, 2, 1)) 
+
+
+# PROJECT 2025 by staff and layoffs 
+ggplot(d) +
+       aes(x = MFL_percent_norm, 
+           y = total_staff) +
+  # Add grid lines
+  geom_hline(yintercept = c(1000, 10000, 100000, 1000000), 
+             color = "gray90", linetype = "dashed") +
+  geom_vline(xintercept = 0, color = "gray60", linetype = "dashed") +
+  # Add agency acronyms colored according to DOGE layoff variable
+  geom_text_repel(aes(label = department_agency_acronym,
+                color = doge_layoffs), 
+            size=3)+ 
+
+  # Scale transformations
+  scale_y_log10(breaks = c(1000, 10000, 100000, 1000000),
+                labels = scales::comma) +
+  scale_x_continuous(breaks = seq(-2, 2, 1)) 
+```
+
+#### By Racialization Score
+
+"ideo_v_racialization_layoffs"
+
+```{r}
+#| label: ideo_v_racialization_layoffs
+#| fig-width: 5
+#| fig-height: 4
+#| layout-ncol: 2
+
+ggplot(d) +
+       aes(x = perceived_ideology_estimate, 
+           y = racialization) +
+  # Add grid lines
+  geom_vline(xintercept = 0, color = "gray60", linetype = "dashed") +
+    geom_hline(yintercept = 0, color = "gray60", linetype = "dashed") +
+geom_smooth(method = "lm") + 
+  # Add agency acronyms colored according to DOGE layoff variable
+  geom_text_repel(aes(label = department_agency_acronym,
+                color = doge_layoffs), 
+            size=3)+ 
+
+  # Scale transformations
+  scale_x_continuous(breaks = seq(-2, 2, 1)) + 
+  labs(title = "Perceived Ideology and Racialized Attention")
+
+
+ggplot(d) +
+       aes(x = abs(perceived_ideology_estimate), 
+           y = racialization) +
+  # Add grid lines
+  geom_vline(xintercept = 0, color = "gray60", linetype = "dashed") +
+    geom_hline(yintercept = 0, color = "gray60", linetype = "dashed") +
+geom_smooth(method = "lm") + 
+  # Add agency acronyms colored according to DOGE layoff variable
+  geom_text_repel(aes(label = department_agency_acronym,
+                color = doge_layoffs), 
+            size=3)+ 
+  # Scale transformations
+  scale_x_continuous(breaks = seq(-2, 2, 1)) + 
+  labs(title = "Perceived Extremism and Racialized Attention Share")
+
+```
+
+#### By Project 2025 Racialization 
+
+
+"ideo_v_2025_layoffs"
+
+```{r}
+#| label: ideo_v_2025_layoffs
+#| fig-width: 5
+#| fig-height: 4
+#| layout-ncol: 2
+
+ggplot(d) +
+       aes(x = perceived_ideology_estimate, 
+           y = MFL_percent_norm) +
+  # Add grid lines
+  geom_vline(xintercept = 0, color = "gray60", linetype = "dashed") +
+    geom_hline(yintercept = 0, color = "gray60", linetype = "dashed") +
+geom_smooth(method = "lm") + 
+  # Add agency acronyms colored according to DOGE layoff variable
+  geom_text_repel(aes(label = department_agency_acronym,
+                color = doge_layoffs), 
+            size=3)+ 
+
+  # Scale transformations
+  scale_x_continuous(breaks = seq(-2, 2, 1)) + 
+  labs(title = "Perceived Ideology and Racialized Attention")
+
+
+ggplot(d) +
+       aes(x = perceived_ideology_estimate, 
+           y = MFL_norm) +
+  # Add grid lines
+  geom_vline(xintercept = 0, color = "gray60", linetype = "dashed") +
+    geom_hline(yintercept = 0, color = "gray60", linetype = "dashed") +
+geom_smooth(method = "lm") + 
+  # Add agency acronyms colored according to DOGE layoff variable
+  geom_text_repel(aes(label = department_agency_acronym,
+                color = doge_layoffs), 
+            size=3)+ 
+  # Scale transformations
+  scale_x_continuous(breaks = seq(-2, 2, 1)) + 
+  labs(title = "Perceived Ideology and Racialized Attention Share")
+
+
+ggplot(d) +
+       aes(x = abs(perceived_ideology_estimate), 
+           y = MFL_percent_norm) +
+  # Add grid lines
+  geom_vline(xintercept = 0, color = "gray60", linetype = "dashed") +
+    geom_hline(yintercept = 0, color = "gray60", linetype = "dashed") +
+geom_smooth(method = "lm") + 
+  # Add department_agency_acronym acronyms colored according to DOGE layoff variable
+  geom_text_repel(aes(label = department_agency_acronym,
+                color = doge_layoffs), 
+            size=3)+ 
+  # Scale transformations
+  scale_x_continuous(breaks = seq(-2, 2, 1)) + 
+  labs(title = "Perceived Extremeism and Racialized Attention Share")
+
+
+ggplot(d) +
+       aes(x = abs(perceived_ideology_estimate), 
+           y = MFL_norm) +
+  # Add grid lines
+  geom_vline(xintercept = 0, color = "gray60", linetype = "dashed") +
+    geom_hline(yintercept = 0, color = "gray60", linetype = "dashed") +
+geom_smooth(method = "lm") + 
+  # Add department_agency_acronym acronyms colored according to DOGE layoff variable
+  geom_text_repel(aes(label = department_agency_acronym,
+                color = doge_layoffs), 
+            size=3)+ 
+  # Scale transformations
+  scale_x_continuous(breaks = seq(-2, 2, 1)) + 
+  labs(title = "Perceived Extremeism and Racialized Attention")
+```
+
+#### By NYT Racialization 
+
+"ideo_v_nyt_layoffs"
+
+```{r}
+#| label: ideo_v_nyt_layoffs
+#| fig-width: 5
+#| fig-height: 4
+#| layout-ncol: 2
+
+ggplot(d) +
+       aes(x = perceived_ideology_estimate, 
+           y = NYT_percent_norm) +
+  # Add grid lines
+  geom_vline(xintercept = 0, color = "gray60", linetype = "dashed") +
+    geom_hline(yintercept = 0, color = "gray60", linetype = "dashed") +
+geom_smooth(method = "lm") + 
+  # Add department_agency_acronym acronyms colored according to DOGE layoff variable
+  geom_text_repel(aes(label = department_agency_acronym,
+                color = doge_layoffs), 
+            size=3)+ 
+  # Scale transformations
+  scale_x_continuous(breaks = seq(-2, 2, 1)) + 
+  labs(title = "Perceived Ideology and Racialized Attention Share")
+
+
+ggplot(d) +
+       aes(x = perceived_ideology_estimate, 
+           y = NYT_norm) +
+  # Add grid lines
+  geom_vline(xintercept = 0, color = "gray60", linetype = "dashed") +
+    geom_hline(yintercept = 0, color = "gray60", linetype = "dashed") +
+geom_smooth(method = "lm") + 
+  # Add department_agency_acronym acronyms colored according to DOGE layoff variable
+  geom_text_repel(aes(label = department_agency_acronym,
+                color = doge_layoffs), 
+            size=3)+ 
+  # Scale transformations
+  scale_x_continuous(breaks = seq(-2, 2, 1)) + 
+  labs(title = "Perceived Ideology and Racialized Attention")
+
+ggplot(d) +
+       aes(x = abs(perceived_ideology_estimate), 
+           y = NYT_percent_norm) +
+  # Add grid lines
+  geom_vline(xintercept = 0, color = "gray60", linetype = "dashed") +
+    geom_hline(yintercept = 0, color = "gray60", linetype = "dashed") +
+geom_smooth(method = "lm") + 
+  # Add department_agency_acronym acronyms colored according to DOGE layoff variable
+  geom_text_repel(aes(label = department_agency_acronym,
+                color = doge_layoffs), 
+            size=3)+ 
+  # Scale transformations
+  scale_x_continuous(breaks = seq(-2, 2, 1)) + 
+  labs(title = "Perceived Extremism and Racialized Attention Share")
+
+
+ggplot(d) +
+       aes(x = abs(perceived_ideology_estimate), 
+           y = NYT_norm) +
+  # Add grid lines
+  geom_vline(xintercept = 0, color = "gray60", linetype = "dashed") +
+    geom_hline(yintercept = 0, color = "gray60", linetype = "dashed") +
+geom_smooth(method = "lm") + 
+  # Add department_agency_acronym acronyms colored according to DOGE layoff variable
+  geom_text_repel(aes(label = department_agency_acronym,
+                color = doge_layoffs), 
+            size=3)+ 
+  # Scale transformations
+  scale_x_continuous(breaks = seq(-2, 2, 1)) + 
+  labs(title = "Perceived Extremism and Racialized Attention")
+```
+
+
+# Correlations
+```{r}
+
+cor.test(d$racialization, d$perceived_ideology_estimate)
+cor.test(d$racialization, abs(d$perceived_ideology_estimate))
+
+
+cor.test(d$MFL_percent_norm, d$perceived_ideology_estimate)
+cor.test(d$MFL_percent_norm, abs(d$perceived_ideology_estimate))
+
+# NYT
+cor.test(d$NYT_percent_norm, d$perceived_ideology_estimate)
+cor.test(d$NYT_percent_norm, abs(d$perceived_ideology_estimate))
+
+```
+
+
+"m_layoffs.Rdata"
+
+```{r models}
+
+d %<>% mutate(layoffs = doge_layoffs == "Targeted" )
+
+#reproduce Adam's linear probability model 
+m_layoffs_ido <-glm(layoffs ~ perceived_ideology_estimate + 
+                  log(total_staff) + 
+                  log(annual_budget_usd),
+                  family=binomial(link="logit"),
+                data=d )
+
+# add MFL
+m_layoffs_ideo_mfl <-glm(layoffs ~ perceived_ideology_estimate + 
+                  #NYT_norm +
+                 MFL_percent_norm +
+                  log(total_staff) + 
+                  log(annual_budget_usd),
+                  family=binomial(link="logit"),
+                data=d )
+
+#reproduce Adam's linear probability model 
+m_layoffs_mfl <- glm(layoffs ~ # perceived_ideology_estimate + 
+                  #NYT_norm +
+                 MFL_percent_norm +
+                  log(total_staff) + 
+                  log(annual_budget_usd),
+                  family=binomial(link="logit"),
+                data=d )
+
+#reproduce Adam's linear probability model 
+m_layoffs_ideo_mfl0 <-glm(layoffs ~ 
+                          perceived_ideology_estimate*(MFL_norm>0) +
+                  log(total_staff) + 
+                  log(annual_budget_usd),
+                  family=binomial(link="logit"),
+                data=d )
+
+
+#display results 
+library(modelsummary)
+
+m_layoffs <- list(
+  "(1)" = m_layoffs_ido ,
+   "(2)" =  m_layoffs_ideo_mfl,
+ "(3)" = m_layoffs_mfl ,
+ "(4)" = m_layoffs_ideo_mfl0 
+)
+  
+rows <- tibble(
+  term = c("Dependent variable"),
+   `(1)` = c("Layoffs") ,
+   `(2)` = c("Layoffs") ,
+  `(3)`= c("Layoffs"),
+    `(4)`= c("Layoffs") 
+
+)
+
+
+modelsummary::modelsummary(m_layoffs, notes = "", stars = T)
+
+save(m_layoffs, cm, rows, 
+     file = here::here("models", "m_layoffs.Rdata"))
+```
+
+"predictions"
+
+```{r}
+#| label: predictions
+
+values <- tidyr::expand(d, 
+                        total_staff = 100000,
+                        annual_budget_usd = 5000000000,
+                        #MFL_percent_norm,
+                        MFL_norm,
+                        perceived_ideology_estimate)
+
+predicted <- predictions(m_layoffs_ideo_mfl0, 
+                         newdata = values)
+
+predicted %>%  
+  ggplot() + 
+  aes(x = perceived_ideology_estimate, 
+      y = estimate, # predicted, 
+      ymin = conf.low,# predicted - 1.96*std.error,
+      ymax = conf.high, 
+      color = MFL_norm>0
+      ) + 
+  geom_pointrange() + 
+  labs(y = "Predicted Probability of Layoff")
+```
+
+
+```{r save}
+save(nyt_v_2025_cor, 
+     n_nyt_articles,
+     n_nyt_agencies,
+     file = here::here("data", "numbers-for-paper.Rdata"))
+```

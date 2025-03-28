@@ -1,0 +1,216 @@
+---
+title: "Words in Federal Policy"
+format:
+    html: 
+      toc: true
+      code-fold: true
+editor_options: 
+  chunk_output_type: console
+---
+
+
+```{r global.options, include=FALSE}
+testing = F
+
+library(tidyverse)
+library(magrittr)
+library(knitr)
+library(kableExtra)
+library(here)
+
+
+knitr::opts_chunk$set(echo = T, # code is folded 
+                      cache = F, # CACHE 
+                      fig.width = 6.5, 
+                      fig.height = 6.5,
+                      split = T,
+                      fig.align = 'center', 
+                      fig.path='figs/',
+                      fig.retina = 6,
+                      warning = F, 
+                      message = F)
+
+# inline numbers round to 2, comma at thousands
+inline <- function(x) {
+  if (is.na(as.numeric(x))) {
+    return (x)
+    } else
+        return (as.numeric(x) |> 
+                 round(2) |>
+                 format(big.mark=",") 
+        )
+}
+
+knitr::knit_hooks$set(inline = inline)
+
+# plot defaults 
+library(ggplot2); theme_set(
+      theme_minimal() + 
+        theme(
+          # # FOR AJPS
+          # panel.grid = element_blank(),
+          # legend.position = "bottom",
+          # # END FOR AJPS 
+          panel.border  = element_blank(),
+          panel.grid.major.x = element_blank())
+                            )
+  options(
+    ggplot2.continuous.color = "cividis",
+    ggplot2.continuous.fill = "cividis"
+  )
+  scale_color_discrete <- function(...)
+    scale_color_viridis_d(..., direction = -1)
+  scale_fill_discrete <- function(...)
+    scale_fill_viridis_d(..., direction = -1)
+  
+# html table formatting
+kablebox <- . %>%  
+  head(100) %>%
+  knitr::kable() %>% 
+  kable_styling() %>% 
+  scroll_box(height = "200px")
+
+kablebox_long <- . %>% 
+  head(100) %>% 
+  knitr::kable() %>% 
+  kable_styling() %>% 
+  scroll_box(height = "500px")
+```
+
+```{r trends-comments}
+
+directory <- here::here("data", "search") |> str_replace("racialization", "regulationsdotgov-data")
+
+terms <- list.dirs(directory, full.names = F)
+
+if(testing){
+term <- terms[33]
+}
+
+p <- function(term){
+
+path <- here::here(directory, term, paste0(term, "_comments.rda")) |> str_remove("racialization")
+
+load(path)
+
+# I did not consistantly name files, some are "comments" some are "d" 
+if(exists("d")){
+  df <- d
+}
+
+if(exists("comments")){
+  df <- comments
+}
+
+df <- df |> 
+  mutate(year = str_sub(postedDate, 1,4) |> as.numeric()) |>
+  count(agencyId, year) |>
+  group_by(agencyId) |>
+  mutate(perAgency = sum(n)) |>
+  mutate(president = case_when(
+    year < 2009 ~ "Bush",
+    year > 2008 & year < 2017 ~ "Obama",
+    year > 2016 & year < 2021 ~  "Trump",
+    year > 2020 & year < 2025 ~ "Biden"
+  ))
+
+top <- df |> 
+ungroup() |> 
+  arrange(-perAgency) |> 
+  distinct(agencyId, perAgency) |> 
+  slice_max(perAgency, n = 4)
+
+df |>
+  filter(agencyId %in% top$agencyId,
+         year > 2004,
+         year < 2025) |>
+  ggplot() +
+  aes(x = year, 
+      y = n, 
+      color = president) +
+  geom_point() +
+  labs(title = term,
+       y = "Public Comments on Proposed Rules",
+       x = "",
+       color = "") +
+  geom_smooth(#method = "lm",
+              se = F) +
+  facet_wrap("agencyId",
+             scales = "free_y") + 
+  scale_color_viridis_d(option = 9, end = .8) + 
+  theme_bw()
+
+} 
+
+# ALL TERMS 
+# materms[2], possibly(p))
+
+```
+
+
+# Race
+
+```{r trends-comments-racial}
+"racial"|> p()                                 
+"Racism"|> p()                                 
+"Racist"|> p() 
+"White Privilege"|> p() 
+ "Colorblindness" |> p()   
+ "Critical Race Theory"|> p()                                      
+"Gang"|> p()
+"Terrorist" |> p()  
+```
+
+## Racialized Policy
+
+### Civil Rights
+
+```{r trends-comments-civil-rights}
+"Affirmative Action" |> p() 
+"Civil Rights" |> p()           
+"Diversity, equity"|> p() 
+"Meritocracy"|> p() 
+"Slavery"|> p()                                
+```
+
+### Immigration 
+
+```{r trends-comments-immigration}
+"Immigration"|> p() 
+#"Border Crisis"|> p() 
+"Citizenship"|> p() 
+"Undocumented"|> p()                                                
+"DACA" |> p() 
+"Drug Cartel" |> p() 
+"Illegal Alien" |> p()                         
+"Immigrant" |> p()                              
+ "Mexican Cartel" |> p()   
+ "Secure Border"|> p()                         
+"Secure the border"|> p() 
+ #"Border security" |> p() 
+```
+
+## Racial/Ethnic Groups
+
+```{r trends-comments-groups}
+"Ethnicity" |> p() 
+"Asian American" |> p() 
+"Arab American" |> p() 
+ "Black american" |> p() 
+ "African American" |> p()   
+ "Hispanic" |> p() 
+ "latina" |> p() 
+ "latino" |> p() 
+ "MENA" |> p() 
+ "Muslim"|> p()                                 
+"Native American"|> p()   
+```
+
+## Intersectional Group
+
+```{r}
+"Black men" |> p() 
+# "Black woman" |> p()  
+# "Black women" 
+```
+

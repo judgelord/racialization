@@ -1,0 +1,14 @@
+.Rproj.user
+.Rhistory
+.Rdata
+.httr-oauth
+.DS_Store
+.quarto
+_extensions
+Icon
+data
+models
+racialization.pdf
+figures
+racialization.Rproj
+racialization-paper.pdf

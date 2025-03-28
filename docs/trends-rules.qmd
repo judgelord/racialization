@@ -1,0 +1,237 @@
+---
+title: "Words in Federal Policy"
+format:
+    html: 
+      toc: true
+      code-fold: true
+editor_options: 
+  chunk_output_type: console
+---
+
+
+```{r global.options, include=FALSE}
+testing = F
+
+library(tidyverse)
+library(magrittr)
+library(knitr)
+library(kableExtra)
+library(here)
+library(scales)
+
+
+
+knitr::opts_chunk$set(echo = T, # code is folded 
+                      cache = F, # CACHE 
+                      fig.width = 6.5, 
+                      fig.height = 6.5,
+                      split = T,
+                      fig.align = 'center', 
+                      fig.path='figs/',
+                      fig.retina = 6,
+                      warning = F, 
+                      message = F)
+
+# inline numbers round to 2, comma at thousands
+inline <- function(x) {
+  if (is.na(as.numeric(x))) {
+    return (x)
+    } else
+        return (as.numeric(x) |> 
+                 round(2) |>
+                 format(big.mark=",") 
+        )
+}
+
+knitr::knit_hooks$set(inline = inline)
+
+# plot defaults 
+library(ggplot2); theme_set(
+      theme_minimal() + 
+        theme(
+          # # FOR AJPS
+          # panel.grid = element_blank(),
+          # legend.position = "bottom",
+          # # END FOR AJPS 
+          panel.border  = element_blank(),
+          panel.grid.major.x = element_blank())
+                            )
+options(
+  ggplot2.continuous.colour = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
+  scale_color_discrete <- function(...)
+    scale_color_viridis_d(..., option = "inferno", begin = .2, end = .8, direction = 1)
+  scale_fill_discrete <- function(...)
+    scale_fill_viridis_d(..., option = "inferno", begin = .2, end = .8, direction = 1)
+  
+# html table formatting
+kablebox <- . %>%  
+  head(100) %>%
+  knitr::kable() %>% 
+  kable_styling() %>% 
+  scroll_box(height = "200px")
+
+kablebox_long <- . %>% 
+  head(100) %>% 
+  knitr::kable() %>% 
+  kable_styling() %>% 
+  scroll_box(height = "500px")
+
+int_breaks <- function(x, n = 5) {
+  l <- pretty(x, n)
+  l[abs(l %% 1) < .Machine$double.eps ^ 0.5] 
+}
+```
+
+```{r trends-rules}
+
+directory <- here::here("data", "search") |> str_replace("racialization", "regulationsdotgov-data")
+
+terms <- list.dirs(directory, full.names = F)
+
+terms <- terms[!terms %in% c("", "comment_details", "documents", "comments")]
+
+# term <- terms[18]
+
+p <- function(term){
+
+path <- here::here(directory, term, paste0(term, "_documents.rda")) |> str_remove("racialization")
+
+load(path)
+
+df <- d |>  #comments |>
+  mutate(year = str_sub(postedDate, 1,4) |> as.numeric()) |>
+  count(agencyId, year) |>
+  group_by(agencyId) |>
+  mutate(perAgency = sum(n)) |>
+  mutate(president = case_when(
+    year < 2009 ~ "Bush",
+    year > 2008 & year < 2017 ~ "Obama",
+    year > 2016 & year < 2021 ~  "Trump",
+    year > 2020 & year < 2025 ~ "Biden"
+  ))
+
+top <- df |> 
+ungroup() |> 
+  arrange(-perAgency) |> 
+  distinct(agencyId, perAgency) |> 
+  slice_max(perAgency, n = 4)
+
+df |>
+  drop_na(n) |> 
+  filter(agencyId %in% top$agencyId,
+         year > 2004,
+         year < 2025) |>
+  ggplot() +
+  aes(x = year, 
+      y = n, 
+      color = president) +
+  geom_point() +
+  labs(title = paste0('Policies with "', str_to_title(term), '"'),
+       y = "Policy Documents (Rules)",
+       x = "",
+       color = "") +
+  geom_line() + 
+  #geom_smooth(#method = "lm", se = F) +
+  facet_wrap("agencyId",
+             scales = "free_y") + 
+  scale_color_viridis_d(option = "inferno", end = .8) + 
+ scale_y_continuous(breaks = int_breaks) + 
+  theme_minimal() + 
+  theme(axis.text.x = element_text(angle = 45))
+
+} 
+
+# ALL TERMS 
+# materms[2], possibly(p))
+
+```
+
+
+# Race
+
+```{r trends-rules-racial}
+#| fig-width: 4
+#| fig-height: 3
+
+"racial"|> p()                                 
+"Racism"|> p()                                 
+"Racist"|> p() 
+# "White Privilege"|> p() 
+# "Colorblindness" |> p()   
+# "Critical Race Theory"|> p()                                      
+"Gang"|> p()
+"Terrorist" |> p()  
+```
+
+## Racialized Policy
+
+### Civil Rights
+
+```{r trends-rules-civil-rights}
+#| fig-width: 4
+#| fig-height: 3
+
+
+"Affirmative Action" |> p() 
+"Civil Rights" |> p()           
+"Diversity, equity"|> p() 
+#"Meritocracy"|> p() 
+"Slavery"|> p()                                
+```
+
+### Immigration 
+
+```{r trends-rules-immigration}
+#| fig-width: 4
+#| fig-height: 3
+
+
+"Immigration"|> p() 
+#"Border Crisis"|> p() 
+"Citizenship"|> p() 
+"Undocumented"|> p()                                                
+"DACA" |> p() 
+#"Drug Cartel" |> p() 
+"Illegal Alien" |> p()                         
+"Immigrant" |> p()                              
+# "Mexican Cartel" |> p()   
+# "Unaccompanied Alien Childen" |> p()          
+# "Secure Border"|> p()                         
+"Secure the border"|> p() 
+# "Border security" |> p() 
+```
+
+## Racial/Ethnic Groups
+
+```{r trends-rules-groups}
+#| fig-width: 4
+#| fig-height: 3
+
+
+"Ethnicity" |> p() 
+"Asian American" |> p() 
+"Arab American" |> p() 
+ "Black american" |> p() 
+ "African American" |> p()   
+ "Hispanic" |> p() 
+ "latina" |> p() 
+ "latino" |> p() 
+ "MENA" |> p() 
+ "Muslim"|> p()                                 
+"Native American"|> p()   
+```
+
+## Intersectional Group
+
+```{r}
+#| fig-width: 4
+#| fig-height: 3
+
+
+"Black men" |> p() 
+# "Black woman" |> p()  
+# "Black women" 
+```
+
