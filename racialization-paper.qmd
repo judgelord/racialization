@@ -77,21 +77,19 @@ library(scales)
 
 In January 2025, the White House issued the "Ending Radical and Wasteful Government DEI Programs and Preferencing" executive order, a sweeping policy that seeks to dismantle diversity, equity, inclusion, and accessibility (DEIA) practices within federal agencies. This directive stands in stark contrast to President Biden’s 2021 executive order, "Advancing Racial Equity and Support for Underserved Communities Through the Federal Government," which aimed to foster racial equity across federal institutions. The new executive order, however, calls for the termination of DEIA initiatives, effectively rolling back efforts toward greater inclusivity in the federal workforce.
 
-In tandem with this order, numerous federal employees were targeted and abruptly dismissed, and while some have been rehired, uncertainty continues to loom over agencies nationwide. In parallel, significant budget cuts targeted programs and institutions conducting diversity research, and funding for initiatives focused on racial equity has been severely restricted, limiting their ability to function and fulfill their missions.If we m
+In tandem with this order, numerous federal employees were targeted and abruptly dismissed, and while some have been rehired, uncertainty continues to loom over agencies nationwide. In parallel, significant budget cuts targeted programs and institutions conducting diversity research, and funding for initiatives focused on racial equity has been severely restricted, limiting their ability to function and fulfill their missions.
 
 On March 20, 2025, the Trump administration issued another major executive order, "Improving Education Outcomes by Empowering Parents, States, and Communities." This order aims to dismantle the Department of Education, arguing that federal education bureaucracy had failed and that authority over education should return to state control. These initiatives were largely aligned with lanague and goals of the Heritage Foundation’s Project 2025, which outlined policies designed to reshape federal government institutions.
 
-The political attention these shifts changes in policies and executive around are bring attention to the language that used to described and highlight federal agencies roles within the concrete exampple of racial tension and migitation across the ailes of conservitave and liberal. These dramatic policy shifts have drawn increased political attention to the language used to define the role of federal agencies, particularly in relation to racial tensions and policy divisions across the ideological spectrum.  What creates a target for agencies and how agenices in term compared other as more racialized? 
-
 Political leaders, elites, and the media strategically deploy racial cues to reinforce or challenge policy directions, framing agencies as aligned with—or in opposition to—specific racial and political ideologies. These linguistic signals, shaped by elite discourse and media narratives, shed light on the current political landscape and illustrate how perceptions of federal agencies have been racialized over time.
 
-Our new measure offers a temporal lens through which to understand how both liberal and conservative institutions are perceived as racialized, particularly in the framing of agencies in terms that reflect racial tension, mitigation, or attention. This measure will enable us to further explore whether such perceptions align with measurable disparities in policy outcomes.
+These recent policy shifts have heightened political scrutiny on specific federal agencies, particularly in how their roles are framed within the context of racial tensions and ideological divides. The language used by political leaders and the media to describe these agencies, along with the frequency of their mention in relation to race, highlights how agencies are perceived as more "racialized" than others.This raises important questions: What makes certain agencies targets for political action, and how do perceptions of racialization differ across agencies typically seen as either conservative or liberal, recognizing that racialization is distinct from political ideology?
 
+Our new measure offers a temporal lens through which to understand how both liberal and conservative institutions are perceived as racialized, particularly in the framing of agencies in terms that reflect racial tension, mitigation, or attention. This measure will enable us to further explore whether such perceptions align with measurable disparities in policy outcomes.
 
 By analyzing these dynamics, we gain critical insights into why federal agencies are strategically targeted by political actors and media organizations across different presidential administrations. This analysis allows us to test competing explanations for why agencies are perceived as more liberal or conservative.
 
 Our findings show that while racialization is distinct from political ideology, it correlates more strongly with perceptions of ideological extremism—the further an agency is perceived from the political center, the more racialized its identity becomes.
-
 
 # United States Bureaucracy and Ideolodgy 
 
@@ -112,9 +110,11 @@ The finding reveal that agencies with similar ideological estimates, such as the
 
 Our proposed measure may contribute to understanding this variation in partisan disagreement and limitations of ideological measures, by incorporating perceptions of racialization. Using text analysis of language that cues race, we aim to capture public, policymaker, and elite perceptions of agency ideology, offering a new lens through which race is examined as a factor that may be missing from traditional scales of liberalism and conservatism.
 
-We include the historical context of racial tension and discrimination in the United States to show the important of making a key distinction between racialization and ideology. While ideological perceptions of agencies are shaped by political leanings, racialization introduces a separate dimension that complicates these perceptions. Our contribution lies in the development of a new measure that captures the perceived racialized nature of agencies, offering insight into how racialized frameworks may operate independently of ideological ones. By focusing on the intersection of race and political ideology, we deepen our understanding of how federal agencies are shaped by both, while also highlighting how these two dimensions may diverge 
+<!--We include the historical context of racial tension and discrimination in the United States to show the important of making a key distinction between racialization and ideology. While ideological perceptions of agencies are shaped by political leanings, racialization introduces a separate dimension that complicates these perceptions. Our contribution lies in the development of a new measure that captures the perceived racialized nature of agencies, offering insight into how racialized frameworks may operate independently of ideological ones. By focusing on the intersection of race and political ideology, we deepen our understanding of how federal agencies are shaped by both, while also highlighting how these two dimensions may diverge -->
 
-> WILL HELP US UNDERSTAND THE POLITICAL LANDSCAPE OF INSTITIONS. Percieved liberal or conservative leanings of agencies is one way that we can understand why agencies are contentious or targeted for reform. Racialization may interact with this (for example, by contributing to how agencies are percieved as more extreme), but it may also give us distinct insights into the political lanscape surounding depates over federal policy and the institutions that exicute it. 
+Understanding the perceived liberal or conservative leanings of agencies is helps explain why certain institutions become contentious or targeted for reform. While racialization may interact with these ideological perceptions—potentially influencing how agencies are seen as more extreme—it also provides distinct insights into the political landscape surrounding debates over federal policy and the institutions that execute it.
+
+> WILL HELP US UNDERSTAND THE POLITICAL LANDSCAPE OF INSTITIONS. Percieved liberal or conservative leanings of agencies is one way that we can understand why agencies are contentious or targeted for reform. Racialization may interact with this (for example, by contributing to how agencies are percieved as more extreme), but it may also give us distinct insights into the political lanscape surounding depates over federal policy and the institutions that exicute it. (added above)
 
 
 # Why Institutional Racialization Matters
@@ -130,8 +130,8 @@ The development of racialized rhetoric and perceptions of race in understanding 
 Federal agencies have never been racially neutral; they were deeply segregated institutions that enforced exclusionary policies, disadvantaging racial minorities and positioning agencies as racialized actors. As federal agencies have changed and reshaped over time, so too has the racial landscape in the United States. The importance of our measure lies in its ability to capture how perceptions of these agencies have evolved.
 
 Our measures focus this provides insight on why racially liberal or conservative agencies become racialized—either because they are perceived as mitigating or obstructing policies that produce racially disparate outcomes, or because the agency's fundamental nature is inherently racialized.
-
-> For example, the Departmnent Housing and Urban Development...
+ 
+<!--For example, the Departmnent Housing and Urban Development... -->
 
 While our measure has not yet fully distinguished these dynamics, it offers a valuable contribution to understanding extremism and raises further inquiries into why some agencies that one might assume to be racialized are not perceived as such.
 
@@ -259,12 +259,11 @@ knitr::include_graphics("docs/figs/trends-rules-groups-6.png") # hispanic
 ```
 
 
-
-##  Public Comments
+<!--##  Public Comments
 
 ### Context 
 
-### Data
+### Data -->
 
 ## News Coverage of Agencies 
 
@@ -334,7 +333,6 @@ knitr::include_graphics("docs/figs/nyt_v_2025-2.png")
 ```
 
 The correlation between the NYT and MFL measures is `r nyt_v_2025_cor$estimate` (p = `r nyt_v_2025_cor$p.value`).  The largest outlier is the Department of Housing and Urban Development, which is discussed in more racialized terms in NYT articles. Most agencies have higher scores on the MFL measure, especially 
-
 
 
 ## Combined Scale
