@@ -25,14 +25,17 @@ author:
     affiliations:
       - name: University of Michigan
     #department: Ford School of Public Policy
-thanks: |
+thanks: | 
+ We will be grateful for any comments on this very early and evolving draft. The most recent draft is [here](http://judgelord.github.io/racialization/racialization-paper.pdf).
 date: today
 abstract: |
- When an institution is said to be liberal or conservative, part of what people mean is whether they are supported by self-identified liberals or conservatives. But what is the substantive content of perceived agency ideologies? What are measures of percieved agency ideology measuring? Related to debates about measures of legislator ideology, measures of institutional ideology may be driven by several latent factors, including the institution's perceived association with racial and economic inequality, as well as their interaction. 
+ While traditional measures of liberal/conservative ideology have long shaped our understanding of public institutions, they often miss a critical dimension: perceived racialization. Racialization, as we define it, refers to the process through which institutions are framed and discussed in relation to race, influencing their perceived role in shaping racial inequality and political conflicts. Yet, we currently lack any systematic measures of institutional racialization. Using text analysis of policy documents, media coverage, and advocacy reports, we develop new measures for the racialization of federal agencies. We find that racialization is not correlated with perceived liberal or conservative ideology. However, agencies perceived as more ideologically extreme---whether as liberal or conservative are more racialized. Agencies involved in immigration enforcement are heavily racialized and perceived as conservative, while others, like the Departments of Labor, Education, and Health and Human Services, are also racialized but perceived as liberal. We also find significant variation over time in racialization, suggesting that efforts to frame or reform agencies affect racialization, even when the agency's mission and work remain the same. 
 
-  In this paper, we use text analysis to create several new measures of racialization of government agencies. We then compare them with leading measures of perceived agency ideology from elite surveys. This analysis shows that racialization is distinct from previous measures of perceived ideology---there is no correlation between racialization and percieved liberal or conservative ideology, but percieved ideologically extremity on both ends is correlated with racialization. The most racialized agencies are involved in upholding racial hierarchy through immigration enforcement and are also percieved as among the most conservative. But many highly racialized agencies, like USAID, the Departments of Labor, Education, and Health and Human services are percieved to as among the most liberal. 
+# How do perceptions of racialization differ between agencies seen as conservative or liberal?
+# (old abstract) When an institution is said to be liberal or conservative, part of what people mean is whether they are supported by self-identified liberals or conservatives. But what is the substantive content of perceived agency ideologies? What are measures of perceived agency ideology? Related to debates about measures of legislator ideology, measures of institutional ideology may be driven by several latent factors, including the institution's perceived association with racial and economic inequality, as well as their interaction. In this paper, we use text analysis to create several new measures of racialization of government agencies. We then compare them with leading measures of perceived agency ideology from elite surveys. This analysis shows that racialization is distinct from previous measures of perceived ideology---there is no correlation between racialization and perceived liberal or conservative ideology, but perceived ideological extremity on both ends is correlated with racialization. The most racialized agencies are involved in upholding racial hierarchy through immigration enforcement and are also perceived as among the most conservative. But many highly racialized agencies, like USAID and the Departments of Labor, Education, and Health and Human Services, are perceived to as among the most liberal. 
+
 # dataverse: 
-keywords: ""
+keywords: "Racialization, bureaucracy, ideology, rhetoric, framing, institutions"
 linestretch: 1.5
 indent: true
 number-sections: true
@@ -47,6 +50,8 @@ warning: false
 ---
 
 ```{r knit-options}
+library(scales) # for percents
+
 # inline numbers round to 2, comma at thousands
 knitr::knit_hooks$set(inline = function(x) {
   if (is.na(as.numeric(x))) {
@@ -58,114 +63,128 @@ knitr::knit_hooks$set(inline = function(x) {
         )
 })
 
-
 # regression table formatting function 
 # modelsummary <- modelsummary_AJPS
 
-# numbers cited in paper that may change
+# numbers cited in the paper that may change
 load(here::here("data", "numbers-for-paper.Rdata"))
-library(scales)
+# nyt_v_2025_cor, 
+n_racial <- sum(n_mfl_racial,n_rules_racial, n_nyt_racial)
+# n_mfl_total,
+# n_mfl_agencies, 
+#      n_nyt_articles,
+#      n_nyt_agencies,
+#      n_rules_racial,
+#      n_rules_agencies
+# Other things cited in the paper 
 ```
 
 \clearpage 
 
-<!-- feedback on framing:  main thing is that we will want to focus on how racialization is distinct from perceived ideology. Examples from news coverage and 2025 etc where both liberal and conservative agencies are described with racialized terms, will help make the results clear.  -->
+<!-- feedback on framing: the main thing is that we will want to focus on how racialization is distinct from perceived ideology. Examples from news coverage and 2025, etc, where both liberal and conservative agencies are described with racialized terms, will help make the results clear.  -->
 
-# Introduction
+# Introduction {#sec-intro}
 
-<!--Institutions are under attack for working to address racial inequality. --> 
+<!--WHY WE ARE WRITING THIS PAPER-->
 
-In January 2025, the White House issued the "Ending Radical and Wasteful Government DEI Programs and Preferencing" executive order, a sweeping policy that seeks to dismantle diversity, equity, inclusion, and accessibility (DEIA) practices within federal agencies. This directive stands in stark contrast to President Biden’s 2021 executive order, "Advancing Racial Equity and Support for Underserved Communities Through the Federal Government," which aimed to foster racial equity across federal institutions. The new executive order, however, calls for the termination of DEIA initiatives, effectively rolling back efforts toward greater inclusivity in the federal workforce.
+Public policy is given effect through government institutions. As such, efforts to shape policy almost necessarily involve efforts to influence the actions of institutions, enhance or undermine their perceived legitimacy, and shape public perceptions of their role in political conflicts. In many political contexts, including the United States, racial inequality and racial resentment are major drivers of policy initiatives and political behavior. Political leaders, elites, and the media strategically deploy racial cues to reinforce or challenge policy directions, framing agencies as aligned with—or in opposition to—specific racial and political ideologies. These linguistic signals, shaped by elite discourse and media narratives, shed light on the current political landscape and illustrate how perceptions of federal agencies have been racialized over time.
 
-In tandem with this order, numerous federal employees were targeted and abruptly dismissed, and while some have been rehired, uncertainty continues to loom over agencies nationwide. In parallel, significant budget cuts targeted programs and institutions conducting diversity research, and funding for initiatives focused on racial equity has been severely restricted, limiting their ability to function and fulfill their missions.
+We define institutional racialization as the level to which the public language used to describe an institution and its actions evoke race and thus make relevant and highlight debates around racial inequality or racial resentments. 
 
-On March 20, 2025, the Trump administration issued another major executive order, "Improving Education Outcomes by Empowering Parents, States, and Communities." This order aims to dismantle the Department of Education, arguing that federal education bureaucracy had failed and that authority over education should return to state control. These initiatives were largely aligned with lanague and goals of the Heritage Foundation’s Project 2025, which outlined policies designed to reshape federal government institutions.
+<!--Institutions are under attack for working to address racial inequality.-->
+Racialization plays a key role in efforts to reshape government. For example, approximately half of the Biden Administration's executive orders instructed agencies to initiate civil rights-related actions, many addressing race. Several "whole-of-government" initiatives included instructions to agencies that had not previously highlighted the racial implications of hiring staff to assess the impacts of the agency's actions on racial inequalities. This included a 2021 executive order titled Advancing Racial Equity and Support for Underserved Communities Through the Federal Government, which initiated efforts to increase racial equity across federal institutions. Other initiatives, such as restricting immigration by not processing asylum claims, were arguably driven by a long-running resurgence of the racialization of immigration policy. Immigration policy began as explicitly racial exclusion, then underwent reforms that de-emphasized racial implications and is now increasingly racialized again. <!--https://civilrights.org/wp-content/uploads/2023/06/Civil-and-Human-Rights-Executive-Order-Progress-Report.pdf--> 
 
-Political leaders, elites, and the media strategically deploy racial cues to reinforce or challenge policy directions, framing agencies as aligned with—or in opposition to—specific racial and political ideologies. These linguistic signals, shaped by elite discourse and media narratives, shed light on the current political landscape and illustrate how perceptions of federal agencies have been racialized over time.
+In January 2025, the Trump Administration issued the Ending Radical and Wasteful Government DEI Programs and Preferencing executive order, initiating efforts to dismantle diversity, equity, inclusion, and accessibility (DEIA) practices within federal agencies. The new executive order, however, calls for the termination of DEIA initiatives, effectively rolling back efforts toward greater inclusivity in the federal workforce. In tandem with this order, numerous federal employees were targeted and abruptly dismissed, and while some have been rehired, uncertainty continues to loom over agencies nationwide. In parallel, significant budget cuts targeted programs and institutions conducting diversity research, and funding for initiatives focused on racial equity has been severely restricted, limiting their ability to function and fulfill their missions.
 
-These recent policy shifts have heightened political scrutiny on specific federal agencies, particularly in how their roles are framed within the context of racial tensions and ideological divides. The language used by political leaders and the media to describe these agencies, along with the frequency of their mention in relation to race, highlights how agencies are perceived as more "racialized" than others.This raises important questions: What makes certain agencies targets for political action, and how do perceptions of racialization differ across agencies typically seen as either conservative or liberal, recognizing that racialization is distinct from political ideology?
+<!--- TO ADVANCE THE ARGUMENT, THIS NEEDS TO TALK ABOUT RACIALIZATION OF THE DEPT OF EDUCATION, NOT THE RHETORIC OF STATES RIGHTS On March 20, 2025, the Trump administration issued another major executive order, "Improving Education Outcomes by Empowering Parents, States, and Communities." This order aims to dismantle the Department of Education, arguing that the federal education bureaucracy had failed and that authority over education should return to state control. --->
+These initiatives were largely aligned with the language and goals of the Heritage Foundation’s Project 2025, which outlined policies designed to reshape federal government institutions.
 
-Our new measure offers a temporal lens through which to understand how both liberal and conservative institutions are perceived as racialized, particularly in the framing of agencies in terms that reflect racial tension, mitigation, or attention. This measure will enable us to further explore whether such perceptions align with measurable disparities in policy outcomes.
+The common theme in these examples is that policy shifts have heightened political scrutiny on specific federal agencies by framing the institution within the context of racial politics. The language used by political leaders and the media to describe these agencies, along with the frequency of their mention in relation to race, highlights how agencies are perceived as more "racialized" than others. This raises important questions: What makes certain agencies targets for political action, and how do perceptions of racialization differ across agencies typically seen as either conservative or liberal, recognizing that racialization is distinct from political ideology?
 
-By analyzing these dynamics, we gain critical insights into why federal agencies are strategically targeted by political actors and media organizations across different presidential administrations. This analysis allows us to test competing explanations for why agencies are perceived as more liberal or conservative.
+To help scholars address these questions, this paper develops measures of institutional racialization. We use data from advocacy groups, news media, and policy documents from agencies themselves. We identify `r n_racial` instances of agencies using or being discussed with racial language, including `r n_mfl_racial` sentences in the Heritage Foundation's Project 2025 Mandate for Leadership report, `r n_nyt_racial` articles in the New York Times, and `r n_rules_racial` agency rules. By scaling the relative frequency that each source does and does not use racialized language when talking about an agency or its policies, we show which agencies are relatively more racialized within and across realms of public discourse. 
+Our new measures also offer a temporal lens through which to understand how both liberal and conservative institutions are perceived as racialized, particularly in the framing of agencies in terms that reflect racial tension, mitigation, or attention.  <!--This analysis allows us to test competing explanations for why agencies are perceived as more liberal or conservative.--> 
 
-Our findings show that while racialization is distinct from political ideology, it correlates more strongly with perceptions of ideological extremism—the further an agency is perceived from the political center, the more racialized its identity becomes.
+Our findings show that while racialization is distinct from political ideology, it correlates more strongly with perceptions of ideological extremism—the further an agency is perceived from the political center, the more racialized its identity becomes. 
 
-# United States Bureaucracy and Ideolodgy 
+# United States Bureaucracy and Ideology {#sec-theory}
 
 <!--What does it mean to be liberal and conservative? What does the agency being liberal or conservative correlate with? --> 
 
+Scholars have developed various methods to evaluate the structure, patronage, competence, and efficiency of federal bureaucracies in the United States [@brierley_bureaucratic_2023]. A large contribution in this literature has been measuring the perceived ideology of agencies and how that impacts policymaking and the influence of other political actors outside the agency, such as the president. Methodological approaches to agency perceived ideology measurement vary, ranging from elite surveys to other work using presidential appointment of agency leadership, public donations and statements, and voting patterns of commission executives [@clinton_expert_2008; @richardson_politicization_2019; epstein_delegating_1999; @nixon_separation_2004; @chen_federal_2014; @maranto_beyond_2005; @maranto_right_2004; @bertelli_lengthened_2011].
 
-Scholars have developed various methods to evaluate the structure, patronage, competence, and efficiency of federal bureaucracies in the United States [@brierley_bureaucratic_2023]. A large contribution in this literature has been measuring the ideology of agencies and how that impacts policymaking and the influence of other political actors outisde the agency, such as the president. Methodological approaches to agency ideology measurement vary, ranging from elite surveys to other work using presidential appointment of agency leadership, public donations and statements, and voting patterns of commission executives [@clinton_expert_2008; @richardson_politicization_2019; epstein_delegating_1999; @nixon_separation_2004; @chen_federal_2014; @maranto_beyond_2005; @maranto_right_2004; @bertelli_lengthened_2011].
-
-For instance, @chen_federal_2014 uses formal models to explore how presidents strategically use unionization as a mechanism to anchor agency ideologies. Their research shows that unionization occurs more frequently under presidents whose political ideologies are closely aligned with the agency, impacting both turnover and ideological orientation. @feinstein_partisan_2018 analyze 578 appointees across 23 agencies over six presidencies, estimating appointees' ideological preferences based on personal campaign contributions...(add more) They find stronger effects on ideological composition in multi-member agencies beginning in the mid-1990s. <!--@lavertu_regulatory_2014 use specific cases..(add more) -->
+For instance, @chen_federal_2014 use formal models to explore how presidents strategically use unionization as a mechanism to anchor agency ideologies. Their research shows that unionization occurs more frequently under presidents whose political ideologies are closely aligned with the agency, impacting both turnover and ideological orientation. @feinstein_partisan_2018 analyze 578 appointees across 23 agencies over six presidencies, estimating appointees' ideological preferences based on personal campaign contributions. They find stronger effects on ideological composition in multi-member agencies beginning in the mid-1990s. <!--@lavertu_regulatory_2014 use specific cases..(add more) -->
 
 @clinton_expert_2008 measured agency preferences through expert surveys conducted in 1988 and 2005, using bureaucratic experts to rank 82 executive agencies on a liberal-to-conservative spectrum. This study, based on the assessments of 37 experts from academia, journalism, and Washington think tanks, provided key insights into the ideological landscape of federal agencies. 
 
-Building on this work, @richardson_politicization_2019 expanded the survey to include more agencies and 1,500 federal executives with government experience, further refining the understanding of agency liberalism and conservatism. In estimating agency preferences, their work offers insight into the potential drivers of agency liberalism and conservatism. We aim to contribute to this understanding by exploring additional drivers such as race and the language used to describe federal agencies. These dimensions may help us better understand how agency ideology is perceived and shaped, providing a more nuanced view of agency preference.
+Building on this work, @richardson_politicization_2019 expanded the survey to include more agencies and 1,500 federal executives with government experience, further refining the understanding of agency liberalism and conservatism. In estimating agency preferences, their work offers insight into the potential drivers of agency liberalism and conservatism. 
 
-In a more recent study, @richardson_characterizing_2024 conducted an original online survey of civil servants from executive departments, independent agencies, and the Executive Office of the President (EOP). The study asked respondents to evaluate partisan disagreement within their agencies, providing a latent measure of agency ideology. 
+In a more recent study, @richardson_characterizing_2024 conducted an original online survey of civil servants from executive departments, independent agencies, and the Executive Office of the President (EOP). The study asked respondents to evaluate partisan disagreement within their agencies, providing a latent measure of agency ideology. The findings reveal that agencies with similar ideological estimates, such as the EPA and CFPB (on the liberal end) and the Air Force, Army, and Navy (on the conservative end), experience varying levels of partisan disagreement. While liberal agencies like the EPA face higher levels of partisan conflict, similarly liberal organizations like the Peace Corps do not. On the conservative side, the Air Force and Army face less partisan disagreement than agencies like United States Customs and Border Protection (USCBP) or the Bureau of Alcohol, Tobacco, Firearms and Explosives (ATF), despite sharing conservative ideology estimates [@richardson_characterizing_2024]. This variation suggests that perceived ideological alignment alone does not explain why certain agencies experience more political conflict, thus leaving opportunities to further explore what it means to be a "liberal" and "conservative" agency and why certain agencies experience more partisan contention. 
 
-The finding reveal that agencies with similar ideological estimates, such as the EPA and CFPB (on the liberal end) and the Air Force, Army, and Navy (on the conservative end), experience varying levels of partisan disagreement. While liberal agencies like the EPA face higher levels of partisan conflict, similarly liberal organizations like the Peace Corps do not. On the conservative side, the Air Force and Army face less partisan disagreement than agencies like USCBP or ATF, despite sharing conservative ideology estimates [@richardson_characterizing_2024]. This variation suggests that ideological alignment alone does not explain why certain agencies experience more political conflict, thus leaving opportunities to further exploration what it means to be "liberal" and "conservative" agency and why certain agencies experience more partisan contention. 
+Perceived ideology is a crucial measure for understanding agency dynamics. By incorporating perceived racialization, we can uncover how this dimension alters traditional ideology scoring, offering new insights and potentially different results. Our proposed measure may contribute to understanding this variation in partisan disagreement and limitations of ideological measures, by incorporating perceptions of racialization. Using text analysis of language that cues race, we aim to capture public, policymaker, and elite perceptions of agency levels in which an agency is classified as "racialized", offering a new lens that may be missing from traditional scales of liberalism and conservatism.
 
-Our proposed measure may contribute to understanding this variation in partisan disagreement and limitations of ideological measures, by incorporating perceptions of racialization. Using text analysis of language that cues race, we aim to capture public, policymaker, and elite perceptions of agency ideology, offering a new lens through which race is examined as a factor that may be missing from traditional scales of liberalism and conservatism.
+<!--We include the historical context of racial tension and discrimination in the United States to show the importance of making a key distinction between racialization and perceived ideology. While ideological perceptions of agencies are shaped by political leanings, racialization introduces a separate dimension that complicates these perceptions. Our contribution lies in the development of a new measure that captures the perceived racialized nature of agencies, offering insight into how racialized frameworks may operate independently of ideological ones. By focusing on the intersection of race and political ideology, we deepen our understanding of how federal agencies are shaped by both, while also highlighting how these two dimensions may diverge -->
 
-<!--We include the historical context of racial tension and discrimination in the United States to show the important of making a key distinction between racialization and ideology. While ideological perceptions of agencies are shaped by political leanings, racialization introduces a separate dimension that complicates these perceptions. Our contribution lies in the development of a new measure that captures the perceived racialized nature of agencies, offering insight into how racialized frameworks may operate independently of ideological ones. By focusing on the intersection of race and political ideology, we deepen our understanding of how federal agencies are shaped by both, while also highlighting how these two dimensions may diverge -->
+<!-- WILL HELP US UNDERSTAND THE POLITICAL LANDSCAPE OF INSTITIONS.--> 
 
-Understanding the perceived liberal or conservative leanings of agencies is helps explain why certain institutions become contentious or targeted for reform. While racialization may interact with these ideological perceptions—potentially influencing how agencies are seen as more extreme—it also provides distinct insights into the political landscape surrounding debates over federal policy and the institutions that execute it.
-
-> WILL HELP US UNDERSTAND THE POLITICAL LANDSCAPE OF INSTITIONS. Percieved liberal or conservative leanings of agencies is one way that we can understand why agencies are contentious or targeted for reform. Racialization may interact with this (for example, by contributing to how agencies are percieved as more extreme), but it may also give us distinct insights into the political lanscape surounding depates over federal policy and the institutions that exicute it. (added above)
+Understanding the perceived liberal or conservative leanings of agencies helps explain why certain institutions become contentious or targeted for reform. While racialization may interact with these ideological perceptions—potentially influencing how agencies are seen as more extreme—it also provides distinct insights into the political landscape surrounding debates over federal policy and the institutions that execute it.
 
 
-# Why Institutional Racialization Matters
+# Why Institutional Racialization Matters {#sec-why}
 
 <!--What do you we know about race -- in media (NYT), think tanks (heritage foundation), and policy media coverage (public comments)--> 
 
-## Race and Bureaucracy 
+When scholars discuss how institutions have perceived ideological leanings, they may not capture how exclusionary practices and the racial construction of bureaucracy influence public and elite perceptions. These exclusionary practices are deeply ingrained in institutions, and while progress has been made, more subtle forms of exclusion continue to exist, becoming less overt but no less impactful in shaping perceptions of agencies as conservative or liberal—particularly as polarization intensifies. 
 
-When scholars discuss how institutions have perceived ideological leanings, they may not capture how the U.S.’s exclusionary practices and the racial construction of its bureaucracy have influenced public and elite perceptions. These exclusionary practices are deeply ingrained in institutions, and while progress has been made, more subtle forms of exclusion continue to exist, becoming less overt but no less impactful in shaping perceptions of agencies as conservative or liberal—particularly as polarization intensifies. 
-
-The development of racialized rhetoric and perceptions of race in understanding federal agencies must be contextualized within the historical evolution of bureaucracies as racialized institutions across ideological lines. This continuity reveals that many of the patterns we observe today are not new but rather repackaged versions of longstanding dynamics. By distinguishing racialization from the measurement of federal agencies as liberal or conservative, we gain a deeper understanding of how this relates to their history of racial cues, signaling, and distancing among both conservative and liberal efforts.
+The development of racialized rhetoric and perceptions of race in understanding federal agencies must be contextualized within the historical evolution of bureaucracies as racialized institutions across perceived ideological lines. This continuity reveals that many of the patterns we observe today are not new but rather repackaged versions of longstanding dynamics. By distinguishing racialization from the measurement of federal agencies as liberal or conservative, we gain a deeper understanding of how this relates to their history of racial cues, signaling, and distancing among both conservative and liberal efforts.
 
 Federal agencies have never been racially neutral; they were deeply segregated institutions that enforced exclusionary policies, disadvantaging racial minorities and positioning agencies as racialized actors. As federal agencies have changed and reshaped over time, so too has the racial landscape in the United States. The importance of our measure lies in its ability to capture how perceptions of these agencies have evolved.
 
-Our measures focus this provides insight on why racially liberal or conservative agencies become racialized—either because they are perceived as mitigating or obstructing policies that produce racially disparate outcomes, or because the agency's fundamental nature is inherently racialized.
- 
-<!--For example, the Departmnent Housing and Urban Development... -->
+Our measures provide insight into why racially liberal or conservative agencies become racialized—either due to their perceived role in mitigating or obstructing policies that result in racially disparate outcomes or because the agency's core functions are inherently racialized.
 
-While our measure has not yet fully distinguished these dynamics, it offers a valuable contribution to understanding extremism and raises further inquiries into why some agencies that one might assume to be racialized are not perceived as such.
+For instance, an agency like the Department of Defense may traditionally be viewed as conservative, but a new administration could implement policies that address racial inequities within its structure. Even agencies perceived as conservative can experience internal conflicts, exposing tensions surrounding race. A key contribution of our measure is its ability to capture the prominence of these debates—the push and pull between efforts to either mitigate or obstruct racial progress.
 
-> A NOTE OF FRAMING HERE: THIS FIRST PARAGRAPH IMPLIES THAT RACIALIZATION IS ABOUT RACIAL BIAS, WHICH MANY WILL TAKE TO BE UPHODING RACIAL HIERARCHY. DO WE WANT TO TALK ABOUT HOW THERE ARE CONTESTS OVER GOVERMENTAL POWER BY THOSE WHO WANT TO MAINTAIN AND EFFORTS TO REDUCE RACIAL INEQUALITIES? I THINK THE STORY ABOUT WHY ICE IS RACIALIZED IS CLEAR, BUT WHAT ABOUT USAID, HUD, ED, LABOR, ETC.---ARE THEY RACIALIZED BECAUSE THEY ARE PERCIEVED AS PUTTING THEIR THUMB ON THE OTHER SIDE OF THE SCALE (I.E. MITIGATING RATHER THAN UPHOLDING HIERARCHY) OR ARE THEY RACIALIZED BECAUSE THERE ARE FIGHTS GOING ON AVBOUT WHETHER THEY SHOULD BE A FORCE FOR HIERAERCHY VS EQUALITY? I THINK WE NEED A STORY FOR WHY "LIBERAL" AGENCIES ARE ALSO RACIALIZED. 
 
-> Percieved conservative agencies may also have fights in them, so fundamentally what we are measuring on both sides is how prominant the debate is.
+<!--
+> A NOTE OF FRAMING HERE: THIS FIRST PARAGRAPH IMPLIES THAT RACIALIZATION IS ABOUT RACIAL BIAS, WHICH MANY WILL TAKE TO BE UPHODING RACIAL HIERARCHY. DO WE WANT TO TALK ABOUT HOW THERE ARE CONTESTS OVER GOVERNMENTAL POWER BY THOSE WHO WANT TO MAINTAIN AND EFFORTS TO REDUCE RACIAL INEQUALITIES? I THINK THE STORY ABOUT WHY ICE IS RACIALIZED IS CLEAR, BUT WHAT ABOUT USAID, HUD, ED, LABOR, ETC.---ARE THEY RACIALIZED BECAUSE THEY ARE PERCEIVED AS PUTTING THEIR THUMB ON THE OTHER SIDE OF THE SCALE (I.E. MITIGATING RATHER THAN UPHOLDING HIERARCHY) OR ARE THEY RACIALIZED BECAUSE THERE ARE FIGHTS GOING ON ABOUT WHETHER THEY SHOULD BE A FORCE FOR HIERARCHY VS EQUALITY? I THINK WE NEED A STORY FOR WHY "LIBERAL" AGENCIES ARE ALSO RACIALIZED. 
+--> 
 
-### Agencies Make Policy That Affect Racial Inequality 
+### Agencies Make Policy That Affects Racial Inequality 
 
-@king_racial_1999 illustrates this clearly explaining, "the role of the federal bureaucracy as a complicit agent in segregated race relations demonstrates how governments, often manipulated by the promoters of special interests, become conduits (at the least) of illiberalism. The legacies of segregated race relations and of the federal government’s involvement in their maintenance and perpetuation have been elemental to US politics".
+Federal agencies are not neutral entities; their structures, leadership composition, and policy responsibilities shape racial outcomes. Understanding how agencies become racialized requires examining both their historical role in racial inequality and how diversity within agencies influences the policies they implement.
 
-The type of policy responsibility an agency administers plays a significant role in predicting the diversity of its employees and leadership, both in terms of race and ethnicity and gender. Regulatory and distributive agencies, such as law enforcement-related departments, tend to have lower levels of racial/ethnic diversity and remain over represented by White males. Conversely, redistributive agencies show tend to have racial and ethnic representation in their workforce more similar to the U.S. population. For example, departments like the Department of Education, Health and Human Services, and Housing and Urban Development demonstrate better diversity in their workforce [@choi_managing_2010].
+@king_racial_1999 illustrates this clearly explaining that "the role of the federal bureaucracy as a complicit agent in segregated race relations demonstrates how governments, often manipulated by the promoters of special interests, become conduits (at the least) of illiberalism. The legacies of racial segregation and of the federal government’s involvement in their maintenance and perpetuation have been elemental to U.S. politics".
 
-### Seggregation in the Federal Agency Workforce
 
-During the Wilson era, President Wilson explicitly endorsed a segregated federal government, framing his separatist ideals as beneficial for African Americans and women. His discriminatory hiring practices were entrenched in the civil service, making merit-based entry difficult. For example, in 1914, the US Civil Service Commission required applicants for civil service posts to supply a photograph with their application form [@van_riper_history_1958; @king_racial_1999; @blatt_race_2018]. 
+### Segregation in the Federal Agency Workforce
 
-Similarly, the illusion of progress during a Democratic administration, the Roosevelt administration, despite the creation of agencies like the National Youth Administration’s (NYA) Division of Negro Affairs and evolution of the "Black Cabinet". These efforts, while pivotal for racial and gender representation, were short-lived and were the terms of segregation [@ross_mary_1975; @king_racial_1999].
+
+The diversity within agencies, particularly in terms of race, ethnicity, and gender, further affects the types of policies they administer. Regulatory and law enforcement-related agencies that have historically been overrepresented by White males remain as such.  On the other hand, redistribution agencies, like the Department of Education, Health and Human Services, and Housing and Urban Development, tend to have a more diverse workforce that mirrors the U.S. population [@choi_managing_2010].
+
+The representative bureaucracy literature has shown that diversity and demographics both influence and reflect policies that align with the composition of an agency's workforce [@mansbridge_should_1999; @watkins-hayes_new_2009; @minta_legislative_2009-1; @juenke_irreplaceable_2012; @hayes_symbolic_2017; @meier_theoretical_2018].
+This suggests that agency structures, as King describes, not only reflect historical racial legacies but also influence the degree to which agencies are racialized in terms of both policy and representation.
+
+President Wilson explicitly endorsed a segregated federal government, framing his segregationist ideals as beneficial for African Americans and women. The Wilson administration's discriminatory hiring practices were entrenched in the civil service, making merit-based entry difficult. For example, in 1914, the US Civil Service Commission required applicants for civil service posts to supply a photograph with their application form [@van_riper_history_1958; @king_racial_1999; @blatt_race_2018]. The Roosevelt administration also created racialized agencies like the National Youth Administration’s (NYA) Division of Negro Affairs and the "Black Cabinet." These efforts, while pivotal for racial and gender representation, were short-lived and were the terms of segregation [@ross_mary_1975; @king_racial_1999].
+
+### Historical Legacies and Institutional Racialization
 
 The sustainability and protection of agencies that serve diverse populations are deeply connected to the historical development of U.S. bureaucracies, which were heavily shaped by anti-Black sentiments and segregationist values. Additionally, pivotal historical moments have simultaneously influenced the broader politics of racialization, making it essential to consider how the public and elites perceive federal agencies, policy preferences, and the agents involved in policymaking.
 
 Scholars have identified the New Deal era as a pivotal moment in the racial realignment of party coalitions and the racialization of politics. The New Deal and the Civil Rights Movement have had lasting effects, including partisan sorting and polarization, which significantly impacted the racial sorting within the Republican and Democratic Party coalitions. In *Steadfast Democrats: How Social Forces Shape Black Political Behavior, White and Laird specifically address the development of Black Americans'* support for the Democratic Party. They examine how this support has remained steadfast since the post-Civil Rights era and how affiliation with the Democratic Party now aligns with the social expectations of Black Americans [@schickler_racial_2016; @tate_black_2003; @white_steadfast_2020].
 
-Traditional measures of ideology may overlook the profound impact of race on agency perceptions as in patterns found in the much of the race and ethnicity scholarship in the realm of public opinion and political behavior. Race and contemporary polarization are central to shaping political ideology and policy making process, as evidenced by the historical discrimination and exclusion in the construction of the bureaucracy and historical alignment of party coalitions along racial lines in the U.S.
 
 ### Framing of Policy Preferences and Race
 
-Public opinion scholars have also shown that racial attitudes are strongly correlated with policy preferences on issues like anti-discrimination, immigration, and race-targeted programs. While race and ethnic politics scholars in Political Science use various methods to test the causes of racial polarization, one indisputable fact is that it exists. @hutchings_centrality_2004 explain how  “the 'Goldwater gamble' in 1964, based on opposition to federal intervention to protect blacks’ civil rights, triggered a heightened emphasis on race in the two parties’ platforms, increased polarization of party activists on racial issues, and polarized mass perceptions of the two parties on desegregation."
+As demonstrated in race and ethnicity scholarship in the realm of public opinion and political behavior, traditional measures of ideology may overlook the profound impact of race on perceptions. Race and contemporary polarization are central to shaping political ideology and the policymaking process, as evidenced by the historical discrimination and exclusion in the construction of the bureaucracy and the historical alignment of party coalitions along racial lines.
 
-The role of race is essential in discussions about polarization within the administrative government. In contemporary politics, polarization is closely intertwined with race, which may be shaping both public and elite perceptions of agency ideology and the policies they enforce. In the book, *The Roots of Polarization*, by @obrian_roots_2024, he shows using history analysis and survey data the polarization among not only elites and the public is heavily shaped by the racial alignment of parties, and this racial alignment triggers broader culture wars in the United States such as issues on abortion and gun control. 
+Public opinion scholars have shown that racial attitudes are strongly correlated with policy preferences on issues like anti-discrimination, immigration, and race-targeted programs. While race and ethnic politics scholars in Political Science use various methods to test the causes of racial polarization, one indisputable fact is that it exists. @hutchings_centrality_2004 explain how “the 'Goldwater gamble' in 1964, based on opposition to federal intervention to protect blacks’ civil rights, triggered a heightened emphasis on race in the two parties’ platforms, increased polarization of party activists on racial issues, and polarized mass perceptions of the two parties on desegregation."
 
-Moreover, a January 2020 survey of Republicans and Republican-leaning Independents aimed at understanding antidemocratic sentiments, such as partisan effects, enthusiasm for Trump, and more, reveals that ethnic antagonism is the strongest correlation. The findings underscore the importance of race in understanding political perceptions, showing that by engaging with race, we gain insight beyond the common scales of party ideology. @bartels_ethnic_2020 found that "the single survey item with the highest average correlation with antidemocratic sentiments is not a measure of attitudes toward Trump, but an item inviting respondents to agree that 'discrimination against whites is as big a problem today as discrimination against blacks and other minorities'" [bartels_ethnic_2020].
+The role of race is essential in discussions about polarization and ideology within the administrative government. In contemporary politics, polarization is closely intertwined with race, which may be shaping both public and elite perceptions of agency ideology and the policies they enforce.  @obrian_roots_2024 shows that polarization among elites and the public is heavily shaped by the racial alignment of parties, and this racial alignment triggers broader culture wars in the United States, such as issues on abortion and gun control. 
 
-Understanding how the perception of the racialization of federal agencies moves us beyond the conventional liberal-conservative spectrum. A metric that incorporates these perceptions helps to understand how key players in the rulemaking process are framed by elites and the public and whether they are positioning them as key drivers in racialized governance.
+<!--COULD CITE WOODLY HERE --> 
+
+Moreover, a January 2020 survey of Republicans and Republican-leaning Independents aimed at understanding antidemocratic sentiments, such as partisan effects, enthusiasm for Trump, and more, reveals that ethnic antagonism is the strongest correlation [@bartels_ethnic_2020]. The findings underscore the importance of race in understanding political perceptions, showing that by engaging with race, we gain insight beyond the common scales of party ideology. @bartels_ethnic_2020 found that "the single survey item with the highest average correlation with antidemocratic sentiments is not a measure of attitudes toward Trump, but an item inviting respondents to agree that 'discrimination against whites is as big a problem today as discrimination against blacks and other minorities'".
+
+Understanding how the perception of the racialization of federal agencies moves us beyond the conventional liberal-conservative spectrum. A metric that incorporates these perceptions helps to understand how key players in the rulemaking process are framed by elites and the public and whether they are positioning them as key drivers in racialized governance across the aisle.
 
 <!-- important additions (more on race and bureaucracy): 
 @kinder_divided_1996 chapter 7
@@ -178,85 +197,44 @@ Understanding how the perception of the racialization of federal agencies moves 
 @gabriel_whitewash_1998
 @gilliam_prime_2000 -->  
 
-# Measurement
 
-## Data 
+<!-- feedback: provide examples from news coverage and Project 2025, where both liberal and conservative agencies are described with racialized terms, which will help make the results clear. -->
 
-<!-- feedback: provide examples from news coverage and project 2025; where both liberal and conservative agencies are described with racialized terms, will help make the results clear. -->
+# Data and Measurement {#sec-data}
 
-# Data and Measurement
+To construct a measure of agency rationalization, we quantify racialized rhetoric used in sources that allow relatively systematic coverage of federal agencies. To date, these sources are The Heritage Foundation's 2024 Mandate for Leadership report, agency rules, <!--public comments on agency rules,--> and New York Times articles mentioning agency names.  Each source captures a different context where racialized rhetoric may have different meanings. This allows us to compare institutional racialization across sources and also to triangulate a combined measure that captures racialization across venues, effectively upweighting racialization scores for agencies that are racialized in multiple contexts and downweighting scores for agencies that are racialized in fewer contexts. 
 
-To construct a measure of agency rationalization, we quantify racialized rhetoric used in sources that allow relatively systematic coverage of federal agencies. To date, these sources are: The Heritage Foundation's 2024 Mandate for Leadership report, agency rules, public comments on agency rules, and New York Times articles mentioning agency names.  Each source captures a different context where racialized rhetoric may have different meanings. This allows us to compare institutional racialization across sources and also to triangulate a combined measure that captures racialization across venues, effectively upweighting racialization scores for agencies that are racialized in multiple contexts and downweighting scores for agencies that are racialized in fewer contexts. 
-
-##  Mandate For Leadership Reports
+##  Mandate For Leadership Reports {#sec-mfl}
 
 
-#### Context
+### Context
 
 <!-- expand more here -->
 
 The Heritage Foundation has gained media attention with its recent **Project 2025** report, published in 2024. This report is part of their broader Mandate for Leadership series, which began in 1981 to provide policy recommendations for incoming Republican administrations. The structure of these reports has remained consistent over the years: they offer policy suggestions organized by targeting specific federal agencies. According to the Heritage Foundation's website, the Mandate for Leadership "is an agenda prepared by and for conservatives who will be ready on Day One of the next administration to save our country".
 
-The Mandate for Leadership series has had a significant historical impact, particularly in shaping conservative policy. @horton_race_2005 explains that the Heritage Foundation had influential role on attacking affirmative action. "Ten days after President Ronald Reagan assumed ofﬁce,...report entitled Mandate for Leadership: Policy Management in a Conservative Administration...which detailed recommendations for virtually every federal agency, *including those responsible for civil rights policy*. This work, along with its later companion volume, Mandate for Leadership II: Continuing the Conservative Revolution , represented, according to one highly placed journalist, one of the most *“widely circulated”* documents in Washington during the early to mid 1980 [@horton_race_2005].
+The Mandate for Leadership series has had a significant historical impact, particularly in shaping conservative policy. @horton_race_2005 explains that the Heritage Foundation had an influential role in attacking affirmative action. "Ten days after President Ronald Reagan assumed ofﬁce,...report entitled Mandate for Leadership: Policy Management in a Conservative Administration...which detailed recommendations for virtually every federal agency, *including those responsible for civil rights policy*. This work, along with its later companion volume, Mandate for Leadership II: Continuing the Conservative Revolution, represented, according to one highly placed journalist, one of the most *'widely circulated'* documents in Washington during the early to mid-1980" [@horton_race_2005].
 
 The impact of the Mandate for Leadership (MFL) on the current administration's swift decisions is evident. As previously mentioned, we are seeing the targeting outlined in the MFL directly mirrored in the executive orders, budget cuts, firing patterns, and rhetoric of the current administration, which focus on federal agencies commonly associated with the so-called "woke" agenda that is being actively addressed. 
 
 ### Data
 
-To create a measure of racialization in Mandate for Leadership Reports, we parsed the portion of the text that discussed proposed reforms to each agency by subheadings, and hand-coded which agency was the primary subject of each section (most subheadings are the names of agencies or offices).^[We created an alternative measure based on which agency names or acronyms were mentioned in each paragraph. Since mose paragraphs focus on a single agency, this measure was not substantially different.] We then counted a custom list of terms that were used in racialized ways in this report (as determined by the authors). These terms were: 
+To create a measure of racialization in Mandate for Leadership Reports, we parsed the portion of the text that discussed proposed reforms to each agency by subheadings and hand-coded which agency was the primary subject of each section (most subheadings are the names of agencies or offices).^[We created an alternative measure based on which agency names or acronyms were mentioned in each paragraph. Since most paragraphs focus on a single agency, this measure was not substantially different.] We then counted a custom list of terms that were used in racialized ways in this report (as determined by the authors). These terms were: 
 
 > Race; Racial; Racism; Discrimination; Discriminate; Slavery; Ethnicity; Diversity; DEI; Equity; Equality; Inclusion; Citizen; Citizenship; DACA; Immigrants; Immigration; Illegal; Civil Rights; Affirmative Action; Head Start; African American; Black; Latino; Hispanic; Muslim; Asian; Color; Racist; Bureau of Indian; native; woke; wokeism; Illegal Alien; Cartel
 
-This list is more expansive that the dictionaries we used in other context because the text was shorter (about 1,000 pages), thus allowing us to inspect and consider the context in which each term was used. Thus, we were able to verify that words like "Discriminate," "Diversity," "Equity," "Equality," "Inclusion," "Citizen," "Illegal," "Black," and "Cartel," that may refer to non-racialized things in other text were always used as racialized terms in this text. Figure 
+This list is more expansive than the dictionaries we used in other contexts because the text was shorter (about 1,000 pages), thus allowing us to inspect and consider the context in which each term was used. Thus, we were able to verify that words like "Discriminate," "Diversity," "Equity," "Equality," "Inclusion," "Citizen," "Illegal," "Black," and "Cartel," that may  refer to non-racialized things in other text were always used as racialized terms in this text. @fig-mfl-data shows the number of sentences with racialized language in the sections discussing each agency. 
 
 ```{r}
 #| fig-cap: "Distribution of Racialized Words in Mandate For Leadership (Project 2025)"
 #| label: fig-mfl-data
-#| out-width: 70%
+#| out-width: 80%
 
 knitr::include_graphics("docs/figs/mfl_data-1.png")
 ```
 
-We create two measures of racialization. First we measure the *level* of racialization as the scled total count of racialized terms used in the section on each agency. Second, we measure relative racialization by dividing this count by the number of sentences in each section, approxamatly measuring the *share* of sentences using racialized terms.  
+We create two measures of racialization. First, we measure the *level* of racialization as the scaled total count of racialized terms used in the section on each agency. Second, we measure relative racialization by dividing this count by the number of sentences in each section, approximately measuring the *share* of sentences using racialized terms.
 We then scale both of these measures by taking the square root of the count (to stabilize the variance), subtracting the mean (to make the scale mean 0), and dividing by the standard deviation (to make the standard deviation 1). 
-
-##  Policy Texts
-
-#### Context 
-
-The power of rhetoric and policy making is critical when understanding what may influence a federal agency's perceived ideology considering that many policy preferences can be tied back to major US polices that are considered contentious or divisive. @stephens-dougan_race_2020 defines *rhetorical strategy* as involving verbal cues that distance politicians from racial and ethnic minorities, either through explicit references (e.g., “African American” or “Mexican”) or implicit, coded language (e.g., “inner city” or “tough on crime”) that associates issues like crime or welfare with racial minorities. [@stephens-dougan_race_2020; @gilens_why_1999]. @gilens_why_1999 finds that in a 1994 CBS and New York Times survey that "55 percent of the respondents said that most people on welfare are black, and these respondents hold consistently more negative views about welfare recipients' true needs and their commitment to the work ethic than do respondents who think that most welfare recipients are white." 
-
-These findings align with subsequent research by @tesler_spillover_2012, who demonstrates that Obama's association with healthcare policies, such as "Obamacare," and media coverage on these issues played a significant role in widening the gap between Black and White Americans' healthcare policy preferences. Using survey experiments, Tesler provides insights into why the racial divide on healthcare opinion grew by 20 percentage points, a larger divide than what was seen during the Clinton presidency. His findings support the argument that racial attitudes were a significant driver of this divide.
-
-Clinton’s rhetoric and framing around welfare, interestingly, were strategic in signaling his racial distancing from Black Americans while reinforcing stereotypes about them and their relationship with welfare. @smith_civic_2008 highlights how Clinton’s strategy reflected Thomas Edsall’s argument (Washington Post report) that the Democratic Party should shift focus from issues of racism, poverty, affirmative action, and civil rights to middle-class concerns, such as lower taxes and a tough approach to welfare. As part of this strategy, Clinton frequently used the phrase “opportunity plus responsibility” in 1992, subtly appealing to white voters' views that Black Americans were irresponsible, lazy, and preferred welfare over work. This illustrates how both Republican and Democratic administrations have used racialized language in framing policy issues, which influences public perceptions and garners media attention, underscoring the need to include racialization as a metric to fully grasp its impact on agency perceptions.
- 
-Though @schneider_social_1993-3 does not fully engage with the nuances of systemic racism or critically examine how race is socially constructed, their analysis in "Social Construction of Target Populations: Implications for Politics and Policy" offers valuable insights into the role of language in policymaking. They highlight how policy recipients are categorized and treated differently based on constructed narratives. As they argue, “Citizens encounter and internalize the messages not only through observation of politics and media coverage but also through their direct, personal experiences with public policy. These experiences tell them whether they are viewed as 'clients' by government and bureaucracies or whether they are treated as objects.” Despite these limitations, their work contributes to understanding the role of language in policymaking and how policy shapes public perceptions. However, the framework falls short in addressing how anti-Blackness and racial hierarchies explicitly structure these categorizations, leaving room for expansion through insights from racial and critical policy studies.
-
-Additionally, the dynamics of race, policy, and language are not confined to the United States; similar patterns can be observed globally. For example, in the United Kingdom around 2010-2012, Prime Minister Cameron’s declaration that "multiculturalism is dead" and Home Secretary May’s statement that "equality is a dirty word" underscore shifts in the political climate, where policies addressing racial inequalities were downgraded. This mirrors similar rhetoric in the United States, where targeted language is used to create by political elites create ways to target federal agency. @craig_invisibilizing_2013 explains that "the Government Equalities Office, responsible for ensuring equalities work within government, has had its budget reduced by almost 50%." The government’s cuts to BME (Black and minority ethnic) networks and the removal of race-focused commissioners at the Equality and Human Rights Commission (EHRC) further highlight how racialized policymaking and the politics of race are global phenomena that require a broader critical framework for understanding [@craig_invisibilizing_2013].
-
-### Data
-
-
-#### Over Time Trends 
-
-@fig-trends-rules shows trends over time in mentions of racial terms in agency rules for select agencies. They show attention to race and racial disparities in policy increasing at some agencies and decreasing at others over time. For example, more Department of Transportation rules mentioned Affirmative Action and Asian Americans more in the second Bush administration than any subsiquent administration. In contrast, the EPA and FDA have increased nearly all racialized terms over the past 20 years, from near zero at the beginning of the Obama Administration to much higher levels, especially during the Biden administration, likely reflecting increased attention to Environmental Justice and attention to racial disparities in public health. 
-
-```{r}
-#| fig-cap: 'Agency Rules with Racialized Language, 2005-2024'
-#| label: fig-trends-rules
-#| out-width: 100%
-#| layout-ncol: 2
-
-knitr::include_graphics("docs/figs/trends-rules-racial-1.png") # racial 
-knitr::include_graphics("docs/figs/trends-rules-civil-rights-1.png") #affirmative action 
-#knitr::include_graphics("docs/figs/trends-rules-groups-1.png") # ethnicity 
-knitr::include_graphics("docs/figs/trends-rules-groups-10.png") # Muslim 
-knitr::include_graphics("docs/figs/trends-rules-groups-2.png") # asian
-knitr::include_graphics("docs/figs/trends-rules-groups-5.png") # african american 
-knitr::include_graphics("docs/figs/trends-rules-groups-6.png") # hispanic
-
-
-```
 
 
 <!--##  Public Comments
@@ -265,26 +243,27 @@ knitr::include_graphics("docs/figs/trends-rules-groups-6.png") # hispanic
 
 ### Data -->
 
-## News Coverage of Agencies 
+## News Coverage of Agencies {#sec-nyt}
 
-#### Context 
+### Context 
 
 <!-- [What the NYT is doing when they talk about agencies.] -->
 
-Walter Lippmann's assertion remain pertinent today: our opinions and beliefs extend far beyond our direct observations and are intricately woven from the reports and narratives disseminated by the mass media. By examining the historical trajectory of poverty coverage and its implications, Gilen underscores the profound influence wielded by media narratives in shaping societal attitudes, policy debates, and perceptions of marginalized communities. "When magazine readers or television viewers see blacks depicted more often as the undeserving poor and whites as the deserving poor,they are likely to form their own stereotypes about race and poverty. And just as news professionals may be unconscious of the stereotypes that shape the content of their coverage, so magazine readers and television viewers may be unaware of the stereotypes that they acquire based on the way poverty is portrayed in the news" [@gilens_why_1999].
+Walter Lippmann's assertion remains pertinent today: our opinions and beliefs extend far beyond our direct observations and are intricately woven from the reports and narratives disseminated by the mass media. By examining the historical trajectory of poverty coverage and its implications, Gilen underscores the profound influence wielded by media narratives in shaping societal attitudes, policy debates, and perceptions of marginalized communities. "When magazine readers or television viewers see blacks depicted more often as the undeserving poor and whites as the deserving poor, they are likely to form their own stereotypes about race and poverty. And just as news professionals may be unconscious of the stereotypes that shape the content of their coverage, so magazine readers and television viewers may be unaware of the stereotypes that they acquire based on the way poverty is portrayed in the news" [@gilens_why_1999].
 
-@kellstedt_mass_2003 and @hutchings_centrality_2004 suggest that long term patterns in media framing plays a significant role in shaping public attitudes on race. As egalitarian framing in media coverage declined in the 1970s, so did racial liberalism and support for policies like affirmative action. For example, @jardina_effects_2022, using survey data, find that dehumanizing racial attitudes toward Black individuals remain prevalent among the White electorate. They link these attitudes to racial messaging by elite politicians, stating, "Many Whites with beliefs aligned with White supremacist groups held top positions in the Trump administration... Figures associated with the alt-right, like Richard Spencer, have brought claims of racial differences into the mainstream, receiving substantial media attention from outlets like The New York Times and NPR. We suspect this coverage legitimizes erroneous beliefs among White Americans" [@jardina_effects_2022].
+@kellstedt_mass_2003 and @hutchings_centrality_2004 suggest that long-term patterns in media framing play a significant role in shaping public attitudes on race. As egalitarian framing in media coverage declined in the 1970s, so did racial liberalism and support for policies like affirmative action. For example, @jardina_effects_2022, using survey data, find that dehumanizing racial attitudes toward Black individuals remain prevalent among the White electorate. They link these attitudes to racial messaging by elite politicians, stating, "Many Whites with beliefs aligned with White supremacist groups held top positions in the Trump administration... Figures associated with the alt-right, like Richard Spencer, have brought claims of racial differences into the mainstream, receiving substantial media attention from outlets like The New York Times and NPR. We suspect this coverage legitimizes erroneous beliefs among White Americans" [@jardina_effects_2022].
 
 
-#### Data
+### Data
 
 Using ProQuest's Text and Data Mining tool, we identified `r n_nyt_articles` articles mentioning agency names in the New York Times.  New York Times dataset currently includes `r n_nyt_agencies` agencies, focusing primarily on cabinet agencies and other major federal agencies. The data include a unique article ID, publication date, and article title for every article mentioning the agency name. 
 
-Of these articles mentioning federal agencies, we then identified all articles that also mention a relevant term, such as 'racial.' This process provides a count of agency mentions and key terms, along with the key sentences containing the specified term.
+Of these articles mentioning federal agencies, we then identified all articles that also mention a relevant term, such as "racial." This process provides a count of agency mentions and key terms, along with the key sentences containing the specified term. Of these `r n_nyt_articles` articles, `r n_nyt_racial` also mentioned the word "racial."
 
 #### Over Time Trends 
 
-@fig-trends-nyt shows 
+@fig-trends-nyt shows the number of articles containing the word "racial" by year for selected agencies. @fig-trends-nyt-total shows the same trend as @fig-trends-nyt aggregated across agencies. Overall, the frequency of racialized articles mentioning agencies peaked in 2020, the end of the first Trump Administration, with 2021, the first year of the Biden administration being the second highest. This likely reflects the larger national racial reckoning in U.S. public discourse ignited by the police killings of Black individuals and subsequent racial justice protests.
+
 
 ```{r}
 #| fig-cap: 'New York Times Articles Mentioning "Racial" By Agency, 2005-2024'
@@ -295,7 +274,6 @@ knitr::include_graphics("docs/figs/trends-nyt-1.png")
 ```
 
 
-@fig-trends-nyt-total shows the same trend as @fig-trends-nyt aggregated across agencies. 
 
 
 ```{r}
@@ -306,62 +284,140 @@ knitr::include_graphics("docs/figs/trends-nyt-1.png")
 knitr::include_graphics("docs/figs/trends-nyt-total-1.png")
 ```
 
-#### Aggregated 
+#### Aggregated Measures of Racialization
 
-We aggregate all articles from 2005-2024 to create two measures of racialization. The first measure of racialized attention is the count of the number of articles mentioning "racial." @fig-nyt-data shows these counts. The second measures the share of articles using "racial" by dividing this count by the total number of letters mentioning each agency. Both of these measures are rescaled by taking the square root of the count (to stabilize the variance), subtracting the mean (to make the scale mean 0), and dividing by the standard deviation (to make the standard deviation 1). 
+We further aggregate all articles from 2005-2024 to create two measures of racialization. The first measure of racialized attention is the count of the number of articles mentioning "racial." @fig-nyt-data shows these counts. The second measures the share of articles using "racial" by dividing this count by the total number of letters mentioning each agency. Both of these measures are rescaled by taking the square root of the count (to stabilize the variance), subtracting the mean (to make the scale mean 0), and dividing by the standard deviation (to make the standard deviation 1). 
 
 ```{r}
-#| fig-cap: "Distribution of Racialized Words in Mandate For New York Times, 2005-2024"
+#| fig-cap: "Distribution of Racialized Words in New York Times Articles, 2005-2024"
 #| label: fig-nyt-data
-#| out-width: 70%
+#| out-width: 80%
 
 knitr::include_graphics("docs/figs/nyt_data-1.png")
 ```
 
 
-##  Comparing Racialization Across Contexts 
+##  Policy Texts {#sec-rules}
+
+### Context 
+
+The power of rhetoric in policy texts is critical to understanding what may influence a federal agency's perceived ideology. Many policy preferences can be tied back to major policies that are considered contentious or divisive.
+@stephens-dougan_race_2020 defines *rhetorical strategy* as involving verbal cues that distance politicians from racial and ethnic minorities, either through explicit references (e.g., “African American” or “Mexican”) or implicit, coded language (e.g., “inner city” or “tough on crime”) that associates issues like crime or welfare with racial minorities. [@stephens-dougan_race_2020; @gilens_why_1999]. 
+<!--THIS SHOULD PROBABLY BE IN THE THEORY SECTION---> 
+
+@gilens_why_1999 finds that in a 1994 CBS and New York Times survey that "55 percent of the respondents said that most people on welfare are black, and these respondents hold consistently more negative views about welfare recipients' true needs and their commitment to the work ethic than do respondents who think that most welfare recipients are white." 
+
+These findings align with subsequent research by @tesler_spillover_2012, who demonstrates that Obama's association with healthcare policies, such as "Obamacare," and media coverage on these issues played a significant role in widening the gap between Black and White Americans' healthcare policy preferences. Using survey experiments, Tesler provides insights into why the racial divide on healthcare opinion grew by 20 percentage points, a larger divide than what was seen during the Clinton presidency. His findings support the argument that racial attitudes were a significant driver of this divide.
+
+Clinton’s rhetoric and framing around welfare, interestingly, were strategic in signaling his racial distancing from Black Americans while reinforcing stereotypes about them and their relationship with welfare. @smith_civic_2008 highlights how Clinton’s strategy reflected Thomas Edsall’s argument (Washington Post report) that the Democratic Party should shift focus from issues of racism, poverty, affirmative action, and civil rights to middle-class concerns, such as lower taxes and a tough approach to welfare. As part of this strategy, Clinton frequently used the phrase “opportunity plus responsibility” in 1992, subtly appealing to white voters' views that Black Americans were irresponsible, lazy, and preferred welfare over work. This illustrates how both Republican and Democratic administrations have used racialized language in framing policy issues, which influences public perceptions and garners media attention, underscoring the need to include racialization as a metric to fully grasp its impact on agency perceptions.
+ 
+Though @schneider_social_1993-3 does not fully engage with the nuances of systemic racism or critically examine how race is socially constructed, their analysis in "Social Construction of Target Populations: Implications for Politics and Policy" offers valuable insights into the role of language in policymaking. They highlight how policy recipients are categorized and treated differently based on constructed narratives. As they argue, “Citizens encounter and internalize the messages not only through observation of politics and media coverage but also through their direct, personal experiences with public policy. These experiences tell them whether they are viewed as 'clients' by government and bureaucracies or whether they are treated as objects.” Despite these limitations, their work contributes to understanding the role of language in policymaking and how policy shapes public perceptions. However, the framework falls short in addressing how anti-Blackness and racial hierarchies explicitly structure these categorizations, leaving room for expansion through insights from racial and critical policy studies.
+
+Additionally, the dynamics of race, policy, and language are not confined to the United States; similar patterns can be observed globally. For example, in the United Kingdom around 2010-2012, Prime Minister Cameron’s declaration that "multiculturalism is dead" and Home Secretary May’s statement that "equality is a dirty word" underscore shifts in the political climate, where policies addressing racial inequalities were downgraded. This mirrors similar rhetoric in the United States, where political elites craft rhetoric to target federal agencies. @craig_invisibilizing_2013 explains that "the Government Equalities Office, responsible for ensuring equalities work within government, has had its budget reduced by almost 50%." The government’s cuts to BME (Black and minority ethnic) networks and the removal of race-focused commissioners at the Equality and Human Rights Commission (EHRC) further highlight how racialized policymaking and the politics of race are global phenomena that require a broader critical framework for understanding [@craig_invisibilizing_2013].
+
+### Data
+
+Using the regulation.gov API, we pull all rulemaking documents, subset to proposed and final rules, and then count the number of documents mentioning the following racialized terms: 
+
+```{r}
+load(here::here("data", "rules_terms.rda"))
+```
+
+> `r terms |> paste0(collapse = "; ")`
+
+We validated these terms by searching regulation.gov for candidate terms and inspecting the documents returned. We excluded candidate terms that returned a significant share of documents where the term was not used with racialized meaning. 
+
+#### Over Time Trends 
+
+@fig-trends-rules-terms shows trends over time in mentions of racial terms in agency rules for select agencies. They show attention to race and racial disparities in policy increasing at some agencies and decreasing at others over time. For example, more Department of Transportation (DOT) rules mentioned Affirmative Action and Asian Americans more in the second Bush administration than in any subsequent administration. The DOT Federal Aviation Administration (FAA) also saw a massive spike in orders mentioning "Citizenship" related to a post-9/11 policy requiring owners of U.S.-based air carriers, including shipping companies and air taxis (small planes for hire) to prove that they were owned and effectively controlled by U.S. citizens. This resulted in many businesses losing licenses and investigations into ownership and control, including DHL and Virgin America.  In contrast, the EPA and FDA have increased nearly all racialized terms over the past 20 years, from near zero at the beginning of the Obama Administration to much higher levels, especially during the Biden administration, likely reflecting increased attention to Environmental Justice and attention to racial disparities in public health. @fig-trends-rules shows the time trend aggregated across all agencies. 
+
+```{r}
+#| fig-cap: 'Agency Rules with Racialized Language, by Agency, 2005-2024'
+#| label: fig-trends-rules-terms
+#| out-width: 100%
+#| layout-ncol: 2
+#| fig-subcap: 
+#|   - ""
+#|   - ""
+#|   - ""
+#|   - ""
+#|   - ""
+#|   - ""
 
 
-@fig-nyt-v-2025 compares racialization scores from New York Times (NYT) articles and from the Mandate for Leadership (MFL) reports. Agencies above the red diagonal line have higher scores for the NYT measure. Agencies below the line have higher scores from the MFL measure. 
+knitr::include_graphics("docs/figs/trends-rules-racial-1.png") # racial 
+knitr::include_graphics("docs/figs/trends-rules-civil-rights-1.png") #affirmative action 
+#knitr::include_graphics("docs/figs/trends-rules-groups-1.png") # ethnicity 
+knitr::include_graphics("docs/figs/trends-rules-groups-10.png") # Muslim 
+knitr::include_graphics("docs/figs/trends-rules-groups-2.png") # asian
+knitr::include_graphics("docs/figs/trends-rules-groups-5.png") # african american 
+knitr::include_graphics("docs/figs/trends-rules-groups-6.png") # hispanic
+```
+
+```{r}
+#| fig-cap: 'Agency Rules with Racialized Language, 2005-2024'
+#| label: fig-trends-rules
+#| out-width: 50%
+
+
+knitr::include_graphics("docs/figs/trends-rules-1.png") 
+```
+
+#### Aggregated Measures of Racialization
+
+As with the NYT data, we aggregate all proposed and final rules from 2005-2024 to create two measures of racialization. The first measure is the count of rules using one or more racialized words. 
+@fig-rules-data shows these counts. Because some agencies make more policies per year than others, the second measures the share of rules by dividing this count by the total number of rules published by the agency. As with the other measures, both of these measures are rescaled by taking the square root of the count (to stabilize the variance), subtracting the mean (to make the scale mean 0), and dividing by the standard deviation (to make the standard deviation 1). 
+
+
+```{r}
+#| fig-cap: "Distribution of Racialized Words in Mandate For New York Times, 2005-2024"
+#| label: fig-rules-data
+#| out-width: 80%
+
+knitr::include_graphics("docs/figs/rules_data-1.png")
+```
+
+
+##  Comparing Racialization Across Contexts {#sec-compared}
+
+
+@fig-nyt-v-2025 compares racialization scores from New York Times (NYT) articles and from the Mandate for Leadership (MFL) reports. Agencies above the red diagonal line have higher scores for the NYT measure. Agencies below the line have higher scores from the MFL measure. The correlation between the NYT and MFL measures is `r nyt_v_2025_cor$estimate` (p = `r nyt_v_2025_cor$p.value`).  The largest outlier is the Department of Housing and Urban Development, which is discussed in more racialized terms in NYT articles. Most agencies have higher scores on the MFL measure. 
+
 
 ```{r}
 #| fig-cap: "Racialization in Project 2025 vs. New York Times"
 #| label: fig-nyt-v-2025
 #| out-width: 70%
 
-knitr::include_graphics("docs/figs/nyt_v_2025-2.png")
+knitr::include_graphics("docs/figs/nyt_v_2025-1.png")
+
 ```
 
-The correlation between the NYT and MFL measures is `r nyt_v_2025_cor$estimate` (p = `r nyt_v_2025_cor$p.value`).  The largest outlier is the Department of Housing and Urban Development, which is discussed in more racialized terms in NYT articles. Most agencies have higher scores on the MFL measure, especially 
+# Institutional Racialization and Perceived Ideology {#sec-ideology}
 
+To create a single measure of racialization, we take the average of racialization scores from each context. While many studies will want to use or compare racialization in particular contexts, this combined racialization scale in similar ways to perceived ideology scales (e.g., @richardson_politicization_2019). One combined scale allows for comparisons with other scales, like perceived ideology shown in @fig-ideo_v_score. 
 
-## Combined Scale
+Racialization is not significantly correlated with perceived ideology. Instead, some highly racialized agencies that perceived as "liberal" (most prominently, the Departments of Education and Housing and Urban Development) while others are perceived as "conservative" (mostly parts of Homeland Security).  Other parts of Homeland Security that are perceived as more centrist, including FEMA and USCIS, are nevertheless strongly racialized. The Department of Justice and Food and Drug Administration are also racialized while being perceived as fairly moderate. 
 
-To create a single measure of racialization, we take the average of racialization scores from each context. 
-
-# Institutional Racialization and Percieved Ideology
-
-Racialization is not significantly correlated with perceived ideology. Instead, some highly racialized agencies that perceived as "liberal" (most prominently, the Departments of Education and Housing and Urban Development) while others  are perceived as "conservative" (mostly parts of Homeland Security).  Other parts of Homeland Security that are perceived as more centrist, including FEMA and USCIS, are nevertheless strongly racialized. The Department of Justice and Food and Drug Administration are also racialized while being perceived as fairly moderate. 
-
-Interestingly, agencies like the Department of Defense and Environmental Protection Agency, are rarely discussed in racialized terms, despite being being perceived as highly polarized and making policy with racial implications. For example EPA has long led the governments work on environmental racism and environmental justice. As a large employer of low-income Americans, Department of Defense policy has racialized consequences. 
+Interestingly, agencies like the Department of Defense and Environmental Protection Agency are rarely discussed in racialized terms despite being perceived as highly polarized and making policies with racial implications. For example, EPA has long led the government's work on environmental racism and environmental justice. As a large employer of low-income Americans, Department of Defense policy has racialized consequences. 
 
 
 ```{r}
-#| fig-cap: "Correlation Between Racialization and Percieved Ideology"
+#| fig-cap: "Correlation Between Racialization and Perceived Ideology"
 #| label: fig-ideo_v_score
-#| out-width: 80%
+#| out-width: 71%
 
 knitr::include_graphics("docs/figs/ideo_v_score-1.png")
 ```
 
 
 Racialization is significantly correlated with perceived ideological extremism (p < 0.05), 
-but this correlation is not strong (0.26). 
+but this correlation is not strong (0.26). @fig-ext_v_score shows the absolute value of the @richardson_politicization_2019 score on the x-axis and our combined score on the y-axis. Agencies in the upper left have high racialization scores by ideology scores near zero (the mean of all of these scales). Agencies in the upper right have high racialization scores and strong "liberal" or strong "conservative" perceptions. Agencies on the bottom vary in perceived ideology but are all low in racialization.  
 
 ```{r}
-#| fig-cap: "Correlation Between Racialization and Percieved Ideology"
+#| fig-cap: "Correlation Between Racialization and Perceived Ideology"
 #| label: fig-ext_v_score
-#| out-width: 80%
+#| out-width: 71%
 
 knitr::include_graphics("docs/figs/ideo_v_score-2.png")
 ```
@@ -372,11 +428,30 @@ knitr::include_graphics("docs/figs/ideo_v_score-2.png")
 
 # Conclusion 
 
+This study contributes to the growing understanding of how federal agencies are racialized by introducing a new measure that captures the tension between racial progress and obstruction within agency policies. By integrating both ideological and racialized perspectives, we offer a more nuanced understanding of how agency structures, leadership, and policy responsibilities influence racial inequality. 
+
 ## Implications for Bureaucracy Scholarship 
+
+Our findings that racialization is correlated across sources as ideologically distant as the New York Times and Heritage Foundation suggest that this construct meaningfully shapes public discourse beyond ideology. 
+
+The association between a given agency and racialized language varies significantly over time, with some agencies seeing more and some seeing less, despite their core missions staying the same. This suggests that racialization is about more than how agency missions and programs affect racial inequality. Framing processes must also be at work to re-cast certain missions and programs in ways that emphasize race and racial inequality. These may include efforts to push institutions to confront the disparate impacts of the policies they study. They may also include efforts to legitimize, delegitimize, polarize, or depolarize public perceptions of certain institutions. 
+
+Our finding that racialized language is associated with perceived ideological extremism (where ideological refers to "conservative" and "liberal") suggests that racialization may indeed reduce perceptions that agencies are "centrist" or "neutral." Alternatively, it may reflect that controversial or polarized government programs are more likely to be cast in a racialized light by opponents (or perhaps racial justice advocates who see directly confronting race as a necessary part of the controversy). 
+Additionally, our measure highlights agencies perceived as "centrist," such as FEMA, that do not attract significant media or elite attention. Understanding why certain agencies face less scrutiny is crucial. Further research should explore why some agencies, which one might expect to be racialized, are not perceived as such.
+
+
 
 ## Next Steps
 
-### Economic Redistribution
+#### Dynamic Racialization Scores
+
+In @sec-nyt and @sec-rules, we present over-time trends. Yet, the measures in @sec-compared and @sec-ideology average out these trends to arrive at one number for the 2005-2024 period. In part, this is because prior copies of the Mandate for Leadership reports are difficult to access and digitize, and thus, we only have one year for this key source. With more data points, we will be able to calculate the combined measure at more points in time, thus allowing comparisons of how relative racialization across sources has changed over time. 
+By analyzing these dynamics, we gain critical insights into why federal agencies are strategically targeted by political actors and media organizations across different presidential administrations.
+
+#### Economic Redistribution
+
+<!-- drafting --> 
+Moving forward, we aim to enhance our measure by incorporating economic redistribution, allowing us to better capture how racialization translates into tangible economic outcomes. By examining the disparate economic effects of policies, we can more accurately assess how racialization correlates to wealth distribution, access to resources, and broader economic inequalities. This addition will provide a more comprehensive understanding of how racialization intersects with economic disparities, offering a clearer picture of the ways in which policy decisions affect communities both racially and economically. This measure will enable us to further explore whether such perceptions align with measurable disparities in policy outcomes.
 
 \clearpage 
 
