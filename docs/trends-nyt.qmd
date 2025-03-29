@@ -52,8 +52,8 @@ library(ggplot2); theme_set(
       theme_minimal() + 
         theme(
           # FOR AJPS
-          panel.grid = element_blank(),
-          legend.position = "bottom",
+          #panel.grid = element_blank(),
+          #legend.position = "bottom",
           # END FOR AJPS 
           panel.border  = element_blank(),
           panel.grid.major.x = element_blank())
@@ -79,6 +79,11 @@ kablebox_long <- . %>%
   knitr::kable() %>% 
   kable_styling() %>% 
   scroll_box(height = "500px")
+
+int_breaks <- function(x, n = 5) {
+  l <- pretty(x, n)
+  l[abs(l %% 1) < .Machine$double.eps ^ 0.5] 
+}
 ```
 
 
@@ -164,17 +169,17 @@ nyt |>
       y = term_count, 
       color = president) +
   geom_point() +
-  labs(title = paste0('Articles Mentioning a Federal Agency and "', term,'"'),
+  labs(title = paste0('Articles Mentioning Each Federal Agency and "', str_to_title(term),'"'),
        y = "NYT Mentions",
        x = "",
        color = "") +
-  geom_smooth(#method = "lm",
-              se = F) +
+   geom_line() + 
+  #geom_smooth(#method = "lm", se = F) +
   facet_wrap("agency",
-             scales = "free_y",
-             ) + 
-  scale_color_viridis_d(option = 9, end = .8) + 
-  theme_bw()
+             scales = "free_y") + 
+  scale_color_viridis_d(option = "inferno", end = .8) + 
+ scale_y_continuous(breaks = int_breaks) + 
+  theme(axis.text.x = element_text(angle = 45))
 
 nyt |> 
   ggplot() +
@@ -182,16 +187,17 @@ nyt |>
       y = ratio, 
       color = president) +
   geom_point() +
-  labs(title = paste0('Articles Mentioning a Federal Agency and "', term,'"'),
+  labs(title = paste0('Articles Mentioning Each Federal Agency and "', str_to_title(term),'"'),
        y = "Share of NYT Articles",
        x = "",
        color = "") +
-  geom_smooth(#method = "lm",
-              se = F) +
+     geom_line() + 
+  #geom_smooth(#method = "lm", se = F) +
   facet_wrap("agency",
              scales = "free_y") + 
-  scale_color_viridis_d(option = 9, end = .8) + 
-  theme_bw()
+  scale_color_viridis_d(option = "inferno", end = .8) + 
+ #scale_y_continuous(breaks = int_breaks) + 
+  theme(axis.text.x = element_text(angle = 45))
 ```
 
 
@@ -213,14 +219,15 @@ nyt_total |>
       y = term_count, 
       color = president) +
   geom_point() +
-  labs(title = paste0('Articles Mentioning a Federal Agency and "', term,'"'),
+  labs(title = paste0('Articles Mentioning a\nFederal Agency and "', str_to_title(term),'"'),
        y = "NYT Mentions",
        x = "",
        color = "") +
-  geom_smooth(#method = "lm",
-              se = F) + 
-  scale_color_viridis_d(option = 9, end = .8) + 
-  theme_bw()
+      geom_line() + 
+  #geom_smooth(#method = "lm", se = F) +
+  scale_color_viridis_d(option = "inferno", end = .8) + 
+ scale_y_continuous(breaks = int_breaks) + 
+  theme(axis.text.x = element_text(angle = 45))
 
 nyt_total |> 
   ggplot() +
@@ -228,12 +235,13 @@ nyt_total |>
       y = ratio, 
       color = president) +
   geom_point() +
-  labs(title = paste0('Share of Articles Mentioning a Federal Agency and "', term,'"'),
+  labs(title = paste0('Share of Articles Mentioning\na Federal Agency and "', str_to_title(term),'"'),
        y = "Share of NYT Articles",
        x = "",
        color = "") +
-  geom_smooth(#method = "lm",
-              se = F) +
-  scale_color_viridis_d(option = "inferno", end = .8) + 
-  theme_bw()
+      geom_line() + 
+  #geom_smooth(#method = "lm", se = F) +
+ scale_color_viridis_d(option = "inferno", end = .8) + 
+ #scale_y_continuous(breaks = int_breaks) + 
+  theme(axis.text.x = element_text(angle = 45))
 ```
