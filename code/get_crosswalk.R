@@ -4,6 +4,7 @@ crosswalk <- read_sheet("https://docs.google.com/spreadsheets/d/1lxKi3EsOREE-YoO
 
 crosswalk <- crosswalk |>
   mutate(agency_short = coalesce(agency_short, regulationsdotgov_agency, other_names, department)) |>
-  select(department, agency_short, department_agency_acronym, department_acronym, other_acronyms, other_names)
+  select(department, agency_short, department_agency_acronym, department_acronym, other_acronyms, other_names, regulationsdotgov_acronym, regulationsdotgov_agency)
 
 save(crosswalk, file = here::here("data", "crosswalk.rda"))
+

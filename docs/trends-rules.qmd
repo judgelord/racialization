@@ -84,13 +84,72 @@ int_breaks <- function(x, n = 5) {
 }
 ```
 
-```{r trends-rules}
+
+
+
+# All racialized terms 
+
+```{r}
+#| fig-width: 4
+#| fig-height: 3
+#| label: trends-rules
+
+
+load(here::here("data", "rules_terms.rda"))
+terms |> kablebox()
+
+load(here::here("data", "rules_racial_distinct.rda"))
+
+df <- rules_racial_distinct  |>  #comments |>
+  mutate(year = str_sub(postedDate, 1,4) |> as.numeric()) |>
+  #filter(documentType %in% )
+  count(agencyId, year, documentType) |>
+  group_by(agencyId) |>
+  mutate(perAgency = sum(n)) |>
+  mutate(president = case_when(
+    year < 2009 ~ "Bush",
+    year > 2008 & year < 2017 ~ "Obama",
+    year > 2016 & year < 2021 ~  "Trump",
+    year > 2020 & year < 2025 ~ "Biden"
+  ))
+
+top <- df |> 
+ # filter(agencyId != "FAA") |> #FIXME 
+ungroup() |> 
+  arrange(-perAgency) |> 
+  distinct(agencyId, perAgency) |> 
+  slice_max(perAgency, n = 4)
+
+df |>
+  drop_na(n) |> 
+  filter(agencyId %in% top$agencyId,
+         year > 2004,
+         year < 2025) |>
+  ggplot() +
+  aes(x = year, 
+      y = n, 
+      color = president,
+      shape = documentType) +
+  geom_point() +
+  labs(title = paste0('Policies with Racialized Terms'),
+       y = "Policy Documents (Rules)",
+       x = "",
+       color = "") +
+  geom_line() + 
+  #geom_smooth(#method = "lm", se = F) +
+  facet_wrap("agencyId",
+             scales = "free_y") + 
+  scale_color_viridis_d(option = "inferno", end = .8) + 
+ scale_y_continuous(breaks = int_breaks) + 
+  theme_minimal() + 
+  theme(axis.text.x = element_text(angle = 45))
+```
+
+
+
+```{r trends-rules-all-terms}
 
 directory <- here::here("data", "search") |> str_replace("racialization", "regulationsdotgov-data")
-
-terms <- list.dirs(directory, full.names = F)
-
-terms <- terms[!terms %in% c("", "comment_details", "documents", "comments")]
 
 # term <- terms[18]
 
@@ -100,7 +159,9 @@ path <- here::here(directory, term, paste0(term, "_documents.rda")) |> str_remov
 
 load(path)
 
-df <- d |>  #comments |>
+documents |> distinct(id, agencyId, postedDate, documentType, searchTerm) |> kablebox()
+
+df <- documents |>  #comments |>
   mutate(year = str_sub(postedDate, 1,4) |> as.numeric()) |>
   count(agencyId, year) |>
   group_by(agencyId) |>
@@ -144,9 +205,10 @@ df |>
 } 
 
 # ALL TERMS 
-# materms[2], possibly(p))
+#cmap(terms, possibly(p))
 
 ```
+
 
 
 # Race
@@ -158,11 +220,12 @@ df |>
 "racial"|> p()                                 
 "Racism"|> p()                                 
 "Racist"|> p() 
-# "White Privilege"|> p() 
-# "Colorblindness" |> p()   
-# "Critical Race Theory"|> p()                                      
 "Gang"|> p()
-"Terrorist" |> p()  
+# "Terrorist" |> p() 
+"White Privilege"|> p() 
+"Colorblindness" |> p()   
+"Critical Race Theory"|> p()                                      
+ 
 ```
 
 ## Racialized Policy
@@ -177,7 +240,7 @@ df |>
 "Affirmative Action" |> p() 
 "Civil Rights" |> p()           
 "Diversity, equity"|> p() 
-#"Meritocracy"|> p() 
+"Meritocracy"|> p() 
 "Slavery"|> p()                                
 ```
 
@@ -189,18 +252,21 @@ df |>
 
 
 "Immigration"|> p() 
-#"Border Crisis"|> p() 
 "Citizenship"|> p() 
 "Undocumented"|> p()                                                
 "DACA" |> p() 
-#"Drug Cartel" |> p() 
 "Illegal Alien" |> p()                         
 "Immigrant" |> p()                              
-# "Mexican Cartel" |> p()   
-# "Unaccompanied Alien Childen" |> p()          
-# "Secure Border"|> p()                         
+                      
 "Secure the border"|> p() 
-# "Border security" |> p() 
+# "Border security" |> p()
+"Border Crisis"|> p()
+"Mexican Cartel" |> p()
+# "Unaccompanied Alien Childen" |> p()
+"Secure Border"|> p()
+"Drug Cartel" |> p()
+
+
 ```
 
 ## Racial/Ethnic Groups
@@ -220,7 +286,7 @@ df |>
  "latino" |> p() 
  "MENA" |> p() 
  "Muslim"|> p()                                 
-"Native American"|> p()   
+# "Native American"|> p()   
 ```
 
 ## Intersectional Group
@@ -231,7 +297,29 @@ df |>
 
 
 "Black men" |> p() 
-# "Black woman" |> p()  
-# "Black women" 
+"Black woman" |> p()  
+"Black women" |> p()
 ```
 
+
+# Outliers 
+
+## DOT mentions of Citizenship 
+
+DOT and FAA saw a massive spike in orders mentioning "Citizenship" related to a post 9/11 policy requiring owners of companies, including shipping companies and air taxis (small planes for hire?) to attest to whether they were owned by citizens that resulted in many businesses losing their aviation licenses and investigations into ownership of aviation businesses, including DHL and Virgin America. 
+
+> Federal law requires U.S.-based air carriers to be U.S. "citizens." To qualify, the outstanding voting interests of the air carrier must be at least 75-percent owned by U.S. citizens and the carrier must also be effectively controlled by U.S. citizens.
+
+https://news.alaskaair.com/newsroom/alaska-airlines-renews-request-for-open-dot-review-of-virgin-americas-ownership-status/
+
+```{r}
+rules_racial_all$searchTerm |> unique() 
+
+rules_racial_all |> filter(agencyId == "DOT", 
+                           searchTerm == "Citizenship") |> 
+  distinct(id, documentType, highlightedContent) |> 
+  arrange(-nchar(highlightedContent)) |> 
+  kablebox()
+
+
+```
