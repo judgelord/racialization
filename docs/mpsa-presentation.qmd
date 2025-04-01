@@ -1,0 +1,269 @@
+---
+title: "Racialization and Perceived Institutional Ideology"
+subtitle: |
+  ::: {style="text-align: center;"}
+  **Karla Magaña, Devin Judge-Lord** <br>
+  *University of Michigan*
+  :::
+title-block-banner: "#001B35" 
+title-block-banner-color: body-bg
+title-slide-attributes:
+    data-background-image: "figs/whitewash.jpg"
+    data-background-size: cover
+    data-background-opacity: "0.2"
+format:
+ revealjs:
+   footer: ""
+   incremental: true   
+   smaller: false
+   scrollable: true
+   # theme: [oil.scss]
+css: styles.css
+execute:
+  echo: false
+  engine: knitr
+---
+
+```{r knit-options}
+library(scales) # for percents
+
+# inline numbers round to 2, comma at thousands
+knitr::knit_hooks$set(inline = function(x) {
+  if (is.na(as.numeric(x))) {
+    return (x)
+    } else
+        return (as.numeric(x) |> 
+                 round(2) |>
+                 format(big.mark=",") 
+        )
+})
+
+# regression table formatting function 
+# modelsummary <- modelsummary_AJPS
+
+# numbers cited in the paper that may change
+load(here::here("data", "numbers-for-paper.Rdata"))
+# nyt_v_2025_cor, 
+n_racial <- sum(n_mfl_racial,n_rules_racial, n_nyt_racial)
+# n_mfl_total,
+# n_mfl_agencies, 
+#      n_nyt_articles,
+#      n_nyt_agencies,
+#      n_rules_racial,
+#      n_rules_agencies
+# Other things cited in the paper 
+```
+
+## {data-background-image="figs/NYT_Words_Disappear.jpg" data-background-size="contain" data-background-position="center" data-background-opacity="1"}
+
+## Research Questions
+
+- What factors make certain agencies targets for political action?
+- How do perceptions of racialization vary between agencies perceived as conservative versus liberal?
+- In what ways is racialization distinct from political ideology?
+
+## Contribution
+
+- We develop a new measure of racialization.
+- We demonstrate that ideology and racialization are distinct.
+- We open up the conversation to key factors that can help explain policy outcomes and the unequal racial effects across agencies.
+
+## {#Concepts}
+
+::: {.columns}
+
+::: {.column width="33%" .column}
+### Percievd Ideology
+- Key idea 1
+- Supporting argument 1
+- Citations
+:::
+
+::: {.column width="33%" .column}
+###  Race and the Bureaucracy
+- Key idea 2
+- Supporting argument 2
+- Citations
+:::
+
+::: {.column width="33%" .column}
+### Racial signaling and Language
+- Key idea
+- Supporting argument 3
+- Citations
+:::
+
+:::
+
+
+## Data 
+
+- Mandate for Leadership (Project 2025) Reports
+
+- New York Times Articles
+
+- Rulemaking Documents 
+
+##  Mandate For Leadership Reports {#mfl}
+
+> Race; Racial; Racism; Discrimination; Discriminate; Slavery; Ethnicity; Diversity; DEI; Equity; Equality; Inclusion; Citizen; Citizenship; DACA; Immigrants; Immigration; Illegal; Civil Rights; Affirmative Action; Head Start; African American; Black; Latino; Hispanic; Muslim; Asian; Color; Racist; Bureau of Indian; native; woke; wokeism; Illegal Alien; Cartel
+
+## {#mfl-data}
+
+```{r}
+#| fig-cap: "Distribution of Racialized Words in Mandate For Leadership (Project 2025)"
+#| label: fig-mfl-data
+#| out-width: 100%
+
+knitr::include_graphics(here::here("docs/figs/mfl_data-1.png"))
+```
+
+
+
+## News Coverage of Agencies {#nyt}
+
+ `r n_nyt_articles` articles mentioning `r n_nyt_agencies` agencies, `r n_nyt_racial` include "racial."
+
+## New York Times Articles Mentioning "Racial" 2005-2024 {#trends-nyt}
+
+```{r}
+#| fig-cap: 'New York Times Articles Mentioning "Racial" By Agency, 2005-2024'
+#| label: fig-trends-nyt
+#| out-width: 100%
+
+knitr::include_graphics(here::here("docs/figs/trends-nyt-1.png"))
+```
+
+## {#trends-nyt-total}
+
+
+```{r}
+#| fig-cap: 'New York Times Total Articles Mentioning "Racial," 2005-2024'
+#| label: fig-trends-nyt-total
+#| out-width: 100%
+
+knitr::include_graphics(here::here("docs/figs/trends-nyt-total-1.png"))
+```
+
+##  {#nyt-data}
+
+```{r}
+#| fig-cap: "Distribution of Racialized Words in New York Times Articles, 2005-2024"
+#| label: fig-nyt-data
+#| out-width: 100%
+
+knitr::include_graphics(here::here("docs/figs/nyt_data-1.png"))
+```
+
+
+##  Policy Texts {#rules}
+
+```{r}
+load(here::here("data", "rules_terms.rda"))
+```
+
+> `r terms |> paste0(collapse = "; ")`
+
+
+## Agency Rules, 2005-2024
+
+
+```{r}
+#| fig-cap: 'Agency Rules with Racialized Language, by Agency, 2005-2024'
+#| label: fig-trends-rules-terms
+#| out-width: 100%
+#| layout-ncol: 2
+#| fig-subcap: 
+#|   - ""
+#|   - ""
+#|   - ""
+#|   - ""
+#|   - ""
+#|   - ""
+
+
+knitr::include_graphics(here::here("docs/figs/trends-rules-racial-1.png") ) # racial 
+knitr::include_graphics(here::here("docs/figs/trends-rules-civil-rights-1.png") )#affirmative action 
+#knitr::include_graphics(here::here("docs/figs/trends-rules-groups-1.png") )# ethnicity 
+knitr::include_graphics(here::here("docs/figs/trends-rules-groups-10.png") )# Muslim 
+knitr::include_graphics(here::here("docs/figs/trends-rules-groups-2.png") )# asian
+knitr::include_graphics(here::here("docs/figs/trends-rules-groups-5.png") )# african american 
+knitr::include_graphics(here::here("docs/figs/trends-rules-groups-6.png") )# hispanic
+```
+
+
+## Agency Rules, 2005-2024 {#trends-rules}
+
+```{r}
+#| fig-cap: 'Agency Rules with Racialized Language, 2005-2024'
+#| label: fig-trends-rules
+#| out-width: 100%
+
+
+knitr::include_graphics(here::here("docs/figs/trends-rules-1.png") )
+```
+
+
+
+## {#nyt-v-2025}
+
+
+```{r}
+#| fig-cap: "Racialization in Project 2025 vs. New York Times"
+#| label: fig-nyt-v-2025
+#| out-width: 100%
+
+knitr::include_graphics(here::here("docs/figs/nyt_v_2025-1.png"))
+
+```
+
+# Racialization and Perceived Ideology {#ideology}
+
+##
+
+```{r}
+#| fig-cap: "Correlation Between Racialization and Perceived Ideology"
+#| label: fig-ideo_v_score
+#| out-width: 100%
+
+knitr::include_graphics(here::here("docs/figs/ideo_v_score-1.png"))
+```
+
+## 
+
+```{r}
+#| fig-cap: "Correlation Between Racialization and Perceived Ideology"
+#| label: fig-ext_v_score
+#| out-width: 100%
+
+knitr::include_graphics(here::here("docs/figs/ideo_v_score-2.png"))
+```
+
+
+## Next Steps
+
+#### Dynamic Racialization Scores
+
+#### Economic Redistribution
+
+
+
+## Key Takeaways
+
+- Racialized language for a given agency can vary over time, despite stable core missions.
+<!-- - Framing processes at work recast missions to emphasize race and inequality.-->
+- Racialized language is tied to ideological extremism, reducing perceptions of agency neutrality.
+- "Centrist" agencies like FEMA attract less media and elite attention.
+
+
+## Next Steps
+
+- More Data will allow us to have more dynamic racialization scores over time
+- Adding economic redistribution to our measure 
+
+
+
+
+
+
+
