@@ -486,7 +486,7 @@ d1 |>
   ggplot() + 
   aes(x = MFL_norm, 
       y = NYT_norm,
-      label = department_agency_acronym) + 
+      label = department_agency_acronym |> str_remove(".*_")) + 
     geom_line(aes(y = MFL_norm), color = "red")  + 
   annotate(x = min_x, y = max_y, geom = "text", 
            label = 'More Racialized\nin NYT', color = "red", hjust = 0) + 
@@ -508,7 +508,7 @@ d1 |>
   ggplot() + 
   aes(x = MFL_percent_norm, 
       y = NYT_percent_norm,
-      label = department_agency_acronym) + 
+      label = department_agency_acronym |> str_remove(".*_")) + 
     geom_line(aes(y = MFL_percent_norm), color = "red")  + 
   annotate(x = min_x, y = max_y, geom = "text", 
            label = 'More Racialized\nin NYT', color = "red", hjust = 0) + 
@@ -548,7 +548,7 @@ d1 |>
   ggplot() + 
   aes(x = rules_norm, 
       y = NYT_norm,
-      label = department_agency_acronym) + 
+      label = department_agency_acronym |> str_remove(".*_")) + 
     geom_line(aes(y = rules_norm), color = "red")  + 
   annotate(x = min_x, y = max_y, geom = "text", 
            label = 'More Racialized\nin NYT', color = "red", hjust = 0) + 
@@ -569,7 +569,7 @@ d1 |>
   ggplot() + 
   aes(x = rules_percent_norm, 
       y = NYT_percent_norm,
-      label = department_agency_acronym) + 
+      label = department_agency_acronym |> str_remove(".*_")) + 
     geom_line(aes(y = rules_percent_norm), color = "red")  + 
   annotate(x = min_x, y = max_y, geom = "text", 
            label = 'More Racialized\nin NYT', color = "red", hjust = 0) + 
@@ -603,7 +603,7 @@ d1 |>
   ggplot() + 
   aes(x = MFL_norm, 
       y = rules_norm,
-      label = department_agency_acronym) + 
+      label = department_agency_acronym |> str_remove(".*_")) + 
     geom_line(aes(y = MFL_norm), color = "red")  + 
   annotate(x = min_x, y = max_y, geom = "text", 
            label = 'More Racialized\nin Rules', color = "red", hjust = 0) + 
@@ -626,7 +626,7 @@ d1 |>
   ggplot() + 
   aes(x = MFL_percent_norm, 
       y = rules_percent_norm,
-      label = department_agency_acronym) + 
+      label = department_agency_acronym |> str_remove(".*_")) + 
     geom_line(aes(y = MFL_percent_norm), color = "red")  + 
   annotate(x = min_x, y = max_y, geom = "text", 
            label = 'More Racialized\nin Rules', color = "red", hjust = 0) + 
@@ -699,7 +699,7 @@ d |>
   ggplot() + 
   aes(x = perceived_ideology_estimate, 
       y = racialization,
-      label = department_agency_acronym) + 
+      label = department_agency_acronym |> str_remove(".*_")) + 
     #geom_line(aes(y = perceived_ideology_estimate), color = "red")  + 
   annotate(x = 2, y = max_y, geom = "text", label = 'Racialized\n"Conservative"', color = "red", hjust = 1) + 
     annotate(x =-2, y = max_y, geom = "text", label = 'Racialized\n"Liberal"', color = "red", hjust = 0) + 
@@ -718,7 +718,7 @@ d |>
   ggplot() + 
   aes(x = abs(perceived_ideology_estimate), 
       y = racialization,
-      label = department_agency_acronym) + 
+      label = department_agency_acronym |> str_remove(".*_")) + 
     #geom_line(aes(y = perceived_ideology_estimate), color = "red")  + 
   annotate(x =0, y = max_y, geom = "text", label = 'Racialized\n"Moderate"', color = "red", hjust = 0) + 
     annotate(x =2, y = max_y, geom = "text", label = 'Racialized\n"Ideological"', color = "red", hjust = 1) + 
@@ -749,7 +749,7 @@ d |>
   ggplot() + 
   aes(x = perceived_ideology_estimate, 
       y = MFL_norm,
-      label = department_agency_acronym) + 
+      label = department_agency_acronym |> str_remove(".*_")) + 
     #geom_line(aes(y = perceived_ideology_estimate), color = "red")  + 
   annotate(x =2, y = max_y, geom = "text", 
            label = 'Racialized\n"Conservative"', color = "red", hjust = 1) + 
@@ -768,7 +768,7 @@ d |>
   ggplot() + 
   aes(x = perceived_ideology_estimate, 
       y = MFL_percent_norm,
-      label = department_agency_acronym) + 
+      label = department_agency_acronym |> str_remove(".*_")) + 
     #geom_line(aes(y = perceived_ideology_estimate), color = "red")  + 
   annotate(x =2, y =2, geom = "text", label = 'Racialized\n"Conservative"', color = "red", hjust = 1) + 
     annotate(x =-2, y =2, geom = "text", label = 'Racialized\n"Liberal"', color ="red", hjust = 0) +   # geom_smooth(method = "lm") + 
@@ -796,7 +796,7 @@ d |>
   ggplot() + 
   aes(x = perceived_ideology_estimate, 
       y = NYT_norm,
-      label = department_agency_acronym) + 
+      label = department_agency_acronym |> str_remove(".*_")) + 
     #geom_line(aes(y = perceived_ideology_estimate), color = "red")  + 
   annotate(x =2, y= max_y, geom = "text", 
            label = 'Racialized\n"Conservative"', color = "red", hjust = 1) + 
@@ -814,7 +814,7 @@ d |>
   ggplot() + 
   aes(x = perceived_ideology_estimate, 
       y = NYT_percent_norm,
-      label = department_agency_acronym) + 
+      label = department_agency_acronym |> str_remove(".*_")) + 
     #geom_line(aes(y = perceived_ideology_estimate), color = "red")  + 
   annotate(x =2, y = max_y, geom = "text", label = 'Racialized\n"Conservative"', color = "red", hjust = 1) + 
     annotate(x =-2, y = max_y, geom = "text", label = 'Racialized\n"Liberal"', color = "red", hjust = 0) +   # geom_smooth(method = "lm") + 
@@ -841,7 +841,7 @@ d |>
   ggplot() + 
   aes(x = perceived_ideology_estimate, 
       y = rules_norm,
-      label = department_agency_acronym) + 
+      label = department_agency_acronym |> str_remove(".*_")) + 
     #geom_line(aes(y = perceived_ideology_estimate), color = "red")  + 
   annotate(x =2, y= max_y, geom = "text", 
            label = 'Racialized\n"Conservative"', color = "red", hjust = 1) + 
@@ -861,7 +861,7 @@ d |>
   ggplot() +
   aes(x = perceived_ideology_estimate,
       y = rules_percent_norm,
-      label = department_agency_acronym) +
+      label = department_agency_acronym |> str_remove(".*_")) +
     #geom_line(aes(y = perceived_ideology_estimate), color = "red")  +
   annotate(x =2, y = max_y, geom = "text", label = 'Racialized\n"Conservative"', color = "red", hjust = 1) +
     annotate(x =-2, y = max_y, geom = "text", label = 'Racialized\n"Liberal"', color = "red", hjust = 0) +   # geom_smooth(method = "lm") +
@@ -980,7 +980,7 @@ ggplot(d) +
              color = "gray90", linetype = "dashed") +
   geom_vline(xintercept = 0, color = "gray60", linetype = "dashed") +
   # Add agency acronyms colored according to DOGE layoff variable
-  geom_text_repel(aes(label = department_agency_acronym,
+  geom_text_repel(aes(label = department_agency_acronym |> str_remove(".*_"),
                 color = doge_layoffs), 
             size=3)+ 
 
@@ -999,7 +999,7 @@ ggplot(d) +
              color = "gray90", linetype = "dashed") +
   geom_vline(xintercept = 0, color = "gray60", linetype = "dashed") +
   # Add agency acronyms colored according to DOGE layoff variable
-  geom_text_repel(aes(label = department_agency_acronym,
+  geom_text_repel(aes(label = department_agency_acronym |> str_remove(".*_"),
                 color = doge_layoffs), 
             size=3)+ 
 
@@ -1019,7 +1019,7 @@ ggplot(d) +
              color = "gray90", linetype = "dashed") +
   geom_vline(xintercept = 0, color = "gray60", linetype = "dashed") +
   # Add agency acronyms colored according to DOGE layoff variable
-  geom_text_repel(aes(label = department_agency_acronym,
+  geom_text_repel(aes(label = department_agency_acronym |> str_remove(".*_"),
                 color = doge_layoffs), 
             size=3)+ 
   # Scale transformations
@@ -1038,7 +1038,7 @@ ggplot(d) +
              color = "gray90", linetype = "dashed") +
   geom_vline(xintercept = 0, color = "gray60", linetype = "dashed") +
   # Add agency acronyms colored according to DOGE layoff variable
-  geom_text_repel(aes(label = department_agency_acronym,
+  geom_text_repel(aes(label = department_agency_acronym |> str_remove(".*_"),
                 color = doge_layoffs), 
             size=3)+ 
   # Scale transformations
@@ -1065,7 +1065,7 @@ ggplot(d) +
     geom_hline(yintercept = 0, color = "gray60", linetype = "dashed") +
 geom_smooth(method = "lm") + 
   # Add agency acronyms colored according to DOGE layoff variable
-  geom_text_repel(aes(label = department_agency_acronym,
+  geom_text_repel(aes(label = department_agency_acronym |> str_remove(".*_"),
                 color = doge_layoffs), 
             size=3)+ 
 
@@ -1082,7 +1082,7 @@ ggplot(d) +
     geom_hline(yintercept = 0, color = "gray60", linetype = "dashed") +
 geom_smooth(method = "lm") + 
   # Add agency acronyms colored according to DOGE layoff variable
-  geom_text_repel(aes(label = department_agency_acronym,
+  geom_text_repel(aes(label = department_agency_acronym |> str_remove(".*_"),
                 color = doge_layoffs), 
             size=3)+ 
   # Scale transformations
@@ -1110,7 +1110,7 @@ ggplot(d) +
     geom_hline(yintercept = 0, color = "gray60", linetype = "dashed") +
 geom_smooth(method = "lm") + 
   # Add agency acronyms colored according to DOGE layoff variable
-  geom_text_repel(aes(label = department_agency_acronym,
+  geom_text_repel(aes(label = department_agency_acronym |> str_remove(".*_"),
                 color = doge_layoffs), 
             size=3)+ 
 
@@ -1127,7 +1127,7 @@ ggplot(d) +
     geom_hline(yintercept = 0, color = "gray60", linetype = "dashed") +
 geom_smooth(method = "lm") + 
   # Add agency acronyms colored according to DOGE layoff variable
-  geom_text_repel(aes(label = department_agency_acronym,
+  geom_text_repel(aes(label = department_agency_acronym |> str_remove(".*_"),
                 color = doge_layoffs), 
             size=3)+ 
   # Scale transformations
@@ -1143,7 +1143,7 @@ ggplot(d) +
     geom_hline(yintercept = 0, color = "gray60", linetype = "dashed") +
 geom_smooth(method = "lm") + 
   # Add department_agency_acronym acronyms colored according to DOGE layoff variable
-  geom_text_repel(aes(label = department_agency_acronym,
+  geom_text_repel(aes(label = department_agency_acronym |> str_remove(".*_"),
                 color = doge_layoffs), 
             size=3)+ 
   # Scale transformations
@@ -1159,7 +1159,7 @@ ggplot(d) +
     geom_hline(yintercept = 0, color = "gray60", linetype = "dashed") +
 geom_smooth(method = "lm") + 
   # Add department_agency_acronym acronyms colored according to DOGE layoff variable
-  geom_text_repel(aes(label = department_agency_acronym,
+  geom_text_repel(aes(label = department_agency_acronym |> str_remove(".*_"),
                 color = doge_layoffs), 
             size=3)+ 
   # Scale transformations
@@ -1188,7 +1188,7 @@ ggplot(d) +
     geom_hline(yintercept = 0, color = "gray60", linetype = "dashed") +
 geom_smooth(method = "lm") + 
   # Add agency acronyms colored according to DOGE layoff variable
-  geom_text_repel(aes(label = department_agency_acronym,
+  geom_text_repel(aes(label = department_agency_acronym |> str_remove(".*_"),
                 color = doge_layoffs), 
             size=3)+ 
   # Scale transformations
@@ -1203,7 +1203,7 @@ ggplot(d) +
     geom_hline(yintercept = 0, color = "gray60", linetype = "dashed") +
 geom_smooth(method = "lm") + 
   # Add department_agency_acronym acronyms colored according to DOGE layoff variable
-  geom_text_repel(aes(label = department_agency_acronym,
+  geom_text_repel(aes(label = department_agency_acronym |> str_remove(".*_"),
                 color = doge_layoffs), 
             size=3)+ 
   # Scale transformations
@@ -1219,7 +1219,7 @@ ggplot(d) +
     geom_hline(yintercept = 0, color = "gray60", linetype = "dashed") +
 geom_smooth(method = "lm") + 
   # Add agency acronyms colored according to DOGE layoff variable
-  geom_text_repel(aes(label = department_agency_acronym,
+  geom_text_repel(aes(label = department_agency_acronym |> str_remove(".*_"),
                 color = doge_layoffs), 
             size=3)+ 
   # Scale transformations
@@ -1234,7 +1234,7 @@ ggplot(d) +
     geom_hline(yintercept = 0, color = "gray60", linetype = "dashed") +
 geom_smooth(method = "lm") + 
   # Add department_agency_acronym acronyms colored according to DOGE layoff variable
-  geom_text_repel(aes(label = department_agency_acronym,
+  geom_text_repel(aes(label = department_agency_acronym |> str_remove(".*_"),
                 color = doge_layoffs), 
             size=3)+ 
   # Scale transformations
@@ -1260,7 +1260,7 @@ ggplot(d) +
     geom_hline(yintercept = 0, color = "gray60", linetype = "dashed") +
 geom_smooth(method = "lm") + 
   # Add department_agency_acronym acronyms colored according to DOGE layoff variable
-  geom_text_repel(aes(label = department_agency_acronym,
+  geom_text_repel(aes(label = department_agency_acronym |> str_remove(".*_"),
                 color = doge_layoffs), 
             size=3)+ 
   # Scale transformations
@@ -1276,7 +1276,7 @@ ggplot(d) +
     geom_hline(yintercept = 0, color = "gray60", linetype = "dashed") +
 geom_smooth(method = "lm") + 
   # Add department_agency_acronym acronyms colored according to DOGE layoff variable
-  geom_text_repel(aes(label = department_agency_acronym,
+  geom_text_repel(aes(label = department_agency_acronym |> str_remove(".*_"),
                 color = doge_layoffs), 
             size=3)+ 
   # Scale transformations
@@ -1291,7 +1291,7 @@ ggplot(d) +
     geom_hline(yintercept = 0, color = "gray60", linetype = "dashed") +
 geom_smooth(method = "lm") + 
   # Add department_agency_acronym acronyms colored according to DOGE layoff variable
-  geom_text_repel(aes(label = department_agency_acronym,
+  geom_text_repel(aes(label = department_agency_acronym |> str_remove(".*_"),
                 color = doge_layoffs), 
             size=3)+ 
   # Scale transformations
@@ -1307,7 +1307,7 @@ ggplot(d) +
     geom_hline(yintercept = 0, color = "gray60", linetype = "dashed") +
 geom_smooth(method = "lm") + 
   # Add department_agency_acronym acronyms colored according to DOGE layoff variable
-  geom_text_repel(aes(label = department_agency_acronym,
+  geom_text_repel(aes(label = department_agency_acronym |> str_remove(".*_"),
                 color = doge_layoffs), 
             size=3)+ 
   # Scale transformations
