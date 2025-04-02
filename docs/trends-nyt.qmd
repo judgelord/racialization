@@ -169,8 +169,8 @@ nyt |>
       y = term_count, 
       color = president) +
   geom_point() +
-  labs(title = paste0('Articles Mentioning Each Federal Agency and "', str_to_title(term),'"'),
-       y = "NYT Mentions",
+  labs(#title = paste0('Articles Mentioning Each Federal Agency and "', str_to_title(term),'"'),
+       y = paste0('NYT Mentions of  "', str_to_title(term),'"' ),
        x = "",
        color = "") +
    geom_line() + 
@@ -187,8 +187,8 @@ nyt |>
       y = ratio, 
       color = president) +
   geom_point() +
-  labs(title = paste0('Articles Mentioning Each Federal Agency and "', str_to_title(term),'"'),
-       y = "Share of NYT Articles",
+  labs(#title = paste0('Articles Mentioning Each Federal Agency and "', str_to_title(term),'"'),
+       y = paste0('Share of Articles with "', str_to_title(term),'"' ),
        x = "",
        color = "") +
      geom_line() + 
@@ -219,8 +219,8 @@ nyt_total |>
       y = term_count, 
       color = president) +
   geom_point() +
-  labs(title = paste0('Articles Mentioning a\nFederal Agency and "', str_to_title(term),'"'),
-       y = "NYT Mentions",
+  labs(#title = paste0('Articles Mentioning a\nFederal Agency and "', str_to_title(term),'"'),
+       y = paste0('NYT Mentions of  "', str_to_title(term),'"' ),
        x = "",
        color = "") +
       geom_line() + 
@@ -235,8 +235,8 @@ nyt_total |>
       y = ratio, 
       color = president) +
   geom_point() +
-  labs(title = paste0('Share of Articles Mentioning\na Federal Agency and "', str_to_title(term),'"'),
-       y = "Share of NYT Articles",
+  labs(#title = paste0('Share of Articles Mentioning\na Federal Agency and "', str_to_title(term),'"'),
+       y = paste0('Share of Articles with "', str_to_title(term),'"' ),
        x = "",
        color = "") +
       geom_line() + 

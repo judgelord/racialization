@@ -68,7 +68,8 @@ knitr::knit_hooks$set(inline = function(x) {
 
 # numbers cited in the paper that may change
 load(here::here("data", "numbers-for-paper.Rdata"))
-# nyt_v_2025_cor, 
+# cor_nyt_v_2025, 
+n_total <- sum(n_mfl_total, n_nyt_articles, n_rules)
 n_racial <- sum(n_mfl_racial,n_rules_racial, n_nyt_racial)
 # n_mfl_total,
 # n_mfl_agencies, 
@@ -168,7 +169,7 @@ Federal agencies are not neutral entities; their structures, leadership composit
 
 The diversity within agencies, particularly in terms of race, ethnicity, and gender, further affects the types of policies they administer. Regulatory and law enforcement-related agencies that have historically been overrepresented by White males remain as such.  On the other hand, redistribution agencies, like the Department of Education, Health and Human Services, and Housing and Urban Development, tend to have a more diverse workforce that mirrors the U.S. population [@choi_managing_2010].
 
-The representative bureaucracy literature has shown that diversity and demographics both influence and reflect policies that align with the composition of an agency's workforce [@mansbridge_should_1999; @watkins-hayes_new_2009; @minta_legislative_2009-1; @juenke_irreplaceable_2012; @hayes_symbolic_2017; @meier_theoretical_2018].
+The representative bureaucracy literature has shown that diversity and demographics both influence and reflect policies that align with the composition of an agency's workforce [@mansbridge_should_1999; @watkins-hayes_new_2009; @minta_legislative_2009-1; @juenke_irreplaceable_2012; @hayes_symbolic_2017; @meier_theoretical_2019].
 This suggests that agency structures, as King describes, not only reflect historical racial legacies but also influence the degree to which agencies are racialized in terms of both policy and representation.
 
 President Wilson explicitly endorsed a segregated federal government, framing his segregationist ideals as beneficial for African Americans and women. The Wilson administration's discriminatory hiring practices were entrenched in the civil service, making merit-based entry difficult. For example, in 1914, the US Civil Service Commission required applicants for civil service posts to supply a photograph with their application form [@van_riper_history_1958; @king_racial_1999; @blatt_race_2018]. The Roosevelt administration also created racialized agencies like the National Youth Administration’s (NYA) Division of Negro Affairs and the "Black Cabinet." These efforts, while pivotal for racial and gender representation, were short-lived and were the terms of segregation [@ross_mary_1975; @king_racial_1999].
@@ -388,7 +389,7 @@ knitr::include_graphics("docs/figs/rules_data-1.png")
 ##  Comparing Racialization Across Contexts {#sec-compared}
 
 
-@fig-nyt-v-2025 compares racialization scores from New York Times (NYT) articles and from the Mandate for Leadership (MFL) reports. Agencies above the red diagonal line have higher scores for the NYT measure. Agencies below the line have higher scores from the MFL measure. The correlation between the NYT and MFL measures is `r nyt_v_2025_cor$estimate` (p = `r nyt_v_2025_cor$p.value`).  The largest outlier is the Department of Housing and Urban Development, which is discussed in more racialized terms in NYT articles. Most agencies have higher scores on the MFL measure. 
+@fig-nyt-v-2025 compares racialization scores from New York Times (NYT) articles and from the Mandate for Leadership (MFL) reports. Agencies above the red diagonal line have higher scores for the NYT measure. Agencies below the line have higher scores from the MFL measure. The correlation between the NYT and MFL measures is `r cor_nyt_v_2025$estimate` (p = `r cor_nyt_v_2025$p.value`).  The largest outlier is the Department of Housing and Urban Development, which is discussed in more racialized terms in NYT articles. Most agencies have higher scores on the MFL measure. 
 
 
 ```{r}
@@ -396,9 +397,30 @@ knitr::include_graphics("docs/figs/rules_data-1.png")
 #| label: fig-nyt-v-2025
 #| out-width: 70%
 
-knitr::include_graphics("docs/figs/nyt_v_2025-1.png")
+knitr::include_graphics("docs/figs/nyt_v_2025-2.png")
 
 ```
+
+<!-- TODO DESCRIBE TWO PLOTS BELOW--> 
+
+```{r}
+#| fig-cap: "Racialization in Rulemaking vs. New York Times"
+#| label: fig-nyt_v_rules
+#| out-width: 100%
+
+knitr::include_graphics(here::here("docs/figs/nyt_v_rules-2.png"))
+```
+
+
+
+```{r}
+#| fig-cap: "Racialization in Rulemaking vs. New York Times"
+#| label: fig-rules_v_2025
+#| out-width: 100%
+
+knitr::include_graphics(here::here("docs/figs/rules_v_2025-2.png"))
+```
+
 
 # Institutional Racialization and Perceived Ideology {#sec-ideology}
 

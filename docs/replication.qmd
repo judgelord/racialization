@@ -295,24 +295,42 @@ nyt |>
 
 ```{r}
 #| fig-width: 5.5
-#| fig-height: 4
+#| fig-height: 8
 #| layout-ncol: 1
 #| label: rules_data
 
 
 load(here::here("data", "rules_racial_distinct_totals.rda") ) 
+load(here::here("data", "rules_total.rda") ) 
 
-
-rules <- rules_racial_distinct_totals |>
-   filter(documentType %in% c("Proposed Rule", "Rule")  ) |> 
+rules_total  <- rules_total |>
+   filter(
+     year > 2004,
+     documentType %in% c("Proposed Rule", "Rule")  ) |> 
   group_by(department_agency_acronym) |>
   summarise(n = sum(n, na.rm = T) ) |> 
-  ungroup() |> 
-  mutate(sub = str_remove(department_agency_acronym, ".*_"),
+  ungroup() 
+
+n_rules <- sum(rules_total$n, na.rm = T)
+
+rules_racial <- rules_racial_distinct_totals |>
+   filter(
+     year > 2004,
+     documentType %in% c("Proposed Rule", "Rule")  ) |> 
+  group_by(department_agency_acronym) |>
+  summarise(n_racial = sum(n, na.rm = T) ) |> 
+  ungroup() 
+
+n_rules_racial <- sum(rules_racial$n_racial)
+
+rules <- full_join(rules_total, rules_racial) |> 
+  mutate(n_racial = replace_na(n_racial, 0), # if not in racial data, assume 0 racialized rules
+         sub = str_remove(department_agency_acronym, ".*_"),
          main = str_remove(department_agency_acronym, "_.*")) 
 
-n_rules_racial <- sum(rules$n)
+
 n_rules_agencies <- distinct(rules, department_agency_acronym) |> nrow()
+
 
 
 # rules_depts <- rules %>%
@@ -342,38 +360,69 @@ n_rules_agencies <- distinct(rules, department_agency_acronym) |> nrow()
 rules %<>% 
   ungroup() %>% 
   mutate(
-    # total = sqrt(total), 
-    rules_n = n,
-                n = sqrt(n),
-                rules_norm = (n - mean(n))/sd(n) 
-                  # percent = n/total,
-                  # rules_percent_norm =  (percent - mean(percent))/sd(percent)
-    ) %>%
-  select(rules_n, rules_norm, 
-         #rules_percent_norm, 
+        rules_percent = n_racial/n,
+            rules_n = n_racial,
+    sqrt_n = sqrt(n), 
+                sqrt_racial = sqrt(n_racial),
+                rules_norm = (sqrt_racial - mean(sqrt_racial))/sd(sqrt_racial), 
+                sqrt_ratio = sqrt_racial/sqrt_n,
+                rules_percent_norm =  (sqrt_ratio - mean(sqrt_ratio, na.rm = T))/sd(sqrt_ratio, na.rm = T)
+    )
+
+
+# add vars from crosswalk 
+rules %<>% left_join(crosswalk)
+
+missing <- filter(rules, is.na(n)) |> 
+  select(min_missing = n_racial, regulationsdotgov_agency, regulationsdotgov_acronym) |> 
+  arrange(-min_missing)
+
+save(missing, file = here::here("data", "missing.rda"))
+
+# subset 
+rules %<>% 
+  distinct(rules_n, 
+         rules_percent,
+                  rules_norm, 
+         rules_percent_norm, 
          department_agency_acronym) %>% 
   ungroup()
 
-
+# add vars from crosswalk 
 rules %<>% left_join(crosswalk)
 
 rules |> 
   #filter(regulationsdotgov_acronym == department_agency_acronym) |> 
   ungroup() |> 
-  drop_na(department) |> 
+  drop_na(regulationsdotgov_agency) |> 
   filter(rules_n > 100) |> 
   ggplot() + 
   aes(x = rules_n, 
-      y = reorder(department, rules_n) ) + 
+      y = reorder(regulationsdotgov_agency, rules_n) ) + 
   geom_col() + 
   labs(x = "Proposed or Final Rules with Racialzed Words, 2005-2024", 
+       y = "")
+
+rules |> 
+  #filter(regulationsdotgov_acronym == department_agency_acronym) |> 
+  filter(rules_percent <= 1) |> #FIXME 
+  ungroup() |> 
+  drop_na(regulationsdotgov_agency) |> 
+  filter(rules_percent > .7500 | rules_percent < .2500 ) |> 
+  ggplot() + 
+  aes(x = rules_percent, 
+      y = reorder(regulationsdotgov_agency, rules_percent) ) + 
+  geom_col() + 
+  labs(x = "Share of Proposed or Final Rules with Racialzed Words, 2005-2024", 
        y = "")
 ```
 
 ```{r join}
 d <- full_join(nyt,
                p2025) |> distinct() |> 
-  full_join(rules |> select(department_agency_acronym, rules_n, rules_norm)) |> 
+  full_join(rules |> select(department_agency_acronym, 
+                            rules_percent, rules_percent_norm,
+                            rules_n, rules_norm)) |> 
   distinct()
 
 ```
@@ -408,6 +457,10 @@ ggplot(d) +
   aes(x = rules_norm) + 
   geom_histogram()
 
+ggplot(d) +
+  aes(x = rules_percent_norm) + 
+  geom_histogram()
+
 ```
 
 
@@ -423,21 +476,22 @@ ggplot(d) +
 #| fig-height: 5
 #| layout-ncol: 2
 
-max_x = max(d$MFL_norm, na.rm = T)
-max_y = max(d$NYT_norm, na.rm = T)
-min_x = min(d$MFL_norm, na.rm = T)
-min_y = min(d$NYT_norm, na.rm = T)
+d1 <- drop_na(d, NYT_norm, MFL_norm)
 
-d |> 
+max_x <- max_y <- max(c(d1$NYT_norm, d1$MFL_norm), na.rm = T)
+min_x <- min_y <-  min(c(d1$MFL_norm, d1$NYT_norm), na.rm = T)
+
+
+d1 |> 
   ggplot() + 
   aes(x = MFL_norm, 
       y = NYT_norm,
       label = department_agency_acronym) + 
     geom_line(aes(y = MFL_norm), color = "red")  + 
   annotate(x = min_x, y = max_y, geom = "text", 
-           label = 'More Racialized in NYT', color = "red", hjust = 0) + 
+           label = 'More Racialized\nin NYT', color = "red", hjust = 0) + 
   annotate(x = max_x, y = min_y, geom = "text", 
-           label = 'More Racialized in MFL', color = "red", hjust = 1) + 
+           label = 'More Racialized\nin MFL', color = "red", hjust = 1) + 
   #geom_smooth(method = "lm") + 
   geom_point() +    geom_label_repel(size =3,force_pull = 10, alpha = .5)  + 
   labs(title = "Racialized Attention",
@@ -445,22 +499,21 @@ d |>
        y = "Scaled NYT Articles")
 
 
+d1 <- drop_na(d, NYT_percent_norm, MFL_percent_norm)
 
-max_x = max(d$MFL_percent_norm, na.rm = T)
-max_y = max(d$NYT_percent_norm, na.rm = T)
-min_x = min(d$MFL_percent_norm, na.rm = T)
-min_y = min(d$NYT_percent_norm, na.rm = T)
+max_x <- max_y <- max(c(d1$MFL_percent_norm), na.rm = T)
+min_x <- min_y <-  min(c(d1$MFL_percent_norm, d1$NYT_percent_norm), na.rm = T)
 
-d |> 
+d1 |> 
   ggplot() + 
   aes(x = MFL_percent_norm, 
       y = NYT_percent_norm,
       label = department_agency_acronym) + 
     geom_line(aes(y = MFL_percent_norm), color = "red")  + 
   annotate(x = min_x, y = max_y, geom = "text", 
-           label = 'More Racialized in NYT', color = "red", hjust = 0) + 
+           label = 'More Racialized\nin NYT', color = "red", hjust = 0) + 
   annotate(x = max_x, y = min_y, geom = "text", 
-           label = 'More Racialized in MFL', color = "red", hjust = 1) +  
+           label = 'More Racialized\nin MFL', color = "red", hjust = 1) +  
   # geom_smooth(method = "lm") + 
   geom_point() +    geom_label_repel(size =3,force_pull = 10, alpha = .5)  + 
   labs(title = "Racialized Attention as a Share of Total",
@@ -468,10 +521,10 @@ d |>
        y = "Scaled Share of NYT Articles")
 
 
-nyt_v_2025_cor <- cor.test(d$MFL_percent_norm, d$NYT_percent_norm)
+cor_nyt_v_2025 <- cor.test(d$MFL_percent_norm, d$NYT_percent_norm)
 
 
-nyt_v_2025_cor
+cor_nyt_v_2025
 ```
 
 
@@ -486,30 +539,51 @@ nyt_v_2025_cor
 #| fig-height: 5
 #| layout-ncol: 2
 
-max_x = max(d$rules_norm, na.rm = T)
-max_y = max(d$NYT_norm, na.rm = T)
-min_x = min(d$rules_norm, na.rm = T)
-min_y = min(d$NYT_norm, na.rm = T)
+d1 <- drop_na(d, NYT_norm, rules_norm)
 
-d |> 
+max_x <- max_y <- max(c(d1$NYT_norm, d1$rules_norm), na.rm = T)
+min_x <- min_y <-  min(c(d1$rules_norm, d1$NYT_norm), na.rm = T)
+
+d1 |> 
   ggplot() + 
-  aes(x = MFL_norm, 
+  aes(x = rules_norm, 
       y = NYT_norm,
       label = department_agency_acronym) + 
-    geom_line(aes(y = MFL_norm), color = "red")  + 
+    geom_line(aes(y = rules_norm), color = "red")  + 
   annotate(x = min_x, y = max_y, geom = "text", 
-           label = 'More Racialized in NYT', color = "red", hjust = 0) + 
+           label = 'More Racialized\nin NYT', color = "red", hjust = 0) + 
   annotate(x = max_x, y = min_y, geom = "text", 
-           label = 'More Racialized in MFL', color = "red", hjust = 1) + 
+           label = 'More Racialized\nin Rules', color = "red", hjust = 1) + 
   #geom_smooth(method = "lm") + 
   geom_point() +    geom_label_repel(size =3,force_pull = 10, alpha = .5)  + 
   labs(title = "Racialized Attention",
        x = "Scaled Rulemaking Mentions",
        y = "Scaled NYT Articles")
 
-rules_v_2025_cor <- cor.test(d$rules_norm, d$NYT_norm)
+d1 <- drop_na(d, NYT_percent_norm, rules_percent_norm)
 
-rules_v_2025_cor
+max_x <- max_y <- max(c(d1$rules_percent_norm), na.rm = T)
+min_x <- min_y <-  min(c(d1$rules_percent_norm, d1$NYT_percent_norm), na.rm = T)
+
+d1 |> 
+  ggplot() + 
+  aes(x = rules_percent_norm, 
+      y = NYT_percent_norm,
+      label = department_agency_acronym) + 
+    geom_line(aes(y = rules_percent_norm), color = "red")  + 
+  annotate(x = min_x, y = max_y, geom = "text", 
+           label = 'More Racialized\nin NYT', color = "red", hjust = 0) + 
+  annotate(x = max_x, y = min_y, geom = "text", 
+           label = 'More Racialized\nin Rules', color = "red", hjust = 1) + 
+  #geom_smooth(method = "lm") + 
+  geom_point() +    geom_label_repel(size =3,force_pull = 10, alpha = .5)  + 
+  labs(title = "Share of Racialized Attention",
+       x = "Scaled Rulemaking Mentions",
+       y = "Scaled NYT Articles")
+
+cor_rules_v_nyt <- cor.test(d$rules_percent_norm, d$NYT_percent_norm)
+
+cor_rules_v_nyt
 ```
 
 ### rules_v_2025
@@ -520,30 +594,53 @@ rules_v_2025_cor
 #| fig-height: 5
 #| layout-ncol: 2
 
-max_x = max(d$MFL_norm, na.rm = T)
-max_y = max(d$rules_norm, na.rm = T)
-min_x = min(d$MFL_norm, na.rm = T)
-min_y = min(d$rules_norm, na.rm = T)
+d1 <- drop_na(d, MFL_norm, rules_norm)
 
-d |> 
+max_x <- max_y <- max(c(d1$MFL_norm, d1$rules_norm), na.rm = T)
+min_x <- min_y <-  min(c(d1$rules_norm, d1$NYT_norm), na.rm = T)
+
+d1 |> 
   ggplot() + 
   aes(x = MFL_norm, 
       y = rules_norm,
       label = department_agency_acronym) + 
     geom_line(aes(y = MFL_norm), color = "red")  + 
   annotate(x = min_x, y = max_y, geom = "text", 
-           label = 'More Racialized in Rules', color = "red", hjust = 0) + 
+           label = 'More Racialized\nin Rules', color = "red", hjust = 0) + 
   annotate(x = max_x, y = min_y, geom = "text", 
-           label = 'More Racialized in MFL', color = "red", hjust = 1) + 
+           label = 'More Racialized\nin MFL', color = "red", hjust = 1) + 
   #geom_smooth(method = "lm") + 
   geom_point() +    geom_label_repel(size =3,force_pull = 10, alpha = .5)  + 
   labs(title = "Racialized Attention",
        x = "Scaled Mandate for Leadership (Project 2025) Mentions",
        y = "Scaled Rulemaking Mentions")
 
-rules_v_2025_cor <- cor.test(d$MFL_norm, d$rules_norm)
 
-rules_v_2025_cor
+d1 <- drop_na(d, MFL_percent_norm, rules_percent_norm)
+
+max_x <- max_y <- max(c(d1$MFL_percent_norm, d1$rules_percent_norm), na.rm = T)
+min_x <- min_y <-  min(c(d1$rules_percent_norm, d1$NYT_percent_norm), na.rm = T)
+
+
+d1 |> 
+  ggplot() + 
+  aes(x = MFL_percent_norm, 
+      y = rules_percent_norm,
+      label = department_agency_acronym) + 
+    geom_line(aes(y = MFL_percent_norm), color = "red")  + 
+  annotate(x = min_x, y = max_y, geom = "text", 
+           label = 'More Racialized\nin Rules', color = "red", hjust = 0) + 
+  annotate(x = max_x, y = min_y, geom = "text", 
+           label = 'More Racialized\nin MFL', color = "red", hjust = 1) + 
+  #geom_smooth(method = "lm") + 
+  geom_point() +    geom_label_repel(size =3,force_pull = 10, alpha = .5)  + 
+  labs(title = "Share of Racialized Attention",
+       x = "Scaled Mandate for Leadership (Project 2025) Mentions",
+       y = "Scaled Rulemaking Mentions")
+
+cor_rules_v_2025 <- cor.test(d$MFL_percent_norm, d$rules_percent_norm)
+
+cor_rules_v_2025
 ```
 
 
@@ -554,18 +651,21 @@ rules_v_2025_cor
 ```{r}
 d %<>% group_by(department_agency_acronym) %>% 
   mutate(racialization = sum(MFL_percent_norm, NYT_percent_norm, 
-                                   na.rm = T) / 2)
+                             rules_percent_norm,
+                                   na.rm = T) / 3)
 ```
 
 ### Least racialized 
 ```{r}
-d %>% distinct(department_agency_acronym, racialization) %>% arrange(racialization) %>% kablebox()
+d %>% distinct(department_agency_acronym, racialization) %>% 
+  arrange(racialization) %>% kablebox()
 ```
 
 ### Most racialized
 
 ```{r}
-d %>% distinct(department_agency_acronym, racialization) %>% arrange(-racialization) %>% kablebox()
+d %>% distinct(department_agency_acronym, racialization) %>% 
+  arrange(-racialization) %>% kablebox()
 ```
 
 
@@ -580,7 +680,9 @@ d %<>% full_join(rcl_ideology_estimates) %>%
   add_count(department_agency_acronym) |> 
   distinct()
 
-d |> distinct() |>  count(department_agency_acronym, sort = T)
+# d |> distinct() |>  count(department_agency_acronym, sort = T)
+
+d %<>% drop_na(department_agency_acronym)
 ```
 
 "ideo_v_score"
@@ -751,20 +853,22 @@ d |>
        x = "Perceived Ideological Leaning\n.     ← More Liberal                More Conservative →",
        y = "Rules with Racial Language")
 
-# max_y = max(d$rules_percent_norm, na.rm = T)
-# 
-# d |> 
-#   ggplot() + 
-#   aes(x = perceived_ideology_estimate, 
-#       y = rules_percent_norm,
-#       label = department_agency_acronym) + 
-#     #geom_line(aes(y = perceived_ideology_estimate), color = "red")  + 
-#   annotate(x =2, y = max_y, geom = "text", label = 'Racialized\n"Conservative"', color = "red", hjust = 1) + 
-#     annotate(x =-2, y = max_y, geom = "text", label = 'Racialized\n"Liberal"', color = "red", hjust = 0) +   # geom_smooth(method = "lm") + 
-#   geom_point() +    geom_label_repel(size =3,force_pull = 10, alpha = .5)  + 
-#   labs(title = "Racialized Attention as a Share of Total",
-#        x = "Perceived Ideological Leaning\n.     ← More Liberal                More Conservative →",
-#        y = "Share of Rules with Racial Language")
+
+# PERCENT 
+max_y = max(d$rules_percent_norm, na.rm = T)
+
+d |>
+  ggplot() +
+  aes(x = perceived_ideology_estimate,
+      y = rules_percent_norm,
+      label = department_agency_acronym) +
+    #geom_line(aes(y = perceived_ideology_estimate), color = "red")  +
+  annotate(x =2, y = max_y, geom = "text", label = 'Racialized\n"Conservative"', color = "red", hjust = 1) +
+    annotate(x =-2, y = max_y, geom = "text", label = 'Racialized\n"Liberal"', color = "red", hjust = 0) +   # geom_smooth(method = "lm") +
+  geom_point() +    geom_label_repel(size =3,force_pull = 10, alpha = .5)  +
+  labs(title = "Racialized Attention as a Share of Total",
+       x = "Perceived Ideological Leaning\n.     ← More Liberal                More Conservative →",
+       y = "Share of Rules with Racial Language")
 
 ```
 
@@ -921,6 +1025,26 @@ ggplot(d) +
   # Scale transformations
   scale_y_log10(breaks = c(1000, 10000, 100000, 1000000),
                 labels = scales::comma) +
+  scale_x_continuous(breaks = seq(-2, 2, 1)) 
+
+
+
+# Rules by staff and layoffs 
+ggplot(d) +
+       aes(x = rules_percent_norm, 
+           y = total_staff) +
+  # Add grid lines
+  geom_hline(yintercept = c(1000, 10000, 100000, 1000000), 
+             color = "gray90", linetype = "dashed") +
+  geom_vline(xintercept = 0, color = "gray60", linetype = "dashed") +
+  # Add agency acronyms colored according to DOGE layoff variable
+  geom_text_repel(aes(label = department_agency_acronym,
+                color = doge_layoffs), 
+            size=3)+ 
+  # Scale transformations
+  scale_y_log10(breaks = c(1000, 10000, 100000, 1000000),
+                labels = scales::comma) +
+  scale_x_continuous(breaks = seq(-2, 2, 1)) 
 ```
 
 #### By Racialization Score
@@ -1042,6 +1166,19 @@ geom_smooth(method = "lm") +
   scale_x_continuous(breaks = seq(-2, 2, 1)) + 
   labs(title = "Perceived Extremeism and Racialized Attention")
 
+```
+
+
+#### By Rulemaking Racialization 
+
+
+"ideo_v_rules_layoffs"
+
+```{r}
+#| label: ideo_v_rules_layoffs
+#| fig-width: 5
+#| fig-height: 4
+#| layout-ncol: 2
 
 ggplot(d) +
        aes(x = perceived_ideology_estimate, 
@@ -1073,6 +1210,36 @@ geom_smooth(method = "lm") +
   scale_x_continuous(breaks = seq(-2, 2, 1)) + 
   labs(title = "Perceived Extremeism and Racialized Attention Share")
 
+# PERCENT 
+ggplot(d) +
+       aes(x = perceived_ideology_estimate, 
+           y = rules_percent_norm) +
+  # Add grid lines
+  geom_vline(xintercept = 0, color = "gray60", linetype = "dashed") +
+    geom_hline(yintercept = 0, color = "gray60", linetype = "dashed") +
+geom_smooth(method = "lm") + 
+  # Add agency acronyms colored according to DOGE layoff variable
+  geom_text_repel(aes(label = department_agency_acronym,
+                color = doge_layoffs), 
+            size=3)+ 
+  # Scale transformations
+  scale_x_continuous(breaks = seq(-2, 2, 1)) + 
+  labs(title = "Perceived Ideology and Racialized Attention Share")
+
+ggplot(d) +
+       aes(x = abs(perceived_ideology_estimate), 
+           y = rules_percent_norm) +
+  # Add grid lines
+  geom_vline(xintercept = 0, color = "gray60", linetype = "dashed") +
+    geom_hline(yintercept = 0, color = "gray60", linetype = "dashed") +
+geom_smooth(method = "lm") + 
+  # Add department_agency_acronym acronyms colored according to DOGE layoff variable
+  geom_text_repel(aes(label = department_agency_acronym,
+                color = doge_layoffs), 
+            size=3)+ 
+  # Scale transformations
+  scale_x_continuous(breaks = seq(-2, 2, 1)) + 
+  labs(title = "Perceived Extremeism and Racialized Attention Share")
 ```
 
 #### By NYT Racialization 
@@ -1165,8 +1332,8 @@ cor.test(d$NYT_percent_norm, abs(d$perceived_ideology_estimate))
 
 # Rules 
 #FIXME change to percent 
-cor.test(d$rules_norm,  d$perceived_ideology_estimate)
-cor.test(d$rules_norm, abs(d$perceived_ideology_estimate))
+cor.test(d$rules_percent_norm,  d$perceived_ideology_estimate)
+cor.test(d$rules_percent_norm, abs(d$perceived_ideology_estimate))
 
 ```
 
@@ -1204,7 +1371,7 @@ m_layoffs_mfl <- glm(layoffs ~ # perceived_ideology_estimate +
 
 #reproduce Adam's linear probability model 
 m_layoffs_ideo_mfl0 <-glm(layoffs ~ 
-                          perceived_ideology_estimate*(MFL_norm>0) +
+                          perceived_ideology_estimate*(MFL_n>10) +
                   log(total_staff) + 
                   log(annual_budget_usd),
                   family=binomial(link="logit"),
@@ -1246,34 +1413,45 @@ values <- tidyr::expand(d,
                         total_staff = 100000,
                         annual_budget_usd = 5000000000,
                         #MFL_percent_norm,
-                        MFL_norm,
+                        MFL_n,
                         perceived_ideology_estimate)
 
 predicted <- predictions(m_layoffs_ideo_mfl0, 
                          newdata = values)
 
 predicted %>%  
+  drop_na(MFL_n) %>% 
   ggplot() + 
   aes(x = perceived_ideology_estimate, 
       y = estimate, # predicted, 
       ymin = conf.low,# predicted - 1.96*std.error,
       ymax = conf.high, 
-      color = MFL_norm>0
+      color = MFL_n>10
       ) + 
-  geom_pointrange() + 
-  labs(y = "Predicted Probability of Layoff")
+  geom_pointrange(alpha = .5) + 
+  labs(y = "Predicted Probability of Layoff",
+       color = ">10 Racialized Words\nin Project 2025 MFL",
+              x = "Perceived Ideological Leaning\n.     ← More Liberal                More Conservative →")
 ```
 
 
 ```{r save}
-save(nyt_v_2025_cor, 
+save(#correlations 
+  cor_nyt_v_2025, 
+  cor_rules_v_2025,
+  cor_rules_v_nyt,
+  # n MFL
      n_mfl_racial,
 n_mfl_total,
 n_mfl_agencies, 
+# NYT 
      n_nyt_articles,
 n_nyt_racial,
      n_nyt_agencies,
+# Rules 
+n_rules,
      n_rules_racial,
      n_rules_agencies, 
+# path
      file = here::here("data", "numbers-for-paper.Rdata"))
 ```

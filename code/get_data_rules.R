@@ -118,17 +118,18 @@ save(rules_racial_all,
 
 
 rules_racial_distinct <- rules_racial_all |>
-  distinct(id, agencyId, department_agency_acronym, postedDate, documentType) |>
+  distinct(id, agencyId, department_agency_acronym, postedDate, documentType, docketId) |>
   drop_na(agencyId)
 
 save(rules_racial_distinct,
      file = here::here("data", "rules_racial_distinct.rda"))
 
-
 rules_racial_distinct_totals <- rules_racial_distinct |>
   drop_na(department_agency_acronym) |>
-  group_by(agencyId, department_agency_acronym, documentType) |>
-  summarise(n = n() ) |>
+  mutate(year = str_sub(postedDate, 1,4)) |>
+  distinct(id, documentType, year, agencyId, docketId, department_agency_acronym) |>
+  group_by(documentType, year, agencyId, docketId, department_agency_acronym) |>
+  count() |>
   ungroup()
 
 save(rules_racial_distinct_totals,
@@ -136,4 +137,20 @@ save(rules_racial_distinct_totals,
 
 
 save(terms, file=here::here("data", "rules_terms.rda"))
+
+# TOTALS
+load(here::here("data", "metadata", "documents_count.rda") |> str_replace("racialization", "regulationsdotgov-data") )
+
+rules_total <- documents_count |>
+  # CORRECTIONS DUE TO DUPLICATE IDS IN REGULATIONS DOT GOV
+  mutate(agencyId = agencyId |>
+           str_replace("CORP", "CNCS") |>
+           str_replace("USEIB", "EIB")
+  ) |>
+  left_join(crosswalk |> drop_na(regulationsdotgov_acronym),
+            by = c("agencyId" = "regulationsdotgov_acronym"))
+
+rules_total |> filter(is.na(regulationsdotgov_agency))
+
+save(rules_total, file=here::here("data", "rules_total.rda"))
 
