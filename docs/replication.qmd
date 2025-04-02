@@ -503,8 +503,10 @@ d1 |>
 
 d1 <- drop_na(d, NYT_percent_norm, MFL_percent_norm)
 
-max_x <- max_y <- max(c(d1$MFL_percent_norm), na.rm = T)
-min_x <- min_y <-  min(c(d1$MFL_percent_norm, d1$NYT_percent_norm), na.rm = T)
+max_x <- max(c(d1$MFL_percent_norm), na.rm = T)
+max_y <- max(c(d1$MFL_percent_norm, d1$NYT_percent_norm), na.rm = T)
+min_x <- min(c(d1$MFL_percent_norm), na.rm = T)
+min_y <-  min(c(d1$MFL_percent_norm, d1$NYT_percent_norm), na.rm = T)
 
 d1 |> 
   ggplot() + 
@@ -564,7 +566,8 @@ d1 |>
 
 d1 <- drop_na(d, NYT_percent_norm, rules_percent_norm)
 
-max_x <- max_y <- max(c(d1$rules_percent_norm), na.rm = T)
+max_x <- max(c(d1$rules_percent_norm), na.rm = T)
+max_y <- max(c(d1$NYT_percent_norm), na.rm = T)
 min_x <- min_y <-  min(c(d1$rules_percent_norm, d1$NYT_percent_norm), na.rm = T)
 
 d1 |> 

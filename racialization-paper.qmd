@@ -177,7 +177,7 @@ The sustainability and protection of agencies that serve diverse populations are
 Scholars have identified the New Deal era as a pivotal moment in the racial realignment of party coalitions and the racialization of politics. The New Deal and the Civil Rights Movement have had lasting effects, including partisan sorting and polarization, which significantly impacted the racial sorting within the Republican and Democratic Party coalitions. In *Steadfast Democrats: How Social Forces Shape Black Political Behavior, White and Laird specifically address the development of Black Americans'* support for the Democratic Party. They examine how this support has remained steadfast since the post-Civil Rights era and how affiliation with the Democratic Party now aligns with the social expectations of Black Americans [@schickler_racial_2016; @tate_black_2003; @white_steadfast_2020].
 
 
-### Framing of Policy Preferences and Race
+### The Role of Race in Framing and Policy Preferences
 
 As demonstrated in race and ethnicity scholarship in the realm of public opinion and political behavior, traditional measures of ideology may overlook the profound impact of race on perceptions. Race and contemporary polarization are central to shaping political ideology and the policymaking process, as evidenced by the historical discrimination and exclusion in the construction of the bureaucracy and the historical alignment of party coalitions along racial lines.
 
@@ -247,6 +247,8 @@ We then scale both of these measures by taking the square root of the count (to 
 
 ### Data -->
 
+\clearpage
+
 ## News Coverage of Agencies {#sec-nyt}
 
 ### Context 
@@ -299,6 +301,8 @@ We further aggregate all articles from 2005-2024 to create two measures of racia
 
 knitr::include_graphics("docs/figs/nyt_data-1.png")
 ```
+
+\clearpage
 
 
 ##  Policy Texts {#sec-rules}
@@ -381,42 +385,37 @@ As with the NYT data, we aggregate all proposed and final rules from 2005-2024 t
 knitr::include_graphics("docs/figs/rules_data-1.png")
 ```
 
+\clearpage 
 
 ##  Comparing Racialization Across Contexts {#sec-compared}
 
 
-@fig-nyt_v_2025 compares racialization scores from New York Times (NYT) articles and from the Mandate for Leadership (MFL) reports. Agencies above the red diagonal line have higher scores for the NYT measure. Agencies below the line have higher scores from the MFL measure. The correlation between the NYT and MFL measures is `r cor_nyt_v_2025$estimate` (p = `r cor_nyt_v_2025$p.value`).  The largest outlier is the Department of Housing and Urban Development, which is discussed in more racialized terms in NYT articles. Most agencies have higher scores on the MFL measure. 
+@fig-v compares (a) racialization scores from New York Times (NYT) articles and from the Mandate for Leadership (MFL) reports. Agencies above the red diagonal line have higher scores for the NYT measure. Agencies below the line have higher scores from the MFL measure. The correlation between the NYT and MFL measures is `r cor_nyt_v_2025$estimate` (p = `r cor_nyt_v_2025$p.value`).  The largest outlier is the Department of Housing and Urban Development, which is discussed in more racialized terms in NYT articles. Most agencies have higher scores on the MFL measure. 
+
+@fig-v compares (b) racialization scores from rulemaking documents and from NYT articles. Agencies above the red diagonal line have higher scores for the NYT measure. Agencies below the line have higher scores from the MFL measure. The correlation between the NYT and MFL measures is `r cor_rules_v_nyt$estimate` (p = `r cor_rules_v_nyt$p.value`).  One of the largest outliers is again the Department of Housing and Urban Development (HUD), which is discussed in more racialized terms in NYT articles. The Department of State (DOS) publishes rules that contain racialized language much more frequently than NYT coverage of DOS uses racialized language. The Departments of Education (ED), Justice (DOJ), Homeland Security (DHS), and Labor (DOL) are fairly high on both measures.  Most agencies have slightly higher scores on the rulemaking measure. 
+
+@fig-v compares (c) racialization scores from rulemaking documents and the Project 2025 Mandate For Leadership. Agencies above the red diagonal line have higher scores for the rulemaking measure. Agencies below the line have higher scores from the MFL measure. The correlation between the NYT and MFL measures is `r cor_rules_v_2025$estimate` (p = `r cor_rules_v_2025$p.value`). The Department of  Department of State, Veterans Affairs (VA), and the Department of Commerce Bureau of Industry and Security (BIS) use relatively more racialized terms in rulemaking. Compared to the language of their rules, Project 2025 uses more racialized language in discussing Customs and Border Protection (CBP), the Bureau of Land Management (BLM), and the U.S. Coast Guard (USCG). 
 
 
 ```{r}
-#| fig-cap: "Racialization in Project 2025 vs. New York Times"
-#| label: fig-nyt_v_2025
-#| out-width: 70%
+#| fig-cap: "Racialization in in Rulemaking  vs. Project 2025 vs. New York Times"
+#| label: fig-v
+#| out-width: 100%
+#| layout-ncol: 2
+#| fig-subcap: 
+#|   - ""
+#|   - ""
+#|   - ""
 
 knitr::include_graphics("docs/figs/nyt_v_2025-2.png")
-
-```
-
-@fig-nyt_v_rules compares racialization scores from rulemaking documents and from NYT articles. Agencies above the red diagonal line have higher scores for the NYT measure. Agencies below the line have higher scores from the MFL measure. The correlation between the NYT and MFL measures is `r cor_rules_v_nyt$estimate` (p = `r cor_rules_v_nyt$p.value`).  One of the largest outliers is again the Department of Housing and Urban Development (HUD), which is discussed in more racialized terms in NYT articles. The Department of State (DOS) publishes rules that contain racialized language much more frequently than NYT coverage of DOS uses racialized language. The Departments of Education (ED), Justice (DOJ), Homeland Security (DHS), and Labor (DOL) are fairly high on both measures.  Most agencies have slightly higher scores on the rulemaking measure. 
-
-```{r}
-#| fig-cap: "Racialization in Rulemaking vs. New York Times"
-#| label: fig-nyt_v_rules
-#| out-width: 70%
-
 knitr::include_graphics(here::here("docs/figs/nyt_v_rules-2.png"))
-```
-
-@fig-rules_v_2025 compares racialization scores from rulemaking documents and the Project 2025 Mandate For Leadership. Agencies above the red diagonal line have higher scores for the rulemaking measure. Agencies below the line have higher scores from the MFL measure. The correlation between the NYT and MFL measures is `r cor_rules_v_2025$estimate` (p = `r cor_rules_v_2025$p.value`). The Department of  Department of State, Veterans Affairs (VA), and the Department of Commerce Bureau of Industry and Security (BIS) use relatively more racialized terms in rulemaking. Compared to the language of their rules, Project 2025 uses more racialized language in discussing Customs and Border Protection (CBP), the Bureau of Land Management (BLM), and the U.S. Coast Guard (USCG). 
-
-```{r}
-#| fig-cap: "Racialization in Rulemaking vs. New York Times"
-#| label: fig-rules_v_2025
-#| out-width: 70%
-
 knitr::include_graphics(here::here("docs/figs/rules_v_2025-2.png"))
 ```
 
+
+
+
+\clearpage 
 
 # Institutional Racialization and Perceived Ideology {#sec-ideology}
 

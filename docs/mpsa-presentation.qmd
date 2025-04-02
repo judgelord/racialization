@@ -10,7 +10,7 @@ title-block-banner-color: body-bg
 title-slide-attributes:
     data-background-image: "figs/whitewash.jpg"
     data-background-size: cover
-    data-background-opacity: "0.25"
+    data-background-opacity: "0.3"
 format:
  revealjs:
    footer: ""
@@ -54,13 +54,13 @@ n_racial <- sum(n_mfl_racial,n_rules_racial, n_nyt_racial)
 # Other things cited in the paper 
 ```
 
-## Racializaton 
+## Racializaton of Institutions {data-background-image="https://www.archpaper.com/wp-content/uploads/2024/07/2022-34_17_print.jpg" data-background-size="cover" data-background-opacity=".1"}
 
 Racialization is the level to which the public and elite language used to describe an institution and its actions evoke race and thus make relevant and highlight debates around racial inequality or racial resentments.
 
 ## {data-background-image="figs/NYT_Words_Disappear.jpg" data-background-size="contain" data-background-position="center" data-background-opacity="1"}
 
-## Research Questions
+## Research Questions {data-background-image="https://mmaa.org/wp-content/uploads/2018/07/maggie_thompson_native_american_weaving_artist_family_portrait-1200x430.jpg" data-background-size="cover" data-background-opacity=".1"}
 
 - Which agencies are more racialized than others?  
   - How has that changed over time?  
@@ -71,7 +71,7 @@ advocacy reports
     
 - How do perceptions of racialization vary between agencies perceived as conservative versus liberal?
 
-## Contribution  
+## Contribution  {data-background-image="https://mmaa.org/wp-content/uploads/2018/07/maggie_thompson_native_american_weaving_artist_family_portrait-1200x430.jpg" data-background-size="cover" data-background-opacity=".1"}
 <!-- the why -->  
 
 - We develop a new measure of racialization.  
@@ -82,7 +82,7 @@ advocacy reports
   - The relationship between racialization and policy implementation  
 
 
-## {#Concepts}
+## {#Concepts} {data-background-image="https://mmaa.org/wp-content/uploads/2018/07/maggie_thompson_native_american_weaving_artist_family_portrait-1200x430.jpg" data-background-size="cover" data-background-opacity=".1"}
 
 ::: {.columns}
 
@@ -116,7 +116,7 @@ advocacy reports
 :::
 
 
-## Data 
+## Data {data-background-image="https://mmaa.org/wp-content/uploads/2018/07/maggie_thompson_native_american_weaving_artist_family_portrait-1200x430.jpg" data-background-size="cover" data-background-opacity=".1"}
 
 ```{r}
 load(here::here("data", "numbers-for-paper.Rdata"))
@@ -280,7 +280,7 @@ knitr::include_graphics(here::here("docs/figs/ideo_v_score-1.png"))
 knitr::include_graphics(here::here("docs/figs/ideo_v_score-2.png"))
 ```
 
-## Next Steps
+## Next Steps {data-background-image="https://www.archpaper.com/wp-content/uploads/2024/07/2022-34_17_print.jpg" data-background-size="cover" data-background-opacity=".1"}
 
 #### Dynamic Racialization Scores
 

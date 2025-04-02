@@ -326,7 +326,7 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" data-background-image="figs/whitewash.jpg" data-background-opacity="0.25" data-background-size="cover" class="quarto-title-block center">
+<section id="title-slide" data-background-image="figs/whitewash.jpg" data-background-opacity="0.3" data-background-size="cover" class="quarto-title-block center">
   <h1 class="title">Racialization and Perceived Institutional Ideology</h1>
   <p class="subtitle"></p><div style="text-align: center;">
 <p><strong>Karla Magaña, Devin Judge-Lord</strong> <br> <em>University of Michigan</em></p>
@@ -336,14 +336,14 @@
 </div>
 
 </section>
-<section id="racializaton" class="slide level2">
+<section id="racializaton" class="slide level2" data-background-image="https://www.archpaper.com/wp-content/uploads/2024/07/2022-34_17_print.jpg" data-background-size="cover" data-background-opacity=".1">
 <h2>Racializaton</h2>
 <p>Racialization is the level to which the public and elite language used to describe an institution and its actions evoke race and thus make relevant and highlight debates around racial inequality or racial resentments.</p>
 </section>
 <section id="section" class="slide level2" data-background-image="figs/NYT_Words_Disappear.jpg" data-background-size="contain" data-background-position="center" data-background-opacity="1">
 <h2></h2>
 </section>
-<section id="research-questions" class="slide level2">
+<section id="research-questions" class="slide level2" data-background-image="https://mmaa.org/wp-content/uploads/2018/07/maggie_thompson_native_american_weaving_artist_family_portrait-1200x430.jpg" data-background-size="cover" data-background-opacity=".1">
 <h2>Research Questions</h2>
 <ul>
 <li class="fragment">Which agencies are more racialized than others?
@@ -358,7 +358,7 @@
 <li class="fragment">How do perceptions of racialization vary between agencies perceived as conservative versus liberal?</li>
 </ul>
 </section>
-<section id="contribution" class="slide level2">
+<section id="contribution" class="slide level2" data-background-image="https://mmaa.org/wp-content/uploads/2018/07/maggie_thompson_native_american_weaving_artist_family_portrait-1200x430.jpg" data-background-size="cover" data-background-opacity=".1">
 <h2>Contribution</h2>
 <!-- the why -->
 <ul>
@@ -376,8 +376,8 @@
 </ul></li>
 </ul>
 </section>
-<section id="Concepts" class="slide level2">
-<h2></h2>
+<section id="concepts" class="slide level2" data-background-image="https://mmaa.org/wp-content/uploads/2018/07/maggie_thompson_native_american_weaving_artist_family_portrait-1200x430.jpg" data-background-size="cover" data-background-opacity=".1">
+<h2>{#Concepts}</h2>
 <div class="columns">
 <div class="column" data-incremental="true" style="width:33%;">
 <h3 id="perceived-ideology">Perceived Ideology</h3>
@@ -405,7 +405,7 @@
 </div>
 </div></div>
 </section>
-<section id="data" class="slide level2">
+<section id="data" class="slide level2" data-background-image="https://mmaa.org/wp-content/uploads/2018/07/maggie_thompson_native_american_weaving_artist_family_portrait-1200x430.jpg" data-background-size="cover" data-background-opacity=".1">
 <h2>Data</h2>
 <div>
 <ul>
@@ -587,7 +587,7 @@ Figure&nbsp;8: Correlation Between Racialization and Perceived Ideology
 <img data-src="figs/ideo_v_score-2.png" style="width:100.0%" class="r-stretch quarto-figure-center"><p class="caption">
 Figure&nbsp;9: Correlation Between Racialization and Perceived Ideology
 </p></section>
-<section id="next-steps" class="slide level2">
+<section id="next-steps" class="slide level2" data-background-image="https://www.archpaper.com/wp-content/uploads/2024/07/2022-34_17_print.jpg" data-background-size="cover" data-background-opacity=".1">
 <h2>Next Steps</h2>
 <h4 id="dynamic-racialization-scores">Dynamic Racialization Scores</h4>
 <h4 id="economic-redistribution">Economic Redistribution</h4>
@@ -609,10 +609,6 @@ Figure&nbsp;9: Correlation Between Racialization and Perceived Ideology
 <li class="fragment">How can we make this measure useful?</li>
 <li class="fragment">In what ways can this measure be refined?</li>
 </ul>
-</section>
-<section id="thank-you" class="slide level2">
-<h2>Thank you!</h2>
-<h3 id="kmaganaumich.edu-judgelorumich.edu">kmagana@umich.edu, judgelor@umich.edu</h3>
 </section>
 <section id="key-takeaways-discussion" class="slide level2">
 <h2>Key Takeaways &amp; Discussion</h2>
@@ -638,7 +634,7 @@ Figure&nbsp;9: Correlation Between Racialization and Perceived Ideology
 </ul>
 </div></div>
 </section>
-<section id="thank-you-1" class="slide level2">
+<section id="thank-you" class="slide level2">
 <h2>Thank You!</h2>
 <p>📧 <strong>Contact:</strong> kmagana@umich.edu | judgelor@umich.edu</p>
 </section></section>
@@ -885,80 +881,42 @@ Figure&nbsp;12: Distribution of Racialized Words in Proposed and Final Rules, 20
       });
     </script>
     
-
     <script>
-
       // htmlwidgets need to know to resize themselves when slides are shown/hidden.
-
       // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
-
       // slide changes (different for each slide format).
-
       (function () {
-
         // dispatch for htmlwidgets
-
         function fireSlideEnter() {
-
           const event = window.document.createEvent("Event");
-
           event.initEvent("slideenter", true, true);
-
           window.document.dispatchEvent(event);
-
         }
-
-    
 
         function fireSlideChanged(previousSlide, currentSlide) {
-
           fireSlideEnter();
 
-    
-
           // dispatch for shiny
-
           if (window.jQuery) {
-
             if (previousSlide) {
-
               window.jQuery(previousSlide).trigger("hidden");
-
             }
-
             if (currentSlide) {
-
               window.jQuery(currentSlide).trigger("shown");
-
             }
-
           }
-
         }
-
-    
 
         // hookup for slidy
-
         if (window.w3c_slidy) {
-
           window.w3c_slidy.add_observer(function (slide_num) {
-
             // slide_num starts at position 1
-
             fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
-
           });
-
         }
 
-    
-
       })();
-
     </script>
-
-    
 
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
