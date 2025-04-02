@@ -377,6 +377,8 @@ missing <- filter(rules, is.na(n)) |>
   select(min_missing = n_racial, regulationsdotgov_agency, regulationsdotgov_acronym) |> 
   arrange(-min_missing)
 
+missing$regulationsdotgov_acronym |> paste(collapse = "', '")
+
 save(missing, file = here::here("data", "missing.rda"))
 
 # subset 
@@ -577,7 +579,7 @@ d1 |>
            label = 'More Racialized\nin Rules', color = "red", hjust = 1) + 
   #geom_smooth(method = "lm") + 
   geom_point() +    geom_label_repel(size =3,force_pull = 10, alpha = .5)  + 
-  labs(title = "Share of Racialized Attention",
+  labs(title = "Racialized Attention as a Share of Total",
        x = "Scaled Rulemaking Mentions",
        y = "Scaled NYT Articles")
 
@@ -634,7 +636,7 @@ d1 |>
            label = 'More Racialized\nin MFL', color = "red", hjust = 1) + 
   #geom_smooth(method = "lm") + 
   geom_point() +    geom_label_repel(size =3,force_pull = 10, alpha = .5)  + 
-  labs(title = "Share of Racialized Attention",
+  labs(title = "Racialized Attention as a Share of Total",
        x = "Scaled Mandate for Leadership (Project 2025) Mentions",
        y = "Scaled Rulemaking Mentions")
 

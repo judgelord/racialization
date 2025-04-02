@@ -66,7 +66,7 @@ Racialization is the level to which the public and elite language used to descri
   - How has that changed over time?  
   - How does that vary across different contexts?  
 
-    - e.g. policy documents, media coverage, and
+    - e.g.  draft and final rules, media coverage, and
 advocacy reports
     
 - How do perceptions of racialization vary between agencies perceived as conservative versus liberal?
@@ -96,7 +96,7 @@ advocacy reports
 :::
 
 ::: {.column width="33%" data-incremental="true"}
-### Race & the Bureaucracy
+### Historical Institutional Racialization
 <div style="border: 2px solid #2196F3; padding: 30px; margin-bottom: 30px; border-radius: 10px; font-size: 22px;">
 - Racialized history shapes perceptions of agencies  
 <br><br>
@@ -166,7 +166,7 @@ knitr::include_graphics(here::here("docs/figs/trends-nyt-total-1.png"))
 
 
 
-##  Policy Texts {#rules}
+##  Draft and Final Rules  {#rules}
 
 ```{r}
 load(here::here("data", "rules_terms.rda"))
@@ -222,6 +222,17 @@ knitr::include_graphics(here::here("docs/figs/trends-rules-1.png") )
 
 > Race; Racial; Racism; Discrimination; Discriminate; Slavery; Ethnicity; Diversity; DEI; Equity; Equality; Inclusion; Citizen; Citizenship; DACA; Immigrants; Immigration; Illegal; Civil Rights; Affirmative Action; Head Start; African American; Black; Latino; Hispanic; Muslim; Asian; Color; Racist; Bureau of Indian; native; woke; wokeism; Illegal Alien; Cartel
 
+## {#rules_v_2025}
+
+
+```{r}
+#| fig-cap: "Racialization in Rulemaking vs. Project 2025"
+#| label: fig-rules_v_2025
+#| out-width: 100%
+
+knitr::include_graphics(here::here("docs/figs/rules_v_2025-2.png"))
+```
+
 ## {#nyt-v-2025}
 
 
@@ -245,16 +256,7 @@ knitr::include_graphics(here::here("docs/figs/nyt_v_rules-2.png"))
 ```
 
 
-## {#rules_v_2025}
 
-
-```{r}
-#| fig-cap: "Racialization in Rulemaking vs. Project 2025"
-#| label: fig-rules_v_2025
-#| out-width: 100%
-
-knitr::include_graphics(here::here("docs/figs/rules_v_2025-2.png"))
-```
 
 # Racialization and Perceived Ideology {#ideology}
 
@@ -290,22 +292,38 @@ knitr::include_graphics(here::here("docs/figs/ideo_v_score-2.png"))
 ## Key Takeaways
 
 - Racialization varies over time, despite stable core missions.
-<!-- - Framing processes at work recast missions to emphasize race and inequality.-->
-- Racialization is tied to perceived ideological extremism, perhaps perceptions of neutrality.
-- Perceived "Centrist" agencies received less racialized attention.
+- Racialization is tied to perceived ideological extremism, 
+  - Perceived "Centrist" agencies received less racialized attention.
 
 
 ## Feedback 
 
-- How can this measure help improve the understanding of racialization in different contexts?
-- What are the boundaries of this measure?
+- How can we make this measure useful?
 - In what ways can this measure be refined?
 
-## Thank you!
-
-### kmagana@umich.edu, judgelor@umich.edu 
 
 
+## Key Takeaways & Discussion   
+
+::: {.columns}
+::: {.column width="50%"}
+### **Key Takeaways**  
+- **Racialization varies over time**, despite stable core missions.  
+- **Racialization is tied to perceived ideological extremism**.  
+  - Perceived **"Centrist" agencies** receive less racialized attention.  
+:::
+
+::: {.column width="50%"}
+### **Feedback**  
+- **How can we make this measure useful?**  
+- **In what ways can this measure be refined?**  
+:::
+:::
+
+---
+
+## Thank You!  
+📧 **Contact:** kmagana@umich.edu | judgelor@umich.edu  
 
 # Extras
 
