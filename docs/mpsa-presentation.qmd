@@ -295,9 +295,28 @@ knitr::include_graphics(here::here("docs/figs/ideo_v_score-2.png"))
 - How can we make this measure useful?
 - In what ways can this measure be refined?
 
-## Thank you!
- **Contact:** kmagana@umich.edu | judgelor@umich.edu  
-## Key Takeaways, Feedback & Thank You  
+---
+
+::: columns
+::: {.column width="60%"}
+### **Feedback**  
+::: {.incremental}
+- **How can we make this measure useful?**  
+- **What refinements would improve it?**  
+:::
+:::
+
+::: {.column width="40%"}
+### **Thank You!**  
+::: {.incremental}
+📧 **Contact:**  
+**kmagana@umich.edu** | **judgelor@umich.edu**  
+:::
+:::
+:::
+
+---
+
 
 # Extras
 
