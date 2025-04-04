@@ -958,7 +958,8 @@ doge_plot(bonica |> group_by(agency) |>
 #                       doge_layoffs = ifelse(sum(doge_layoffs) >0, "Targeted", "Not Targeted" ))
 
 b <- bonica |> mutate(doge_layoffs = ifelse(doge_layoffs >0, "Targeted", "Not Targeted" )) |> 
-  rename(perceived_ideology_estimate_bonica = perceived_ideology_estimate)
+  mutate(dog_layoffs = replace_na(doge_layoffs, "No Data")) |> 
+  rename(perceived_ideology_estimate_bonica = perceived_ideology_estimate) 
 
 if(testing){
   anti_join(b, d) |> distinct(agency, department_agency_acronym)  # in bonica, not in our data
@@ -969,8 +970,8 @@ anti_join(d, b)  |> distinct(agency, department_agency_acronym)# in our data, no
 ### "by_staff"
 
 ```{r}
-#| fig-width: 7
-#| fig-height: 5
+#| fig-width: 6
+#| fig-height: 3
 #| layout-ncol: 2
 #| label: by_staff
 
@@ -992,7 +993,11 @@ ggplot(d) +
   # Scale transformations
   scale_y_log10(breaks = c(1000, 10000, 100000, 1000000),
                 labels = scales::comma) +
-  scale_x_continuous(breaks = seq(-2, 2, 1)) 
+  scale_x_continuous(breaks = seq(-2, 2, 1)) +
+  labs(title = "",
+       x = "Number of NYT Articles\n.     ← Less Racialized                More Racialized →",
+       y = "Staff",
+       color = "Layoffs")
 
 
 # PROJECT 2025 by staff and layoffs 
@@ -1011,7 +1016,11 @@ ggplot(d) +
   # Scale transformations
   scale_y_log10(breaks = c(1000, 10000, 100000, 1000000),
                 labels = scales::comma) +
-  scale_x_continuous(breaks = seq(-2, 2, 1)) 
+  scale_x_continuous(breaks = seq(-2, 2, 1)) +
+  labs(title = "",
+       x = "Share of NYT Articles\n.     ← Less Racialized                More Racialized →",
+       y = "Staff",
+       color = "Layoffs")
 
 
 
@@ -1030,7 +1039,11 @@ ggplot(d) +
   # Scale transformations
   scale_y_log10(breaks = c(1000, 10000, 100000, 1000000),
                 labels = scales::comma) +
-  scale_x_continuous(breaks = seq(-2, 2, 1)) 
+  scale_x_continuous(breaks = seq(-2, 2, 1)) +
+  labs(title = "",
+       x = "Racial Language in Rules\n.     ← Less Racialized                More Racialized →",
+       y = "Staff",
+       color = "Layoffs")
 
 
 
@@ -1049,7 +1062,11 @@ ggplot(d) +
   # Scale transformations
   scale_y_log10(breaks = c(1000, 10000, 100000, 1000000),
                 labels = scales::comma) +
-  scale_x_continuous(breaks = seq(-2, 2, 1)) 
+  scale_x_continuous(breaks = seq(-2, 2, 1)) +
+  labs(title = "",
+       x = "Share of Racial Language in Rules\n.     ← Less Racialized                More Racialized →",
+       y = "Staff",
+       color = "Layoffs")
 ```
 
 #### By Racialization Score
@@ -1058,8 +1075,8 @@ ggplot(d) +
 
 ```{r}
 #| label: ideo_v_racialization_layoffs
-#| fig-width: 5
-#| fig-height: 4
+#| fig-width: 6
+#| fig-height: 3
 #| layout-ncol: 2
 
 ggplot(d) +
@@ -1068,7 +1085,7 @@ ggplot(d) +
   # Add grid lines
   geom_vline(xintercept = 0, color = "gray60", linetype = "dashed") +
     geom_hline(yintercept = 0, color = "gray60", linetype = "dashed") +
-geom_smooth(method = "lm") + 
+#geom_smooth(method = "lm") + 
   # Add agency acronyms colored according to DOGE layoff variable
   geom_text_repel(aes(label = department_agency_acronym |> str_remove(".*_"),
                 color = doge_layoffs), 
@@ -1076,7 +1093,10 @@ geom_smooth(method = "lm") +
 
   # Scale transformations
   scale_x_continuous(breaks = seq(-2, 2, 1)) + 
-  labs(title = "Perceived Ideology and Racialized Attention")
+  labs(title = "",
+       x = "Perceived Ideological Leaning\n.     ← More Liberal                More Conservative →",
+       y = "Racialization Score",
+       color = "Layoffs")
 
 
 ggplot(d) +
@@ -1085,14 +1105,17 @@ ggplot(d) +
   # Add grid lines
   geom_vline(xintercept = 0, color = "gray60", linetype = "dashed") +
     geom_hline(yintercept = 0, color = "gray60", linetype = "dashed") +
-geom_smooth(method = "lm") + 
+#geom_smooth(method = "lm") + 
   # Add agency acronyms colored according to DOGE layoff variable
   geom_text_repel(aes(label = department_agency_acronym |> str_remove(".*_"),
                 color = doge_layoffs), 
             size=3)+ 
   # Scale transformations
   scale_x_continuous(breaks = seq(-2, 2, 1)) + 
-  labs(title = "Perceived Extremism and Racialized Attention Share")
+  labs(title = "",
+       x = "Perceived Ideological Leaning\n.     ← More Moderate                More Extreme →",
+       y = "Racialization Score",
+       color = "Layoffs")
 
 ```
 
@@ -1103,8 +1126,8 @@ geom_smooth(method = "lm") +
 
 ```{r}
 #| label: ideo_v_2025_layoffs
-#| fig-width: 5
-#| fig-height: 4
+#| fig-width: 6
+#| fig-height: 3
 #| layout-ncol: 2
 
 ggplot(d) +
@@ -1113,7 +1136,7 @@ ggplot(d) +
   # Add grid lines
   geom_vline(xintercept = 0, color = "gray60", linetype = "dashed") +
     geom_hline(yintercept = 0, color = "gray60", linetype = "dashed") +
-geom_smooth(method = "lm") + 
+# geom_smooth(method = "lm") + 
   # Add agency acronyms colored according to DOGE layoff variable
   geom_text_repel(aes(label = department_agency_acronym |> str_remove(".*_"),
                 color = doge_layoffs), 
@@ -1121,7 +1144,10 @@ geom_smooth(method = "lm") +
 
   # Scale transformations
   scale_x_continuous(breaks = seq(-2, 2, 1)) + 
-  labs(title = "Perceived Ideology and Racialized Attention")
+  labs(title = "",
+       x = "Perceived Ideological Leaning\n.     ← More Liberal                More Conservative →",
+       y = "MFL Percent Racialization Score",
+       color = "Layoffs")
 
 
 ggplot(d) +
@@ -1130,14 +1156,17 @@ ggplot(d) +
   # Add grid lines
   geom_vline(xintercept = 0, color = "gray60", linetype = "dashed") +
     geom_hline(yintercept = 0, color = "gray60", linetype = "dashed") +
-geom_smooth(method = "lm") + 
+#geom_smooth(method = "lm") + 
   # Add agency acronyms colored according to DOGE layoff variable
   geom_text_repel(aes(label = department_agency_acronym |> str_remove(".*_"),
                 color = doge_layoffs), 
             size=3)+ 
   # Scale transformations
   scale_x_continuous(breaks = seq(-2, 2, 1)) + 
-  labs(title = "Perceived Ideology and Racialized Attention Share")
+  labs(title = "",
+       x = "Perceived Ideological Leaning\n.     ← More Liberal                More Conservative →",
+       y = "MFL Racialization Score",
+       color = "Layoffs")
 
 
 ggplot(d) +
@@ -1146,14 +1175,17 @@ ggplot(d) +
   # Add grid lines
   geom_vline(xintercept = 0, color = "gray60", linetype = "dashed") +
     geom_hline(yintercept = 0, color = "gray60", linetype = "dashed") +
-geom_smooth(method = "lm") + 
+#geom_smooth(method = "lm") + 
   # Add department_agency_acronym acronyms colored according to DOGE layoff variable
   geom_text_repel(aes(label = department_agency_acronym |> str_remove(".*_"),
                 color = doge_layoffs), 
             size=3)+ 
   # Scale transformations
   scale_x_continuous(breaks = seq(-2, 2, 1)) + 
-  labs(title = "Perceived Extremeism and Racialized Attention Share")
+    labs(title = "",
+       x = "Perceived Ideological Leaning\n.     ← More Moderate                More Extreme →",
+       y = "MFL Percent Racialization Score",
+       color = "Layoffs")
 
 
 ggplot(d) +
@@ -1162,14 +1194,17 @@ ggplot(d) +
   # Add grid lines
   geom_vline(xintercept = 0, color = "gray60", linetype = "dashed") +
     geom_hline(yintercept = 0, color = "gray60", linetype = "dashed") +
-geom_smooth(method = "lm") + 
+#geom_smooth(method = "lm") + 
   # Add department_agency_acronym acronyms colored according to DOGE layoff variable
   geom_text_repel(aes(label = department_agency_acronym |> str_remove(".*_"),
                 color = doge_layoffs), 
             size=3)+ 
   # Scale transformations
   scale_x_continuous(breaks = seq(-2, 2, 1)) + 
-  labs(title = "Perceived Extremeism and Racialized Attention")
+    labs(title = "",
+       x = "Perceived Ideological Leaning\n.     ← More Moderate                More Extreme →",
+       y = "MFL Racialization Score",
+       color = "Layoffs")
 
 ```
 
@@ -1181,8 +1216,8 @@ geom_smooth(method = "lm") +
 
 ```{r}
 #| label: ideo_v_rules_layoffs
-#| fig-width: 5
-#| fig-height: 4
+#| fig-width: 6
+#| fig-height: 3
 #| layout-ncol: 2
 
 ggplot(d) +
@@ -1191,14 +1226,17 @@ ggplot(d) +
   # Add grid lines
   geom_vline(xintercept = 0, color = "gray60", linetype = "dashed") +
     geom_hline(yintercept = 0, color = "gray60", linetype = "dashed") +
-geom_smooth(method = "lm") + 
+# geom_smooth(method = "lm") + 
   # Add agency acronyms colored according to DOGE layoff variable
   geom_text_repel(aes(label = department_agency_acronym |> str_remove(".*_"),
                 color = doge_layoffs), 
             size=3)+ 
   # Scale transformations
   scale_x_continuous(breaks = seq(-2, 2, 1)) + 
-  labs(title = "Perceived Ideology and Racialized Attention Share")
+    labs(title = "",
+       x = "Perceived Ideological Leaning\n.     ← More Liberal                More Conservative →",
+       y = "Rulemaking Racialization Score",
+       color = "Layoffs")
 
 ggplot(d) +
        aes(x = abs(perceived_ideology_estimate), 
@@ -1206,7 +1244,7 @@ ggplot(d) +
   # Add grid lines
   geom_vline(xintercept = 0, color = "gray60", linetype = "dashed") +
     geom_hline(yintercept = 0, color = "gray60", linetype = "dashed") +
-geom_smooth(method = "lm") + 
+# geom_smooth(method = "lm") + 
   # Add department_agency_acronym acronyms colored according to DOGE layoff variable
   geom_text_repel(aes(label = department_agency_acronym |> str_remove(".*_"),
                 color = doge_layoffs), 
@@ -1222,14 +1260,17 @@ ggplot(d) +
   # Add grid lines
   geom_vline(xintercept = 0, color = "gray60", linetype = "dashed") +
     geom_hline(yintercept = 0, color = "gray60", linetype = "dashed") +
-geom_smooth(method = "lm") + 
+# geom_smooth(method = "lm") + 
   # Add agency acronyms colored according to DOGE layoff variable
   geom_text_repel(aes(label = department_agency_acronym |> str_remove(".*_"),
                 color = doge_layoffs), 
             size=3)+ 
   # Scale transformations
   scale_x_continuous(breaks = seq(-2, 2, 1)) + 
-  labs(title = "Perceived Ideology and Racialized Attention Share")
+    labs(title = "",
+       x = "Perceived Ideological Leaning\n.     ← More Liberal                More Conservative →",
+       y = "Rulemaking Percent Racialization Score",
+       color = "Layoffs")
 
 ggplot(d) +
        aes(x = abs(perceived_ideology_estimate), 
@@ -1237,14 +1278,17 @@ ggplot(d) +
   # Add grid lines
   geom_vline(xintercept = 0, color = "gray60", linetype = "dashed") +
     geom_hline(yintercept = 0, color = "gray60", linetype = "dashed") +
-geom_smooth(method = "lm") + 
+# geom_smooth(method = "lm") + 
   # Add department_agency_acronym acronyms colored according to DOGE layoff variable
   geom_text_repel(aes(label = department_agency_acronym |> str_remove(".*_"),
                 color = doge_layoffs), 
             size=3)+ 
   # Scale transformations
   scale_x_continuous(breaks = seq(-2, 2, 1)) + 
-  labs(title = "Perceived Extremeism and Racialized Attention Share")
+    labs(title = "",
+       x = "Perceived Ideological Leaning\n.     ← More Moderate                More Extreme →",
+       y = "Rulemaking Racialization Score",
+       color = "Layoffs")
 ```
 
 #### By NYT Racialization 
@@ -1253,8 +1297,8 @@ geom_smooth(method = "lm") +
 
 ```{r}
 #| label: ideo_v_nyt_layoffs
-#| fig-width: 5
-#| fig-height: 4
+#| fig-width: 6
+#| fig-height: 3
 #| layout-ncol: 2
 
 ggplot(d) +
@@ -1263,14 +1307,17 @@ ggplot(d) +
   # Add grid lines
   geom_vline(xintercept = 0, color = "gray60", linetype = "dashed") +
     geom_hline(yintercept = 0, color = "gray60", linetype = "dashed") +
-geom_smooth(method = "lm") + 
+#geom_smooth(method = "lm") + 
   # Add department_agency_acronym acronyms colored according to DOGE layoff variable
   geom_text_repel(aes(label = department_agency_acronym |> str_remove(".*_"),
                 color = doge_layoffs), 
             size=3)+ 
   # Scale transformations
   scale_x_continuous(breaks = seq(-2, 2, 1)) + 
-  labs(title = "Perceived Ideology and Racialized Attention Share")
+    labs(title = "",
+       x = "Perceived Ideological Leaning\n.     ← More Liberal                More Conservative →",
+       y = "NYT Percent Racialization Score",
+       color = "Layoffs")
 
 
 ggplot(d) +
@@ -1279,14 +1326,17 @@ ggplot(d) +
   # Add grid lines
   geom_vline(xintercept = 0, color = "gray60", linetype = "dashed") +
     geom_hline(yintercept = 0, color = "gray60", linetype = "dashed") +
-geom_smooth(method = "lm") + 
+#geom_smooth(method = "lm") + 
   # Add department_agency_acronym acronyms colored according to DOGE layoff variable
   geom_text_repel(aes(label = department_agency_acronym |> str_remove(".*_"),
                 color = doge_layoffs), 
             size=3)+ 
   # Scale transformations
   scale_x_continuous(breaks = seq(-2, 2, 1)) + 
-  labs(title = "Perceived Ideology and Racialized Attention")
+    labs(title = "",
+       x = "Perceived Ideological Leaning\n.     ← More Liberal                More Conservative →",
+       y = "NYT Racialization Score",
+       color = "Layoffs")
 
 ggplot(d) +
        aes(x = abs(perceived_ideology_estimate), 
@@ -1294,14 +1344,17 @@ ggplot(d) +
   # Add grid lines
   geom_vline(xintercept = 0, color = "gray60", linetype = "dashed") +
     geom_hline(yintercept = 0, color = "gray60", linetype = "dashed") +
-geom_smooth(method = "lm") + 
+#geom_smooth(method = "lm") + 
   # Add department_agency_acronym acronyms colored according to DOGE layoff variable
   geom_text_repel(aes(label = department_agency_acronym |> str_remove(".*_"),
                 color = doge_layoffs), 
             size=3)+ 
   # Scale transformations
   scale_x_continuous(breaks = seq(-2, 2, 1)) + 
-  labs(title = "Perceived Extremism and Racialized Attention Share")
+    labs(title = "",
+       x = "Perceived Ideological Leaning\n.     ← More Moderate                More Extreme →",
+       y = "NYT Racialization Score",
+       color = "Layoffs")
 
 
 ggplot(d) +
@@ -1310,18 +1363,22 @@ ggplot(d) +
   # Add grid lines
   geom_vline(xintercept = 0, color = "gray60", linetype = "dashed") +
     geom_hline(yintercept = 0, color = "gray60", linetype = "dashed") +
-geom_smooth(method = "lm") + 
+#geom_smooth(method = "lm") + 
   # Add department_agency_acronym acronyms colored according to DOGE layoff variable
   geom_text_repel(aes(label = department_agency_acronym |> str_remove(".*_"),
                 color = doge_layoffs), 
             size=3)+ 
   # Scale transformations
   scale_x_continuous(breaks = seq(-2, 2, 1)) + 
-  labs(title = "Perceived Extremism and Racialized Attention")
+    labs(title = "",
+       x = "NYT Perceived Ideological Leaning\n.     ← More Moderate                More Extreme →",
+       y = "Racialization Score",
+       color = "Layoffs")
 ```
 
 
 # Correlations
+
 ```{r}
 # COMBINED 
 cor.test(d$racialization, d$perceived_ideology_estimate)
@@ -1413,6 +1470,8 @@ save(m_layoffs, cm, rows,
 
 ```{r}
 #| label: predictions
+#| fig-width: 6
+#| fig-height: 4
 
 values <- tidyr::expand(d, 
                         total_staff = 100000,
