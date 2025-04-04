@@ -13,7 +13,7 @@ title-slide-attributes:
     data-background-opacity: "0.3"
 format:
  revealjs:
-   footer: ""
+   footer: 'MPSA 2025 - "Racialization and Perceived Institutional Ideology" - Karla Magaña & Devin Judge-Lord'
    incremental: true   
    smaller: false
    scrollable: true
@@ -60,7 +60,7 @@ Racialization is the level to which the public and elite language used to descri
 
 ## {data-background-image="figs/NYT_Words_Disappear.jpg" data-background-size="contain" data-background-position="center" data-background-opacity="1"}
 
-## Research Questions {data-background-image="https://mmaa.org/wp-content/uploads/2018/07/maggie_thompson_native_american_weaving_artist_family_portrait-1200x430.jpg" data-background-size="cover" data-background-opacity=".1"}
+## Research Questions {data-background-image="https://ids.si.edu/ids/deliveryService?id=SAAM-2022.34_17&max=640" data-background-size="cover" data-background-opacity=".1"}
 
 - Which agencies are more racialized than others?  
   - How has that changed over time?  
@@ -72,44 +72,46 @@ advocacy reports
 - How do perceptions of racialization vary between agencies perceived as conservative versus liberal?
 
 
-## {data-background-image="https://mmaa.org/wp-content/uploads/2018/07/maggie_thompson_native_american_weaving_artist_family_portrait-1200x430.jpg" data-background-size="cover" data-background-opacity=".1"}
+## {data-background-image="https://ids.si.edu/ids/deliveryService?id=SAAM-2022.34_21&max=640" data-background-size="cover" data-background-opacity=".1"}
 
 ::: {.columns}
 
 ::: {.column width="33%" data-incremental="true"}
+
 ### Perceived Ideology
 <div style="border: 2px solid #2196F3; padding: 30px; margin-bottom: 30px; border-radius: 10px; font-size: 22px;">
-- Perceived liberal-conservative: Expert surveys, appointments, donations, and voting patterns 
-  - contribution
-<br><br>
-  <span style="font-style: italic; font-size: 12px; color: #333;">(Clinton and Lewis (2008); Richardson et al. (2019); Richardson et al. (2024); Epstein (1999); Nixon (2004); Chen and Johnson (2014); Maranto (2005); Maranto and Hult (2004); Bertelli and Grose (2011))</span>
+- Perceived liberal-conservative leaning via expert surveys, appointments, donations, and voting patterns   <span style="font-style: italic; font-size: 12px; color: #333;">(Clinton and Lewis (2008); Richardson et al. (2019); Richardson et al. (2024); Epstein (1999); Nixon (2004); Chen and Johnson (2014); Maranto (2005); Maranto and Hult (2004); Bertelli and Grose (2011))</span>
+
+- [This Paper's Contribution]
+
 </div>
 :::
 
 ::: {.column width="33%" data-incremental="true"}
 ### Historical Institutional Racialization
 <div style="border: 2px solid #2196F3; padding: 30px; margin-bottom: 30px; border-radius: 10px; font-size: 22px;">
-- Racialized history shapes perceptions of agencies 
-  - Contribution 
-<br><br>
-  <span style="font-style: italic; font-size: 12px; color: #333;">(King, 1999; Choi and Rainey, 2010; Schickler, 2016; Tate, 2003; White and Laird, 2020; Mansbridge, 1999; Watkins-Hayes, 2009; Minta, 2009; Juenke and Preuhs, 2012; Hayes and Hibbing, 2017)</span>
+- Racialized history shapes perceptions of agencies   <span style="font-style: italic; font-size: 12px; color: #333;">(King, 1999; Choi and Rainey, 2010; Schickler, 2016; Tate, 2003; White and Laird, 2020; Mansbridge, 1999; Watkins-Hayes, 2009; Minta, 2009; Juenke and Preuhs, 2012; Hayes and Hibbing, 2017)</span> 
+
+- [This Paper's Contribution]
+
 </div>
 :::
 
 ::: {.column width="33%" data-incremental="true"}
 ### Race & Policy Framing
 <div style="border: 2px solid #2196F3; padding: 30px; margin-bottom: 30px; border-radius: 10px; font-size: 22px;">
-- Racial attitudes are deeply intertwined with policy preferences and rhetorical framing 
-  - Contribution
-<br><br>
-  <span style="font-style: italic; font-size: 12px; color: #333;">(Gilens, 1999; Kellstedt, 2003; Hutchings & Valentino, 2004; Bartels, 2020; Stephens-Dougan, L., 2020; O’Brian, 2024)</span>
+
+- Racial attitudes & framing affect policy preferences <span style="font-style: italic; font-size: 12px; color: #333;">(Gilens, 1999; Kellstedt, 2003; Hutchings & Valentino, 2004; Bartels, 2020; Stephens-Dougan, L., 2020; O’Brian, 2024)</span>
+
+- [This Paper's Contribution]
+
 </div>
 :::
 
 :::
 
 
-## Data {data-background-image="https://mmaa.org/wp-content/uploads/2018/07/maggie_thompson_native_american_weaving_artist_family_portrait-1200x430.jpg" data-background-size="cover" data-background-opacity=".1"}
+## Data {data-background-image="https://ids.si.edu/ids/deliveryService?id=SAAM-2022.34_34&max=960" data-background-size="cover" data-background-opacity=".1"}
 
 ```{r}
 load(here::here("data", "numbers-for-paper.Rdata"))
@@ -207,13 +209,20 @@ knitr::include_graphics(here::here("docs/figs/trends-rules-1.png") )
 ```
 
 
-# Comparing across contexts 
 
-<!-- (Karla will pick one to focus on ): focusing on Figure 7: MFL/Rules -->
+<!-- add math equation -->
 
 ##  Mandate For Leadership Reports {#mfl}
 
 > Race; Racial; Racism; Discrimination; Discriminate; Slavery; Ethnicity; Diversity; DEI; Equity; Equality; Inclusion; Citizen; Citizenship; DACA; Immigrants; Immigration; Illegal; Civil Rights; Affirmative Action; Head Start; African American; Black; Latino; Hispanic; Muslim; Asian; Color; Racist; Bureau of Indian; native; woke; wokeism; Illegal Alien; Cartel
+
+# Comparing across contexts {data-background-image="https://ids.si.edu/ids/deliveryService?id=SAAM-2022.34_34&max=960" data-background-size="cover" data-background-opacity=".1"}
+
+$Racialization Score_{jk} = \frac{\sqrt{x_{ijk}} - \bar{x_{jk}}}{sd(x_{jk})}$
+
+Where $x_{ijk}$ is the count of racialized terms in document/article/sentence $i$ about agency $j$ in source $k$. 
+
+Thus, all scores are mean 0, standard deviation 1.
 
 ## {#rules_v_2025}
 
@@ -273,7 +282,7 @@ knitr::include_graphics(here::here("docs/figs/ideo_v_score-1.png"))
 knitr::include_graphics(here::here("docs/figs/ideo_v_score-2.png"))
 ```
 
-## Next Steps {data-background-image="https://www.archpaper.com/wp-content/uploads/2024/07/2022-34_17_print.jpg" data-background-size="cover" data-background-opacity=".1"}
+## Next Steps {data-background-image="https://ids.si.edu/ids/deliveryService?id=SAAM-2022.34_14&max=960" data-background-size="cover" data-background-opacity=".1"}
 
 #### Dynamic Racialization Scores
 
@@ -281,35 +290,25 @@ knitr::include_graphics(here::here("docs/figs/ideo_v_score-2.png"))
 
 #### Compare with Other Agency Characteristics (e.g campaign donations)
 
-<!-- combine key takeways and feedback and thank you -->
 
-## Key Takeaways 
+## Key Takeaways {data-background-image="https://ids.si.edu/ids/deliveryService?id=SAAM-2022.34_14&max=960" data-background-size="cover" data-background-opacity=".1"}
 
-- Racialization varies over time, despite stable core missions.
-- Racialization is tied to perceived ideological extremism, 
-  - Perceived "Centrist" agencies received less racialized attention.
-
-
-## Feedback 
-
-- How can we make this measure useful?
-- In what ways can this measure be refined?
-
----
+- Racialization varies over time, despite stable core missions
+- Racialization is tied to perceived ideological extremism
+  - perceived "centrist" agencies received less racialized attention.
 
 ::: columns
 ::: {.column width="60%"}
 ### **Feedback**  
 ::: {.incremental}
-- **How can we make this measure useful?**  
-- **What refinements would improve it?**  
+- **How can we make these measures useful?**  
 :::
 :::
 
 ::: {.column width="40%"}
 ### **Thank You!**  
 ::: {.incremental}
-📧 **Contact:**  
+ **Contact:**  
 **kmagana@umich.edu** | **judgelor@umich.edu**  
 :::
 :::
@@ -318,7 +317,7 @@ knitr::include_graphics(here::here("docs/figs/ideo_v_score-2.png"))
 ---
 
 
-# Extras
+# Extra
 
 
 ## {#mfl-data}
