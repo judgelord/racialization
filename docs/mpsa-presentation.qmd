@@ -23,6 +23,7 @@ execute:
   echo: false
   engine: knitr
 embed-resources: true
+
 ---
 
 
@@ -110,7 +111,7 @@ advocacy reports
 
 - Racial attitudes & framing affect policy preferences 
 
-- Our work bridges public opinion research with institutional behavior, elite decision-making, and policy outcomes.
+- Our work bridges public opinion research with institutions, elite decision-making, and policy outcomes.
 
 <span style="font-style: italic; font-size: 12px; color: #333;">(Gilens, 1999; Kellstedt, 2003; Hutchings & Valentino, 2004; Bartels, 2020; Stephens-Dougan, L., 2020; O’Brian, 2024)</span>
 </div>
@@ -218,11 +219,6 @@ knitr::include_graphics(here::here("docs/figs/trends-rules-1.png") )
 
 
 
-<!-- add math equation -->
-
-##  Mandate For Leadership Reports {#mfl}
-
-> Race; Racial; Racism; Discrimination; Discriminate; Slavery; Ethnicity; Diversity; DEI; Equity; Equality; Inclusion; Citizen; Citizenship; DACA; Immigrants; Immigration; Illegal; Civil Rights; Affirmative Action; Head Start; African American; Black; Latino; Hispanic; Muslim; Asian; Color; Racist; Bureau of Indian; native; woke; wokeism; Illegal Alien; Cartel
 
 # Comparing across contexts 
 
@@ -233,6 +229,12 @@ For each source, we have two counts: $r_{i}$ (the **count of racialized** docume
 Percent Racialized $x_i = \frac{\sqrt{r_{i}}}{\sqrt{y_{i}}}$ (variance stabilized)
 
 Racialization Score $z_{i} = \frac{x_i - \bar{x}}{sd(x)}$ (standardized, mean 0, standard deviation 1)
+
+
+
+##  Mandate For Leadership Reports {#mfl}
+
+> Race; Racial; Racism; Discrimination; Discriminate; Slavery; Ethnicity; Diversity; DEI; Equity; Equality; Inclusion; Citizen; Citizenship; DACA; Immigrants; Immigration; Illegal; Civil Rights; Affirmative Action; Head Start; African American; Black; Latino; Hispanic; Muslim; Asian; Color; Racist; Bureau of Indian; native; woke; wokeism; Illegal Alien; Cartel
 
 
 ## {#rules_v_2025}
