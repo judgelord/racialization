@@ -5,15 +5,13 @@ subtitle: |
   **Karla Magaña, Devin Judge-Lord** <br>
   *University of Michigan*
   :::
-title-block-banner: "#001B35" 
-title-block-banner-color: body-bg
 title-slide-attributes:
     data-background-image: "figs/whitewash.jpg"
     data-background-size: cover
-    data-background-opacity: "0.3"
+    data-background-opacity: "0.5"
 format:
  revealjs:
-   footer: 'MPSA 2025 - "Racialization and Perceived Institutional Ideology" - Karla Magaña & Devin Judge-Lord'
+   footer: '"Racialization and Perceived Institutional Ideology" - Karla Magaña & Devin Judge-Lord'
    incremental: true   
    smaller: false
    scrollable: true
@@ -41,9 +39,6 @@ knitr::knit_hooks$set(inline = function(x) {
         )
 })
 
-# regression table formatting function 
-# modelsummary <- modelsummary_AJPS
-
 # numbers cited in the paper that may change
 load(here::here("data", "numbers-for-paper.Rdata"))
 # nyt_v_2025_cor, 
@@ -57,15 +52,19 @@ n_racial <- sum(n_mfl_racial,n_rules_racial, n_nyt_racial)
 # Other things cited in the paper 
 ```
 
+
+## {background-image=figs/whitewash.jpg}
+
+
 ## Racializaton of Institutions 
-<!-- {data-background-image="https://ids.si.edu/ids/deliveryService?id=SAAM-2022.34_14&max=960" data-background-size="cover" data-background-opacity=".1"} -->
 
 Racialization is the level to which the public and elite language used to describe an institution and its actions evoke race and thus make relevant and highlight debates around racial inequality or racial resentments.
 
+
 ## {data-background-image="figs/NYT_Words_Disappear.jpg" data-background-size="contain" data-background-position="center" data-background-opacity="1"}
 
+
 ## Research Questions 
-<!-- {data-background-image="https://ids.si.edu/ids/deliveryService?id=SAAM-2022.34_17&max=640" data-background-size="cover" data-background-opacity=".1"} -->
 
 - Which agencies are more racialized than others?  
   - How has that changed over time?  
@@ -146,28 +145,26 @@ load(here::here("data", "numbers-for-paper.Rdata"))
 - Perceived Agency Ideology (Richardson et al., 2019)
 
 
-
-## NYT Articles with "Racial" 2005-2024 {#trends-nyt}
+## NYT Articles 2005-2025 {#trends-nyt}
 
 ```{r}
-#| fig-cap: 'New York Times Articles Mentioning "Racial" By Agency, 2005-2024'
+#| fig-cap: 'New York Times Articles With Racialized Words By Agency, 2005-2025'
 #| label: fig-trends-nyt
 #| out-width: 100%
 
 knitr::include_graphics(here::here("docs/figs/trends-nyt-1.png"))
 ```
 
+
 ## {#trends-nyt-total}
 
-
 ```{r}
-#| fig-cap: 'New York Times Total Articles Mentioning "Racial," 2005-2024'
+#| fig-cap: 'New York Times Articles With Racialized Words, 2005-2025'
 #| label: fig-trends-nyt-total
 #| out-width: 100%
 
 knitr::include_graphics(here::here("docs/figs/trends-nyt-total-1.png"))
 ```
-
 
 
 ##  Draft and Final Rules  {#rules}
@@ -179,11 +176,10 @@ load(here::here("data", "rules_terms.rda"))
 > `r terms |> paste0(collapse = "; ")`
 
 
-## Agency Rules, 2005-2024
-
+## Agency Rules, 2005-2025
 
 ```{r}
-#| fig-cap: 'Agency Rules with Racialized Language, by Agency, 2005-2024'
+#| fig-cap: 'Agency Rules with Racialized Language, by Agency, 2005-2025'
 #| label: fig-trends-rules-terms
 #| out-width: 100%
 #| layout-ncol: 2
@@ -195,29 +191,38 @@ load(here::here("data", "rules_terms.rda"))
 #|   - ""
 #|   - ""
 
-
 knitr::include_graphics(here::here("docs/figs/trends-rules-racial-1.png") ) # racial 
-knitr::include_graphics(here::here("docs/figs/trends-rules-civil-rights-1.png") )#affirmative action 
+#knitr::include_graphics(here::here("docs/figs/trends-rules-civil-rights-1.png") )#affirmative action 
 #knitr::include_graphics(here::here("docs/figs/trends-rules-groups-1.png") )# ethnicity 
 knitr::include_graphics(here::here("docs/figs/trends-rules-groups-10.png") )# Muslim 
 knitr::include_graphics(here::here("docs/figs/trends-rules-groups-2.png") )# asian
 knitr::include_graphics(here::here("docs/figs/trends-rules-groups-5.png") )# african american 
 knitr::include_graphics(here::here("docs/figs/trends-rules-groups-6.png") )# hispanic
+
+# knitr::include_graphics("docs/figs/trends-rules-racial-1.png") # racial 
+# # knitr::include_graphics("docs/figs/trends-rules-civil-rights-1.png") #affirmative action 
+# #knitr::include_graphics("docs/figs/trends-rules-term-36.png") # communitis of color
+# knitr::include_graphics("docs/figs/trends-rules-term-55.png") # ethnic
+# knitr::include_graphics("docs/figs/trends-rules-term-49.png") # DEI
+# knitr::include_graphics("docs/figs/trends-rules-term-90.png") # minority pop
+# #knitr::include_graphics("docs/figs/trends-rules-groups-1.png") # ethnicity 
+# #knitr::include_graphics("docs/figs/trends-rules-groups-10.png") # Muslim 
+# #knitr::include_graphics("docs/figs/trends-rules-groups-2.png") # asian
+# knitr::include_graphics("docs/figs/trends-rules-groups-5.png") # african american 
+# knitr::include_graphics("docs/figs/trends-rules-groups-6.png") # hispanic
 ```
 
 
-## Agency Rules, 2005-2024 {#trends-rules}
+## Agency Rules, 2005-2025 {#trends-rules}
 
 ```{r}
-#| fig-cap: 'Agency Rules with Racialized Language, 2005-2024'
+#| fig-cap: 'Agency Rules with Racialized Language, 2005-2025'
 #| label: fig-trends-rules
 #| out-width: 100%
 
 
 knitr::include_graphics(here::here("docs/figs/trends-rules-1.png") )
 ```
-
-
 
 
 # Comparing across contexts 
@@ -231,11 +236,17 @@ Percent Racialized $x_i = \frac{\sqrt{r_{i}}}{\sqrt{y_{i}}}$ (variance stabilize
 Racialization Score $z_{i} = \frac{x_i - \bar{x}}{sd(x)}$ (standardized, mean 0, standard deviation 1)
 
 
-
 ##  Mandate For Leadership Reports {#mfl}
 
-> Race; Racial; Racism; Discrimination; Discriminate; Slavery; Ethnicity; Diversity; DEI; Equity; Equality; Inclusion; Citizen; Citizenship; DACA; Immigrants; Immigration; Illegal; Civil Rights; Affirmative Action; Head Start; African American; Black; Latino; Hispanic; Muslim; Asian; Color; Racist; Bureau of Indian; native; woke; wokeism; Illegal Alien; Cartel
 
+```{r}
+#| fig-cap: "Racialized Words in Project 2025 Mandate For Leadership"
+#| label: fig-mfl-dat2
+#| out-width: 100%
+
+knitr::include_graphics(here::here("docs/figs/mfl_data-2.png"))
+
+```
 
 ## {#rules_v_2025}
 
@@ -248,8 +259,8 @@ Racialization Score $z_{i} = \frac{x_i - \bar{x}}{sd(x)}$ (standardized, mean 0,
 knitr::include_graphics(here::here("docs/figs/rules_v_2025-2.png"))
 ```
 
-## {#nyt-v-2025}
 
+## {#nyt-v-2025}
 
 ```{r}
 #| fig-cap: "Racialization in Project 2025 vs. New York Times"
@@ -259,8 +270,8 @@ knitr::include_graphics(here::here("docs/figs/rules_v_2025-2.png"))
 knitr::include_graphics(here::here("docs/figs/nyt_v_2025-2.png"))
 ```
 
-## {#nyt_v_rules}
 
+## {#nyt_v_rules}
 
 ```{r}
 #| fig-cap: "Racialization in Rulemaking vs. New York Times"
@@ -271,9 +282,8 @@ knitr::include_graphics(here::here("docs/figs/nyt_v_rules-2.png"))
 ```
 
 
-
-
 # Racialization and Perceived Ideology {#ideology}
+
 
 ##
 
@@ -284,6 +294,7 @@ knitr::include_graphics(here::here("docs/figs/nyt_v_rules-2.png"))
 
 knitr::include_graphics(here::here("docs/figs/ideo_v_score-1.png"))
 ```
+
 
 ## 
 
@@ -297,15 +308,12 @@ knitr::include_graphics(here::here("docs/figs/ideo_v_score-2.png"))
 
 ## Next Steps 
 
-<!-- {data-background-image="https://ids.si.edu/ids/deliveryService?id=SAAM-2022.34_14&max=960" data-background-size="cover" data-background-opacity=".1"} -->
-
 - Dynamic Racialization Scores
 - Economic Redistribution
 - Compare with Other Agency Characteristics (e.g campaign donations)
 
 
 ## Key Takeaways 
-<!-- {data-background-image="https://ids.si.edu/ids/deliveryService?id=SAAM-2022.34_14&max=960" data-background-size="cover" data-background-opacity=".1"} -->
 
 - Racialization varies over time, despite stable core missions
 - Racialization is tied to perceived ideological extremism
@@ -325,31 +333,34 @@ knitr::include_graphics(here::here("docs/figs/ideo_v_score-2.png"))
 
 ```{r}
 #| fig-cap: "Distribution of Racialized Words in Mandate For Leadership (Project 2025)"
-#| label: fig-mfl-data
+#| label: fig-mfl-data-1
 #| out-width: 100%
 
 knitr::include_graphics(here::here("docs/figs/mfl_data-1.png"))
 ```
 
+
 ##  {#nyt-data}
 
 ```{r}
-#| fig-cap: "Distribution of Racialized Words in New York Times Articles, 2005-2024"
+#| fig-cap: "Distribution of Racialized Words in New York Times Articles, 2005-2025"
 #| label: fig-nyt-data
 #| out-width: 100%
 
 knitr::include_graphics(here::here("docs/figs/nyt_data-1.png"))
 ```
 
+
 ##  {#rules-data}
 
 ```{r}
-#| fig-cap: "Distribution of Racialized Words in Proposed and Final Rules, 2005-2024"
+#| fig-cap: "Distribution of Racialized Words in Proposed and Final Rules, 2005-2025"
 #| label: fig-rules-data
 #| out-width: 100%
 
 knitr::include_graphics(here::here("docs/figs/rules_data-1.png"))
 ```
+
 
 ## Racialization & DOGE Layoffs
 
@@ -361,6 +372,7 @@ knitr::include_graphics(here::here("docs/figs/rules_data-1.png"))
 knitr::include_graphics(here::here("docs/figs/ideo_v_racialization_layoffs-1.png"))
 ```
 
+
 ## Project 2025 & DOGE Layoffs
 
 ```{r}
@@ -370,6 +382,7 @@ knitr::include_graphics(here::here("docs/figs/ideo_v_racialization_layoffs-1.png
 
 knitr::include_graphics(here::here("docs/figs/ideo_v_2025_layoffs-1.png"))
 ```
+
 
 ## NYT & DOGE Layoffs
 
@@ -381,6 +394,7 @@ knitr::include_graphics(here::here("docs/figs/ideo_v_2025_layoffs-1.png"))
 knitr::include_graphics(here::here("docs/figs/ideo_v_nyt_layoffs-1.png"))
 ```
 
+
 ## Rulemaking Racialization & Layoffs
 
 ```{r}
@@ -390,6 +404,7 @@ knitr::include_graphics(here::here("docs/figs/ideo_v_nyt_layoffs-1.png"))
 
 knitr::include_graphics(here::here("docs/figs/ideo_v_rules_layoffs-1.png"))
 ```
+
 
 ## Layoff Predictions
 

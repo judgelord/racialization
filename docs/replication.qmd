@@ -1,6 +1,18 @@
 ---
-title: "Replication Code and Robustness Checks"
-subtitle: ""
+title: "Replication Code"
+subtitle: "Racialization and Perceived Institutional Ideology"
+author:
+  - name: Karla Magaña
+    affiliations:
+      - name: University of Michigan
+    #department: Department of Political Science
+    email: "kmagana@umich.edu"
+    attributes:
+      corresponding: true
+  - name: Devin Judge-Lord
+    affiliations:
+      - name: University of Michigan
+    #department: Ford School of Public Policy
 format:
     html: 
       toc: true
@@ -15,7 +27,7 @@ testing = F
 
 library(modelsummary)
 library(marginaleffects)
-library(fixest)
+# library(fixest)
 library(tidyverse)
 library(magrittr)
 library(knitr)
@@ -88,37 +100,7 @@ kablebox_long <- . %>%
 - [ ] 
 
 
-
-```{r means}
-# Regression table formatting for AJPS 
-modelsummary_AJPS <- function(models, notes = "", center_rows = 1, ...){
-  modelsummary::modelsummary(models,  
-             # Custom sig stars for AJPS 
-             stars = c('†' = .1, '*' = .05, '**' = .01), 
-             # Align coefficients by decimal for AJPS 
-             align = paste0("l", paste0(rep("d", length(models)), collapse = "")), 
-             add_rows = rows,               
-             coef_map = cm, 
-             gof_map = gm, 
-             output = "tinytable",
-             notes = notes) |>
-    # bold header, hline bottom, aligned center
-    tinytable::style_tt(i = 0:1, bold = T, line = "b",  align = "c") |>
-    # stats aligned center 
-    tinytable::style_tt(i = center_rows, align = "c") |> 
-    # row labels left
-    tinytable::style_tt(j = 1, align = "l")
-} 
-
-# modelsummary <- modelsummary_AJPS
-
-save(modelsummary_AJPS,
-     file = here::here("data", "modelsummary_AJPS.rda"))
-```
-
-
-
-```{r cm}
+```{r cm, include=FALSE}
 # directory to store model objects 
 if (!dir.exists(here::here("models"))) {dir.create(here::here("models"))}
 
@@ -132,14 +114,9 @@ cm = c("Perceived Ideology" = "Perceived ideology",
        "Num.Obs." = "Observations"
        )
 
-# FORMATTING FOR AJPS 
-cmAJPS <- cm |> str_to_sentence()
-names(cmAJPS) <- names(cm)
-cm <- cmAJPS
-# END FORMATTING FOR AJPS 
 
 # set fixed effects mapping 
-setFixest_dict(cm)
+# setFixest_dict(cm)
 
 format_n <- function(x) format(round(x, 3), big.mark=",") # this works
 f <- function(x) stringr::str_replace(x, "[A-z]", "✓") #FIXME not sure why this is not working
@@ -147,13 +124,22 @@ f <- function(x) stringr::str_replace(x, "[A-z]", "✓") #FIXME not sure why thi
 gm <- list(
   list("raw" = "nobs", "clean" = "Observations", "fmt" = format_n)
 )
-
-load(here::here("data", "crosswalk.rda"))
 ```
 
 # Data
 
+## Agency name crosswalk 
+
+```{r crosswalk}
+# From code/get_crosswalk.R
+load(here::here("data", "crosswalk.rda"))
+
+crosswalk |> kablebox()
+```
+
 ## Project 2025 
+
+<https://github.com/judgelord/2025>
 
 "mfl_data"
 
@@ -163,59 +149,11 @@ load(here::here("data", "crosswalk.rda"))
 #| layout-ncol: 1
 #| label: mfl_data
 
-load(here::here("data", "p2025_Affirmative action, etc..rda")) 
+# from https://github.com/judgelord/2025
+# modified with code/get_data_2025.R
+load(here::here("data", "mfl.rda"))
 
-mfl <- p2025
-mfl_terms <- mfl$terms[1]
-mfl <- mfl |> select(-terms, -Terms)
-kablebox(mfl)
-
-#mfl$terms[1] |> str_split("\\|")
-
-# https://stats.stackexchange.com/questions/46418/why-is-the-square-root-transformation-recommended-for-count-data
-# https://www.nature.com/articles/npre.2010.4136.1.pdf
-mfl %<>% mutate(year = 2024,
-                  agency = str_remove(department_agency_acronym, "_.*") ,
-                  total = paragraphs, 
-                  n = ifelse(n > total, total, n)) 
-
-
-mfl_depts <- mfl %>%
-  filter(str_detect(department_agency_acronym, "_") ) 
-
-
-mfl_depts <- mfl %>%
-  filter(agency %in% mfl_depts$agency ) 
-
-
-mfl_ind <- mfl |> filter(# subagencies or independent 
-  str_detect(department_agency_acronym, "_") | !agency %in% mfl_depts$agency)
-
-
-mfl_depts %<>% 
-  # total per department 
-  group_by(agency) %>% 
-            mutate(total = sum(total, na.rm = T),
-                  n = sum(n, na.rm = T) ) %>% 
-  ungroup() %>% 
-  filter(department_agency_acronym == agency)
-
-
-
-mfl <-  full_join(mfl_depts, mfl_ind) %>% 
-  mutate(MFL_n = n,
-         MFL_total = total,
-                  MFL_percent = n/total,
-         # standardize variance of counts
-                  n =  sqrt(n),
-                  total = sqrt(total),
-         # normalize mean 0, sd 1
-                  MFL_norm = (n - mean(n, na.rm = T))/sd(n, na.rm = T),
-                  percent = n/total,
-                  MFL_percent_norm =  (percent - mean(percent, na.rm = T))/sd(percent, na.rm = T))  %>%
-  select(year, agency, department_agency_acronym, 
-         MFL_n,  MFL_total, MFL_percent,
-         MFL_norm, MFL_percent_norm)
+mfl |> kablebox()
 
 mfl %<>% left_join(crosswalk)
 
@@ -250,6 +188,8 @@ mfl |>
 
 ## NYT 
 
+From ProQuest
+
 "nyt_data"
 
 ```{r}
@@ -258,22 +198,15 @@ mfl |>
 #| layout-ncol: 1
 #| label: nyt_data
 
+# from code/get_data_nyt.R
+# + docs/trends-nyt.qmd
+load(here::here("data", "nyt.rda") ) 
 
-load(here::here("data", "nyt_combined.rda") ) 
-
-# corrections (diff between regulations.gov and canonical crosswalk)
-nyt %<>% mutate(agency = agency |> 
-                  str_replace("FERC", "DOE_FERC") |>
-                str_replace("TREAS", "Treasury"),
-                department_agency_acronym = agency,
-                agency = str_remove(agency, "_.*"))
+nyt  |> kablebox()
 
 n_nyt_articles <- sum(nyt$total)
 n_nyt_racial <- sum(nyt$term_count)
 n_nyt_agencies <- length(unique(nyt$department_agency_acronym))
-
-
-kablebox(nyt)
 
 #FIXME BRING BACK A BY-YEAR VERSION AT SOME POINT 
 nyt %<>% 
@@ -319,6 +252,8 @@ nyt %<>% select(-percent)
 
 ## Rules 
 
+<https://github.com/judgelord/regulationsdotgov>
+
 "rules_data"
 
 ```{r}
@@ -327,99 +262,12 @@ nyt %<>% select(-percent)
 #| layout-ncol: 1
 #| label: rules_data
 
+# from https://github.com/judgelord/regulationsdotgov
+# modified with code/get_data_rules.R
+# FIXME - include the total so that we can make the summary stats here and load just one dataframe, rules.rda
+load(here::here("data", "rules.Rdata"))
 
-load(here::here("data", "rules_racial_distinct_totals.rda") ) 
-load(here::here("data", "rules_total.rda") ) 
-
-rules_total  <- rules_total |> 
-    distinct(docketId, documentType, department_agency_acronym, year) |> 
-   filter(
-     year > 2004,
-     documentType %in% c("Proposed Rule", "Rule")  ) |> 
-  group_by(department_agency_acronym) |>
-  count(name = "n") |> 
-  filter(n > 10) |> 
-  ungroup() 
-
-n_rules <- sum(rules_total$n, na.rm = T)
-
-rules_racial <- rules_racial_distinct_totals |> 
-    distinct(docketId, documentType, department_agency_acronym, year) |> 
-   filter(
-     year > 2004,
-     documentType %in% c("Proposed Rule", "Rule")  ) |> 
-  group_by(department_agency_acronym) |>
-  count(name = "n_racial") |> 
-  ungroup() 
-
-n_rules_racial <- sum(rules_racial$n_racial)
-
-rules <- full_join(rules_total, rules_racial) |> 
-  mutate(n_racial = replace_na(n_racial, 0), # if not in racial data, assume 0 racialized rules
-         sub = str_remove(department_agency_acronym, ".*_"),
-         main = str_remove(department_agency_acronym, "_.*")) 
-
-
-n_rules_agencies <- distinct(rules, department_agency_acronym) |> nrow()
-
-
-
-# rules_depts <- rules %>%
-#   filter(str_detect(department_agency_acronym, "_") ) 
-# 
-# 
-# rules_depts <- rules %>%
-#   filter(main %in% rules_depts$main ) 
-# 
-# 
-# rules_ind <- rules |> filter(# subagencies or independent 
-#   str_detect(department_agency_acronym, "_") | !main %in% rules_depts$main)
-# 
-# 
-# rules_depts %<>% 
-#   # total per department 
-#   group_by(main) %>% 
-#             mutate(#total = sum(total, na.rm = T),
-#                   n = sum(n, na.rm = T) ) %>% 
-#   ungroup() %>% 
-#   filter(department_agency_acronym == main)
-# 
-# 
-# 
-# rules <-  full_join(rules_depts, rules_ind) 
-
-rules %<>% 
-  ungroup() %>% 
-  mutate(
-        rules_percent = n_racial/n,
-            rules_n = n_racial,
-    sqrt_n = sqrt(n), 
-                sqrt_racial = sqrt(n_racial),
-                rules_norm = (sqrt_racial - mean(sqrt_racial))/sd(sqrt_racial), 
-                sqrt_ratio = sqrt_racial/sqrt_n,
-                rules_percent_norm =  (sqrt_ratio - mean(sqrt_ratio, na.rm = T))/sd(sqrt_ratio, na.rm = T)
-    )
-
-
-# add vars from crosswalk 
-rules %<>% left_join(crosswalk)
-
-missing <- filter(rules, is.na(n)) |> 
-  select(min_missing = n_racial, regulationsdotgov_agency, regulationsdotgov_acronym) |> 
-  arrange(-min_missing)
-
-missing$regulationsdotgov_acronym |> paste(collapse = "', '")
-
-save(missing, file = here::here("data", "missing_agency_data.rda"))
-
-# subset 
-rules %<>% 
-  distinct(rules_n, 
-         rules_percent,
-                  rules_norm, 
-         rules_percent_norm, 
-         department_agency_acronym) %>% 
-  ungroup()
+rules  |> kablebox()
 
 # add vars from crosswalk 
 rules %<>% left_join(crosswalk)
@@ -451,6 +299,8 @@ rules |>
        y = "")
 ```
 
+# Combined
+
 ```{r join}
 d <- full_join(nyt,
                mfl) |> distinct() |> 
@@ -460,6 +310,7 @@ d <- full_join(nyt,
   distinct() |> 
   select(ends_with("norm"), everything())
 
+d  |> kablebox()
 ```
 
 "hist"
@@ -683,14 +534,21 @@ cor_rules_v_mfl
 ```
 
 
-## Combined 
+## Combined Racialization Score
 
 
 ```{r}
-d %<>% group_by(department_agency_acronym) %>% 
-  mutate(racialization = sum(MFL_percent_norm, NYT_percent_norm, 
-                             rules_percent_norm,
-                                   na.rm = T) / 3)
+d <- d |>
+  group_by(department_agency_acronym) |>
+  mutate(racialization = mean(c(MFL_percent_norm, 
+                              NYT_percent_norm, 
+                              rules_percent_norm),
+                              trim = 0,
+                              na.rm = TRUE))
+
+d  |> 
+  select(agency = department_agency_acronym, racialization, ends_with("percent_norm")) |>
+  kablebox()
 ```
 
 ### Least racialized 
@@ -710,11 +568,14 @@ d %>% distinct(department_agency_acronym, racialization) %>%
 ## Perceived Ideology 
 
 ```{r}
+# from code/get_ideology_scores.R
 load( here::here("data", "rcl_ideology_estimates.rda") )
 
-d %<>% full_join(rcl_ideology_estimates) %>% 
-  rename(perceived_ideology_estimate = X.ideo_rating.) %>% 
-  distinct() %>% 
+rcl_ideology_estimates |> kablebox()
+
+d <- d  |>  full_join(rcl_ideology_estimates)  |> 
+  rename(perceived_ideology_estimate = X.ideo_rating.)  |> 
+  distinct()  |> 
   add_count(department_agency_acronym) |> 
   distinct()
 
@@ -811,8 +672,8 @@ d |>
       label = department_agency_acronym |> str_remove(".*_")) + 
   geom_label_repel(size =3,force_pull = 10, alpha = .5)  + 
     #geom_line(aes(y = perceived_ideology_estimate), color = "red")  + 
-  annotate(x =2, y =2, geom = "text", label = 'Racialized\n"Conservative"', color = "red", hjust = 1) + 
-    annotate(x =-2, y =2, geom = "text", label = 'Racialized\n"Liberal"', color ="red", hjust = 0) +   # geom_smooth(method = "lm") + 
+  annotate(x =2, y =max_y, geom = "text", label = 'Racialized\n"Conservative"', color = "red", hjust = 1) + 
+    annotate(x =-2, y =max_y, geom = "text", label = 'Racialized\n"Liberal"', color ="red", hjust = 0) +   # geom_smooth(method = "lm") + 
   geom_point() +    
   labs(title = "Racialized Attention as a Share of Total",
        x = "Perceived Ideological Leaning\n.     ← More Liberal                More Conservative →",
@@ -915,7 +776,69 @@ d |>
 
 ```
 
-### DOGE Layoff data from Adam Bonica 
+
+# Correlations
+
+```{r}
+# COMBINED 
+cor_ido <- cor.test(d$racialization, d$perceived_ideology_estimate)
+cor_ido 
+cor_ido_abs <- cor.test(d$racialization, abs(d$perceived_ideology_estimate))
+cor_ido_abs
+
+# MFL
+cor_ido_mfl <- cor.test(d$MFL_percent_norm, d$perceived_ideology_estimate)
+cor_ido_mfl
+cor_ido_mfl_abs <-cor.test(d$MFL_percent_norm, abs(d$perceived_ideology_estimate))
+cor_ido_mfl_abs
+
+# NYT
+cor_ido_nyt <-cor.test(d$NYT_percent_norm, d$perceived_ideology_estimate)
+cor_ido_nyt 
+cor_ido_nyt_abs <-cor.test(d$NYT_percent_norm, abs(d$perceived_ideology_estimate))
+cor_ido_nyt_abs
+
+# Rules 
+cor_ido_rules <-cor.test(d$rules_percent_norm,  d$perceived_ideology_estimate)
+cor_ido_rules
+cor_ido_rules_abs <-cor.test(d$rules_percent_norm, abs(d$perceived_ideology_estimate))
+cor_ido_rules_abs
+```
+
+
+
+```{r save}
+save(#correlations 
+  cor_nyt_v_mfl, 
+  cor_rules_v_mfl,
+  cor_rules_v_nyt,
+  cor_ido,
+  cor_ido_abs,
+  cor_ido_mfl,
+  cor_ido_mfl_abs,
+  cor_ido_nyt,
+  cor_ido_nyt_abs,
+  cor_ido_rules,
+  cor_ido_rules_abs,
+  # n MFL
+     n_mfl_racial,
+n_mfl_total,
+n_mfl_agencies, 
+# NYT 
+     n_nyt_articles,
+n_nyt_racial,
+     n_nyt_agencies,
+# Rules 
+n_rules,
+     n_rules_racial,
+     n_rules_agencies, 
+# path
+     file = here::here("data", "numbers-for-paper.Rdata"))
+```
+
+
+
+# DOGE Layoff data from Adam Bonica 
 
 "doge"
 
@@ -925,6 +848,7 @@ d |>
 #| fig-height: 5
 #| layout-ncol: 2
 
+# from get_data_bonica.R
 load(here::here("data", "bonica.rda"))
 
 names(bonica)<-names(bonica) |> tolower()
@@ -1415,35 +1339,6 @@ ggplot(d) +
 ```
 
 
-# Correlations
-
-```{r}
-# COMBINED 
-cor_ido <- cor.test(d$racialization, d$perceived_ideology_estimate)
-cor_ido 
-cor_ido_abs <- cor.test(d$racialization, abs(d$perceived_ideology_estimate))
-cor_ido_abs
-
-# MFL
-cor_ido_mfl <- cor.test(d$MFL_percent_norm, d$perceived_ideology_estimate)
-cor_ido_mfl
-cor_ido_mfl_abs <-cor.test(d$MFL_percent_norm, abs(d$perceived_ideology_estimate))
-cor_ido_mfl_abs
-
-# NYT
-cor_ido_nyt <-cor.test(d$NYT_percent_norm, d$perceived_ideology_estimate)
-cor_ido_nyt 
-cor_ido_nyt_abs <-cor.test(d$NYT_percent_norm, abs(d$perceived_ideology_estimate))
-cor_ido_nyt_abs
-
-# Rules 
-cor_ido_rules <-cor.test(d$rules_percent_norm,  d$perceived_ideology_estimate)
-cor_ido_rules
-cor_ido_rules_abs <-cor.test(d$rules_percent_norm, abs(d$perceived_ideology_estimate))
-cor_ido_rules_abs
-```
-
-
 "m_layoffs.Rdata"
 
 ```{r models}
@@ -1510,6 +1405,7 @@ save(m_layoffs, cm, rows,
      file = here::here("models", "m_layoffs.Rdata"))
 ```
 
+## Predictions 
 "predictions"
 
 ```{r}
@@ -1542,32 +1438,3 @@ predicted %>%
               x = "Perceived Ideological Leaning\n.     ← More Liberal                More Conservative →")
 ```
 
-
-```{r save}
-save(#correlations 
-  cor_nyt_v_mfl, 
-  cor_rules_v_mfl,
-  cor_rules_v_nyt,
-  cor_ido,
-  cor_ido_abs,
-  cor_ido_mfl,
-  cor_ido_mfl_abs,
-  cor_ido_nyt,
-  cor_ido_nyt_abs,
-  cor_ido_rules,
-  cor_ido_rules_abs,
-  # n MFL
-     n_mfl_racial,
-n_mfl_total,
-n_mfl_agencies, 
-# NYT 
-     n_nyt_articles,
-n_nyt_racial,
-     n_nyt_agencies,
-# Rules 
-n_rules,
-     n_rules_racial,
-     n_rules_agencies, 
-# path
-     file = here::here("data", "numbers-for-paper.Rdata"))
-```

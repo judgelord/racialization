@@ -9,6 +9,12 @@ abstract: |
 
 # [Draft paper](https://judgelord.github.io/racialization/racialization-paper.pdf)
 
+# [Slides](https://judgelord.github.io/racialization/mpsa-presentation.html#/title-slide)
+
+# [Replication code](https://judgelord.github.io/racialization/replication)
+
+# [Replication Data]
+
 <!--
 [slides](https://judgelord.github.io/racialization/mpsa-presentation.html#/title-slide)
 

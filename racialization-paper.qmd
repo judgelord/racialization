@@ -16,11 +16,11 @@ author:
       - name: University of Michigan
     #department: Ford School of Public Policy
 thanks: | 
- We will appreciate any comments on this very early and evolving draft. The most recent draft is [here](http://judgelord.github.io/racialization/racialization-paper.pdf).
+ We will appreciate any comments on this very early and evolving draft. Slides, replication files, and the most recent draft are available at [judgelord.github.io/racialization](http://judgelord.github.io/racialization). We are grateful for comments from Alicia Barnes, Mallory Compton, and Vincent Hutchings. 
 date: today
 abstract: |
-  The extent to which public discourse about policymaking highlights the implications of policy for racial inequality varies across contexts and over time. While some institutions are inherently more central to maintaining or reducing racial inequality than others, policymakers, the media, and advocates talk about the aims and implications of policy in different ways over time. Some may downplay the racial implications of policy while others may emphasize race, either to reduce racial inequality or increase it. While qualitative scholarship highlights the importance of institutional racialization for policy outcomes and public opinion research finds that racialization affects public support, we lack systematic measures. Using text analysis of policy documents, media coverage, and advocacy agendas, we develop new measures for the racialization of federal agencies over time. We find that racialization is not correlated with perceived liberal or conservative ideology. However, agencies perceived as more ideological---whether liberal or conservative---tend to be more racialized. We also find significant variation in racialization over time, suggesting that efforts to reform institutions and to reframe policy debates affect racialization, even when the agency's mission and core functions largely remain the same. 
-# abstract-extra: Racialization reflects an institution's perceived role in shaping racial inequality and political conflicts. Agencies involved in immigration enforcement are highly racialized and perceived as conservative, while others, like the Departments of Labor, Education, and Health and Human Services, are also racialized but perceived as liberal. 
+  The extent to which public discourse about policymaking highlights the implications of policy for racial inequality varies across contexts and over time. While some institutions are inherently more central to reducing or maintaining racial inequality than others, policymakers, the media, and advocates discuss the aims and implications of policy in different ways over time. Some may downplay the racial implications of policy while others may emphasize race, either to reduce racial inequality or increase it. While qualitative scholarship highlights the importance of institutional racialization for policy outcomes and public opinion research finds that racialization affects public support, we lack systematic measures. Using text analysis of policy documents, media coverage, and advocacy agendas, we develop new measures for the racialization of federal agencies over time. We find that racialization is not correlated with perceived liberal or conservative ideology. However, agencies perceived as more ideological---whether liberal or conservative---tend to be more racialized. We also find significant variation in racialization over time, suggesting that efforts to reform institutions and to reframe policy debates affect racialization, even when the agency's mission and core functions largely remain the same. 
+# abstract-extra: Racialization reflects an institution's perceived role in shaping racial inequality and political conflicts. Agencies involved in immigration enforcement are highly racialized and perceived as conservative. Others, like the Departments of Labor, Education, and Health and Human Services, are also racialized but perceived as liberal. 
 # dataverse: 
 keywords: "Racialization, bureaucracy, ideology, rhetoric, framing, institutions"
 linestretch: 1.5
@@ -31,9 +31,9 @@ cap-location: top
 bibliography: "library.bib"
 execute:
   echo: false
-cache: false
-message: false
-warning: false
+  cache: false
+  message: false
+  warning: false
 journal:
   blinded: false
 wordcount:
@@ -60,21 +60,10 @@ knitr::knit_hooks$set(inline = function(x) {
         )
 })
 
-# regression table formatting function 
-# modelsummary <- modelsummary_AJPS
-
 # numbers cited in the paper that may change
 load(here::here("data", "numbers-for-paper.Rdata"))
-# cor_nyt_v_mfl, 
 n_total <- sum(n_mfl_total, n_nyt_articles, n_rules)
 n_racial <- sum(n_mfl_racial,n_rules_racial, n_nyt_racial)
-# n_mfl_total,
-# n_mfl_agencies, 
-#      n_nyt_articles,
-#      n_nyt_agencies,
-#      n_rules_racial,
-#      n_rules_agencies
-# Other things cited in the paper 
 ```
 
 \clearpage 
