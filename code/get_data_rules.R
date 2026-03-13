@@ -133,3 +133,97 @@ rules_total |> filter(is.na(regulationsdotgov_agency))
 save(rules_total, file=here::here("data", "rules_total.rda"))
 
 
+# COMBINED
+
+rules_total  <- rules_total |>
+  distinct(docketId, documentType, department_agency_acronym, year) |>
+  filter(
+    year > 2004,
+    documentType %in% c("Proposed Rule", "Rule")  ) |>
+  group_by(department_agency_acronym) |>
+  count(name = "n") |>
+  filter(n > 10) |>
+  ungroup()
+
+n_rules <- sum(rules_total$n, na.rm = T)
+
+rules_racial <- rules_racial_distinct_totals |>
+  distinct(docketId, documentType, department_agency_acronym, year) |>
+  filter(
+    year > 2004,
+    documentType %in% c("Proposed Rule", "Rule")  ) |>
+  group_by(department_agency_acronym) |>
+  count(name = "n_racial") |>
+  ungroup()
+
+n_rules_racial <- sum(rules_racial$n_racial)
+
+rules <- full_join(rules_total, rules_racial) |>
+  mutate(n_racial = replace_na(n_racial, 0), # if not in racial data, assume 0 racialized rules
+         sub = str_remove(department_agency_acronym, ".*_"),
+         main = str_remove(department_agency_acronym, "_.*"))
+
+
+n_rules_agencies <- distinct(rules, department_agency_acronym) |> nrow()
+
+
+
+# rules_depts <- rules %>%
+#   filter(str_detect(department_agency_acronym, "_") )
+#
+#
+# rules_depts <- rules %>%
+#   filter(main %in% rules_depts$main )
+#
+#
+# rules_ind <- rules |> filter(# subagencies or independent
+#   str_detect(department_agency_acronym, "_") | !main %in% rules_depts$main)
+#
+#
+# rules_depts %<>%
+#   # total per department
+#   group_by(main) %>%
+#             mutate(#total = sum(total, na.rm = T),
+#                   n = sum(n, na.rm = T) ) %>%
+#   ungroup() %>%
+#   filter(department_agency_acronym == main)
+#
+#
+#
+# rules <-  full_join(rules_depts, rules_ind)
+
+rules %<>%
+  ungroup() %>%
+  mutate(
+    rules_percent = n_racial/n,
+    rules_n = n_racial,
+    sqrt_n = sqrt(n),
+    sqrt_racial = sqrt(n_racial),
+    rules_norm = (sqrt_racial - mean(sqrt_racial))/sd(sqrt_racial),
+    sqrt_ratio = sqrt_racial/sqrt_n,
+    rules_percent_norm =  (sqrt_ratio - mean(sqrt_ratio, na.rm = T))/sd(sqrt_ratio, na.rm = T)
+  )
+
+
+# add vars from crosswalk
+rules %<>% left_join(crosswalk)
+
+missing <- filter(rules, is.na(n)) |>
+  select(min_missing = n_racial, regulationsdotgov_agency, regulationsdotgov_acronym) |>
+  arrange(-min_missing)
+
+missing$regulationsdotgov_acronym |> paste(collapse = "', '")
+
+save(missing, file = here::here("data", "missing_agency_data.rda"))
+
+# subset
+rules %<>%
+  distinct(rules_n,
+           rules_percent,
+           rules_norm,
+           rules_percent_norm,
+           department_agency_acronym) %>%
+  ungroup()
+
+save(rules, n_rules, n_rules_racial, n_rules_agencies, file = here::here("data", "rules.Rdata"))
+
