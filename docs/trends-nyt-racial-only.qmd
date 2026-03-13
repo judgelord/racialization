@@ -94,70 +94,103 @@ int_breaks <- function(x, n = 5) {
 
 
 ```{r data}
+# 
+# directory <- here::here("data", "ProQuest") 
+# 
+# agencies <- list.files(directory, full.names = F) |> str_remove("_.*") |> unique()
+# 
+# term <- "racial"
+# agency <- "DOC"
+# 
+# # term function 
+# make_term_data <- function(agency, term){
+# 
+# path1 <- here::here(directory, paste(agency, term, "2005_2025.csv", sep = "_")) 
+# 
+# d <- read_csv(path1) |>
+#   mutate(year = str_extract(Date, "[0-9]{4}") |> as.numeric(),
+#          agency = agency, 
+#          term = term) |> 
+#   count(agency, year, term, name =  "term_count")
+# 
+# } 
+# 
+# # total function 
+# make_total_data <- function(agency){
+# 
+# path1 <- here::here(directory, paste(agency, "2005_2025.csv", sep = "_")) 
+# 
+# d <- read_csv(path1) |>
+#   mutate(year = str_extract(Date, "[0-9]{4}") |> as.numeric(),
+#          agency = agency) |>
+#   count(agency, year, name = "total")
+# } 
+# 
+# 
+# term_counts <- map_dfr(agencies, .f = make_term_data, term = "racial")
+# 
+# term_counts |> filter(is.na(year))
+# term_counts |> filter(agency == "DOS")
+# 
+# term_counts %<>% drop_na(year)
+# 
+# total_counts <- map_dfr(agencies, .f = make_total_data)
+# 
+# total_counts |> filter(is.na(year))
+# 
+# total_counts %<>%  drop_na(year)
+# 
+# nyt <- full_join(term_counts, total_counts) |>
+#   mutate(ratio = (term_count/total),
+#          term = replace_na(term, "racial"),
+#          term_count = tidyr::replace_na(term_count, 0)
+#          ) |> 
+# # add covariates 
+#   mutate(president = case_when(
+#     year > 2004 & year < 2009 ~ "Bush2",
+#     year > 2008 & year < 2013 ~ "Obama",
+#     year > 2012 & year < 2017 ~ "Obama2",
+#     year > 2016 & year < 2021 ~  "Trump",
+#     year > 2020 & year < 2025 ~ "Biden",
+#     year > 2024 & year < 2029 ~ "Trump2" )) |>  
+#   filter(year > 2004,
+#          year < 2025) 
 
 
-
-
-load(here("data", "nyt_total.rda"))
-load(here("data", "nyt_racial.rda"))
-term = "Racial Terms"
-
-
-nyt <- full_join(
-  nyt_total |> rename(total = n), 
-  nyt_racial |> rename(term_count = n)
-) |>
-  mutate(term_count = tidyr::replace_na(term_count, 0),
-         ratio = (term_count/total),
-         term = "All racialized terms"
-         ) |> 
-# add covariates 
-  mutate(president = case_when(
-    year > 2004 & year < 2009 ~ "Bush2",
-    year > 2008 & year < 2013 ~ "Obama",
-    year > 2012 & year < 2017 ~ "Obama2",
-    year > 2016 & year < 2021 ~  "Trump",
-    year > 2020 & year < 2025 ~ "Biden",
-    year > 2024 & year < 2029 ~ "Trump2" )) |>  
-  filter(year > 2004,
-         year < 2026) 
-
-
-save(nyt, file = here::here("data", "nyt_combined.rda"))
+# save(nyt, file = here::here("data", "nyt.rda"))
+load(file = here::here("data", "nyt.rda"))
 ```
 
 
-```{r trends-nyt, fig.width=9.5, fig.height=6}
+```{r trends-nyt-racial, fig.width=7, fig.height=6}
+term <- "racial"
 # trends-nyt
 nyt |> 
   ggplot() +
   aes(x = year, 
       y = term_count, 
-      color = president,
-      group = president) +
+      color = president) +
   geom_point() +
   labs(#title = paste0('Articles Mentioning Each Federal Agency and "', str_to_title(term),'"'),
-       y = paste0('NYT Aticles with ', str_to_title(term),'' ),
+       y = paste0('NYT Mentions of  "', str_to_title(term),'"' ),
        x = "",
        color = "") +
    geom_line() + 
-  #geom_smooth(method = "lm", se = F) +
+  #geom_smooth(#method = "lm", se = F) +
   facet_wrap("agency",
              scales = "free_y") + 
   scale_color_viridis_d(option = "inferno", end = .8) + 
  scale_y_continuous(breaks = int_breaks) + 
-    scale_x_discrete(breaks = seq(2005, 2025,2) ) + 
-  theme(axis.text.x = element_text(angle = 60))
+  theme(axis.text.x = element_text(angle = 45))
 
 nyt |> 
   ggplot() +
   aes(x = year, 
       y = ratio, 
-      color = president,
-      group = president) +
+      color = president) +
   geom_point() +
   labs(#title = paste0('Articles Mentioning Each Federal Agency and "', str_to_title(term),'"'),
-       y = paste0('Share of Articles with ', str_to_title(term),'' ),
+       y = paste0('Share of Articles with "', str_to_title(term),'"' ),
        x = "",
        color = "") +
      geom_line() + 
@@ -166,15 +199,14 @@ nyt |>
              scales = "free_y") + 
   scale_color_viridis_d(option = "inferno", end = .8) + 
  #scale_y_continuous(breaks = int_breaks) + 
-    scale_x_discrete(breaks = seq(2005, 2025,2) ) + 
-  theme(axis.text.x = element_text(angle = 60))
+  theme(axis.text.x = element_text(angle = 45))
 ```
 
 
 ## Total 
 
 
-```{r trends-nyt-total, fig.width=3.5, fig.height=2.8}
+```{r trends-nyt-total-racial, fig.width=3.5, fig.height=2.5}
 # trends-nyt-total
 
 nyt_total <- nyt |>
@@ -187,35 +219,32 @@ nyt_total |>
   ggplot() +
   aes(x = year, 
       y = term_count, 
-      color = president,
-      group = president) +
+      color = president) +
   geom_point() +
   labs(#title = paste0('Articles Mentioning a\nFederal Agency and "', str_to_title(term),'"'),
-       y = paste0('NYT Aticles  ', str_to_title(term),'' ),
+       y = paste0('NYT Mentions of  "', str_to_title(term),'"' ),
        x = "",
        color = "") +
       geom_line() + 
   #geom_smooth(#method = "lm", se = F) +
   scale_color_viridis_d(option = "inferno", end = .8) + 
  scale_y_continuous(breaks = int_breaks) + 
-      scale_x_discrete(breaks = seq(2005, 2025,2) ) + 
   theme(axis.text.x = element_text(angle = 45))
 
 nyt_total |> 
   ggplot() +
   aes(x = year, 
       y = ratio, 
-      color = president,
-      group = president) +
+      color = president) +
   geom_point() +
   labs(#title = paste0('Share of Articles Mentioning\na Federal Agency and "', str_to_title(term),'"'),
-       y = paste0('Share of Articles with ', str_to_title(term),'' ),
+       y = paste0('Share of Articles with "', str_to_title(term),'"' ),
        x = "",
        color = "") +
       geom_line() + 
   #geom_smooth(#method = "lm", se = F) +
  scale_color_viridis_d(option = "inferno", end = .8) + 
-      scale_x_discrete(breaks = seq(2005, 2025,2) ) + 
  #scale_y_continuous(breaks = int_breaks) + 
   theme(axis.text.x = element_text(angle = 45))
 ```
+

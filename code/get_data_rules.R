@@ -1,70 +1,36 @@
+library(googlesheets4)
+googlesheets4::gs4_deauth()
+gs4_auth(email = "devin.jl@gmail.com")
+
+library(tidyverse)
 
 
+searchTerms = read_sheet("1LLKWDHiwnVEpvlqurI1t7NNHmdrk2liXPd-FZkNrvW0", sheet = "Racialized Terms")|>
+  drop_na(term) |>
+  filter(!str_detect(term, "/")) |>
+  pull(term) |>
+  unique()
 
+# temp fixes
+terms <- searchTerms[!searchTerms %in% c("Heritage American", "Reverse discrimination")]
+
+
+# collected
 directory <- here::here("data", "search") |> str_replace("racialization", "regulationsdotgov-data")
 
-terms <- list.dirs(directory, full.names = F)
+terms_collected <- list.dirs(directory, full.names = F)
 
-terms <- terms[!terms %in% c("", "comment_details", "documents", "comments")]
+terms_collected <- terms_collected[!terms %in% c("", "comment_details", "documents", "comments")]
 
-terms |>  str_c(collapse = '","') |> knitr::kable()
+terms_collected |>  str_c(collapse = '","') |> knitr::kable()
 
-terms <- c(#"adversely",
-           "Affirmative Action",#"affirmatively",
-           "African American",
-            "alien","Antiracist","Arab American","Asian American","Black american",
-            "Colorblindness",#"community",
-           "Critical Race Theory","D.E.I.",
-            "DACA",
-           #"disparate","Diverse",
-           #"diversity",
-           "Diversity equity",
-            "Diversity, equity","Drug Cartel",
-"Black men","Black woman","Black women","Border Crisis",
-"Equity","Ethnicity","Gang","Hispanic",
-"Unaccompanied Alien Childen","underserved","Undocumented","White Privilege",
-"Illegal Alien","Immigrant","Immigration",
-"Intersectional","latina","latino",
-"MENA","Meritocracy","Mexican Cartel","Multicultural","Muslim",
-"racial","Racial inequities","Racial injustices","Racial Justice",
-"Racism","Racist","Secure Border","Secure the border","Slavery",
-"Unaccompanied Alien Childen","underserved","Undocumented","White Privilege",
-"Citizenship","Civil Rights")
 
-if(F){
-gender <- c("Assigned male at birth","biologically female","biologically male",
-            "Gender","gender identity","genderqueer")
-
-native <- c("cherokee nation")
-
-environment <- c("clean energy","climate change","climate crisis",
-                 "climate justice","climate science",
-                 "environmental justice","environmental quality")
-
-tbd <- c("Hate speech","Historically",
-                 "inequality","inequity","Institutional",
-                 "LGBT",
-                 "national congress of american indians",
-                 "Native American",
-                 "Nonbinary","Oppression",
-                 "pollution",
-                 "Pregnant people","pregnant person",
-                 "racial","Racial inequities","Racial injustices","Racial Justice","Racism","Racist","Secure Border","Secure the border","Slavery",
-                 "systemic",
-                 "Terrorist",
-                 "Transgender","transsexual","Trauma")
-}
-
-# term <- terms[18]
-
-# load("/Users/judgelor/University of Michigan Dropbox/Devin Judge-Lord/regulationsdotgov-data/data/search/underserved/underserved_documents.rda")
-# documents <- comments
-# save(documents , file = "/Users/judgelor/University of Michigan Dropbox/Devin Judge-Lord/regulationsdotgov-data/data/search/underserved/underserved_documents.rda")
+# term <- searchTerm[18]
 
 # FIRST CORRECT MIS-LABELED OBJECTS (documents called "comments")
 p <- function(term){
 
-  path <- here::here(directory, term, paste0(term, "_documents.rda")) |> str_remove("racialization")
+  path <- here::here(directory, term, paste0(term, "_documents.rda"))
 
   load(path)
   message(ls() |> str_remove_all("path|term"), "|", term, "|"  , unique(documents$searchTerm) )
@@ -83,10 +49,15 @@ if(exists("d") & !exists("documents")){
 
 walk(terms, p)
 
-# THEN COMBIND THE DATA
+
+######################
+# DOCUMENTS
+#######################
+
+# THEN COMBINE THE DATA
 p <- function(term){
 
-  path <- here::here(directory, term, paste0(term, "_documents.rda")) |> str_remove("racialization")
+  path <- here::here(directory, term, paste0(term, "_documents.rda"))
 
   load(path)
 
@@ -95,7 +66,7 @@ p <- function(term){
 
 d <- map_dfr(terms, p)
 
-
+# crosswalk
 load(here::here("data", "crosswalk.rda"))
 
 rules_racial_all <- d |>
@@ -111,6 +82,9 @@ rules_racial_all <- d |>
 rules_racial_all |>
   filter(is.na(department_agency_acronym)) |>
   count(agencyId)
+
+inspect <- rules_racial_all |>
+  filter(is.na(department_agency_acronym))
 
 
 save(rules_racial_all,
@@ -138,6 +112,10 @@ save(rules_racial_distinct_totals,
 
 save(terms, file=here::here("data", "rules_terms.rda"))
 
+
+
+
+
 # TOTALS
 load(here::here("data", "metadata", "documents_count.rda") |> str_replace("racialization", "regulationsdotgov-data") )
 
@@ -153,4 +131,5 @@ rules_total <- documents_count |>
 rules_total |> filter(is.na(regulationsdotgov_agency))
 
 save(rules_total, file=here::here("data", "rules_total.rda"))
+
 

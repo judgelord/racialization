@@ -89,10 +89,10 @@ int_breaks <- function(x, n = 5) {
 
 # All racialized terms 
 
-```{r trends-rules-all}
+```{r trends-rule-docs-all}
 #| fig-width: 4
 #| fig-height: 3
-#| label: trends-rules
+#| label: trends-rule-docs
 
 
 load(here::here("data", "rules_terms.rda"))
@@ -103,12 +103,12 @@ load(here::here("data", "rules_racial_distinct.rda"))
 set <- rules_racial_distinct  |>  #comments |>
   mutate(year = str_sub(postedDate, 1,4) |> as.numeric()) |> 
   filter(year > 2004) |> 
-    filter(documentType %in% c("Rule", "Proposed Rule") ) |> 
+  #  filter(documentType %in% c("Rule", "Proposed Rule") ) |> 
   expand(agencyId, year, documentType)
 
 df <- rules_racial_distinct  |>  #comments |>
   mutate(year = str_sub(postedDate, 1,4) |> as.numeric()) |>
-  filter(documentType %in% c("Rule", "Proposed Rule") ) |> 
+  #filter(documentType %in% c("Rule", "Proposed Rule") ) |> 
   count(agencyId, year, documentType) |>
   group_by(agencyId) |>
   mutate(perAgency = sum(n)) |>
@@ -141,11 +141,10 @@ df |>
       color = president,
       shape = documentType) +
   geom_point() +
-  labs(title = paste0('Policies with Racialized Terms'),
-       y = "Policy Documents (Rules)",
+  labs(title = paste0('Policy Documents with Racialized Terms'),
+       y = "Policy Documents",
        x = "",
-       color = "",
-       shape = "") +
+       color = "") +
   geom_line() + 
   #geom_smooth(#method = "lm", se = F) +
   facet_wrap("agencyId",
@@ -158,9 +157,7 @@ df |>
 
 
 
-```{r trends-rules-term}
-#| fig-width: 4
-#| fig-height: 3
+```{r trends-rule-docs-term}
 
 directory <- here::here("data", "search") |> str_replace("racialization", "regulationsdotgov-data")
 
@@ -176,7 +173,7 @@ file.info(path) |> as_tibble()
 load(path)
 
 df <- documents |>  #comments |>
-    filter(documentType %in% c("Rule", "Proposed Rule") ) |> 
+    #filter(documentType %in% c("Rule", "Proposed Rule") ) |> 
   mutate(year = str_sub(postedDate, 1,4) |> as.numeric()) |>
   count(agencyId, year) |>
   group_by(agencyId) |>
@@ -215,8 +212,8 @@ df |>
       y = n, 
       color = president) +
   geom_point() +
-  labs(title = paste0('Policies with "', str_to_title(term), '"'),
-       y = "Policy Documents (Rules)",
+  labs(title = paste0('Policy Documents with "', str_to_title(term), '"'),
+       y = "Policy Documents",
        x = "",
        color = "") +
   geom_line() + 
@@ -243,7 +240,7 @@ map(terms, possibly(p))
 
 # Race
 
-```{r trends-rules-racial}
+```{r trends-rule-docs-racial}
 #| fig-width: 4
 #| fig-height: 3
 
@@ -262,7 +259,7 @@ map(terms, possibly(p))
 
 ### Civil Rights
 
-```{r trends-rules-civil-rights}
+```{r trends-rule-docs-civil-rights}
 #| fig-width: 4
 #| fig-height: 3
 
@@ -276,7 +273,7 @@ map(terms, possibly(p))
 
 ### Immigration 
 
-```{r trends-rules-immigration}
+```{r trends-rule-docs-immigration}
 #| fig-width: 4
 #| fig-height: 3
 
@@ -301,7 +298,7 @@ map(terms, possibly(p))
 
 ## Racial/Ethnic Groups
 
-```{r trends-rules-groups}
+```{r trends-rule-docs-groups}
 #| fig-width: 4
 #| fig-height: 3
 

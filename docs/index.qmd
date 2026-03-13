@@ -1,0 +1,15 @@
+---
+title: "index"
+format: html
+---
+
+[paper](https://judgelord.github.io/racialization/racialization-paper.pdf)
+
+<!--
+[slides](https://judgelord.github.io/racialization/mpsa-presentation.html#/title-slide)
+
+
+![The National Park Service (Interrior Department) removes displays on George Washington’s ownership of enslaved people](https://static01.nyt.com/images/2026/02/17/multimedia/17trump-news-reporter-updates-jfhc/17trump-news-reporter-updates-jfhc-jumbo.jpg)
+
+Trump Nominee on ‘White Erasure’: Jeremy Carl, President Trump’s pick for a senior State Department post, told the Senate Foreign Relations Committee during his confirmation hearing that a loss of a dominant white culture is weakening the country.
+--> 
