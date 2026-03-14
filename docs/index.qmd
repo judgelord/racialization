@@ -7,13 +7,7 @@ abstract: |
   The extent to which public discourse about policymaking highlights the implications of policy for racial inequality varies across contexts and over time. While some institutions are inherently more central to maintaining or reducing racial inequality than others, policymakers, the media, and advocates talk about the aims and implications of policy in different ways over time. Some may downplay the racial implications of policy while others may emphasize race, either to reduce racial inequality or increase it. While qualitative scholarship highlights the importance of institutional racialization for policy outcomes and public opinion research finds that racialization affects public support, we lack systematic measures. Using text analysis of policy documents, media coverage, and advocacy agendas, we develop new measures for the racialization of federal agencies over time. We find that racialization is not correlated with perceived liberal or conservative ideology. However, agencies perceived as more ideological---whether liberal or conservative---tend to be more racialized. We also find significant variation in racialization over time, suggesting that efforts to reform institutions and to reframe policy debates affect racialization, even when the agency's mission and core functions largely remain the same. 
 ---
 
-# [Draft paper](https://judgelord.github.io/racialization/racialization-paper.pdf)
-
-# [Slides](https://judgelord.github.io/racialization/mpsa-presentation.html#/title-slide)
-
-# [Replication code](https://judgelord.github.io/racialization/replication)
-
-# [Replication Data]
+# [Draft paper](https://judgelord.github.io/racialization/racialization-paper.pdf) | [Slides](https://judgelord.github.io/racialization/mpsa-presentation.html#/title-slide) | [Replication code](https://judgelord.github.io/racialization/replication) | [Data](https://github.com/judgelord/racialization/tree/master/data)
 
 <!--
 [slides](https://judgelord.github.io/racialization/mpsa-presentation.html#/title-slide)

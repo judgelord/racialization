@@ -21,7 +21,6 @@ editor_options:
   chunk_output_type: console
 ---
 
-
 ```{r global.options, include=FALSE}
 testing = F
 
@@ -93,13 +92,6 @@ kablebox_long <- . %>%
   scroll_box(height = "500px")
 ```
 
-
-
-#TODO 
-
-- [ ] 
-
-
 ```{r cm, include=FALSE}
 # directory to store model objects 
 if (!dir.exists(here::here("models"))) {dir.create(here::here("models"))}
@@ -126,7 +118,16 @@ gm <- list(
 )
 ```
 
+This file produces all of the numbers and figures and numbers used in the paper.
+
+#TODO 
+
+- [ ] Dynamic scores
+
 # Data
+
+The data required to run the code below and the code that produced it are available on [github.com/judgelord/racialization](https://github.com/judgelord/racialization/tree/master/data)
+
 
 ## Agency name crosswalk 
 
