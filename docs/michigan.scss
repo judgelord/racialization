@@ -1,0 +1,142 @@
+/*-- scss:defaults --*/
+// importing fonts
+@import url(https://fonts.googleapis.com/css?family=Nunito+Sans&display=swap);
+@import url(https://fonts.googleapis.com/css?family=Nunito+Sans&display=swap);
+
+// fonts
+$font-family-sans-serif: 'Nunito Sans', sans-serif !default;
+
+// headings
+$presentation-heading-font: 'Nunito Sans', sans-serif  !default;
+$presentation-heading-color: #00274C !default;
+$h1-font-size: 1.6em !default;
+$h2-font-size: 1.3em !default;
+$h3-font-size: 1.15em !default;
+
+//code
+$code-color: #00274C !default;
+$font-family-monospace: 'Nunito Sans', monospace  !default;
+$code-bg: #A5A508;
+$code_inline_background_color: $code-bg;
+$code-highlight-color: #FFCB05;
+
+// general
+$body-bg: #FFFFFF;
+$body-color: #00274C;
+$navbar-bg: $body-color;
+$link-color: #2F65A7;
+$text-muted: #655A52;
+$background_color: #FFFFFF;
+$text_font_size: 1rem;
+$callout-color-note: #75988d;
+$callout-color-tip: #A5A508;
+$callout-color-warning: #9A3324;
+$callout-color-caution: #D86018;
+$callout-color-important: #FFCB05;
+$table_row_even_background_color:#CFC096;
+
+/*-- scss:rules --*/
+ul li:first-child,
+ol li:first-child {
+  margin-top: 0; // No extra space at the end
+}
+
+// tiny transparent text
+.transparent {
+   Opacity:0;
+   font-size: 0.01em;
+}
+
+.subtitleqwerty {
+  color: $body-color;
+  font-size: $h2-font-size;
+  font-family: $presentation-heading-font;
+}
+
+.author {
+  color: $body-bg;
+  font-size: $h2-font-size;
+  font-family: $presentation-heading-font;
+}
+
+.center-x{
+    text-align: center;
+}
+
+mark {
+  background-color: $code_highlight_color;
+  color: $body-color;
+}
+
+p {
+    margin-top:-5px;
+}
+
+
+.blockquote {
+  border-left: 3px solid $text-muted;
+  padding-left: 1em;
+  font-style: italic;
+  color: $text-muted;
+}
+
+
+
+// Default list styling
+ul, ol {
+  li {
+    margin-bottom: 0.0em;
+    padding-bottom: 0.0em;
+    line-height: 1.5; // Default for normal pages
+    gap: 0.0em;
+  }
+}
+
+
+/*-- PRESENTATIONS --*/
+
+.reveal {
+  font-size: 35px;
+}
+
+// Override for Reveal.js slides
+.reveal li { padding: 0px 0px; }
+
+.reveal {
+  ul, ol {
+    li {
+      line-height: 1.2 !important; // Override for slides; !important ensures it's not overridden by the default
+    }
+  }
+}
+
+
+/*-- make menue logo the block M --*/
+.reveal .slide-menu-button .fa-bars::before {
+  background-image: url('https://brand.umich.edu/assets/brand/downloads/um-logos/primary_logo_kit/black-logo/u-m_logo-black.png') !important;
+}
+
+.reveal blockquote {
+  border-left: 3px solid $text-muted;
+  padding-left: 1em;
+  font-style: italic;
+  color: $text-muted;
+}
+
+.reveal ol li:first-child:nth-last-child(n + 10),
+.reveal ol li:first-child:nth-last-child(n + 10) ~ li {
+  margin-left: 1em;
+}
+
+.reveal .slide-number {
+  font-family: $presentation-heading-font;
+}
+
+.reveal .panel-tabset [role=tab] {
+    font-size: 0.8em;
+}
+
+.reveal .footer {
+    color: $text-muted;
+    font-family: $presentation-heading-font;
+}

@@ -118,7 +118,7 @@ gm <- list(
 )
 ```
 
-This file produces all of the numbers and figures and numbers used in the paper.
+This file produces all of the numbers and figures used in the paper, except the trends over time figures, which are currently produced in `trends-nyt.qmd` and `trends-rules.qmd`.
 
 #TODO 
 
@@ -382,7 +382,7 @@ d1 |>
   #geom_smooth(method = "lm") + 
   geom_point() +    geom_label_repel(size =3,force_pull = 10, alpha = .5)  + 
   labs(title = "Racialized Attention",
-       x = "Scaled Mandate for Leadership (Project 2025) Mentions",
+       x = "Scaled Mandate for Leadership Words",
        y = "Scaled NYT Articles")
 
 
@@ -446,7 +446,7 @@ d1 |>
   #geom_smooth(method = "lm") + 
   geom_point() +    geom_label_repel(size =3,force_pull = 10, alpha = .5)  + 
   labs(title = "Racialized Attention",
-       x = "Scaled Rulemaking Mentions",
+       x = "Scaled Number of Rules",
        y = "Scaled NYT Articles")
 
 d1 <- drop_na(d, NYT_percent_norm, rules_percent_norm)
@@ -468,8 +468,8 @@ d1 |>
   #geom_smooth(method = "lm") + 
   geom_point() +    geom_label_repel(size =3,force_pull = 10, alpha = .5)  + 
   labs(title = "Racialized Attention as a Share of Total",
-       x = "Scaled Rulemaking Mentions",
-       y = "Scaled NYT Articles")
+       x = "Scaled Share of Rules",
+       y = "Scaled Share of NYT Articles")
 
 cor_rules_v_nyt <- cor.test(d$rules_percent_norm, d$NYT_percent_norm)
 
@@ -489,6 +489,7 @@ d1 <- drop_na(d, MFL_norm, rules_norm)
 max_x <- max_y <- max(c(d1$MFL_norm, d1$rules_norm), na.rm = T)
 min_x <- min_y <-  min(c(d1$rules_norm, d1$NYT_norm), na.rm = T)
 
+
 d1 |> 
   ggplot() + 
   aes(x = MFL_norm, 
@@ -502,14 +503,15 @@ d1 |>
   #geom_smooth(method = "lm") + 
   geom_point() +    geom_label_repel(size =3,force_pull = 10, alpha = .5)  + 
   labs(title = "Racialized Attention",
-       x = "Scaled Mandate for Leadership (Project 2025) Mentions",
-       y = "Scaled Rulemaking Mentions")
+       x = "Scaled Mandate for Leadership Words",
+       y = "Scaled Number of Rules")
 
 
 d1 <- drop_na(d, MFL_percent_norm, rules_percent_norm)
 
 max_x <- max_y <- max(c(d1$MFL_percent_norm, d1$rules_percent_norm), na.rm = T)
-min_x <- min_y <-  min(c(d1$rules_percent_norm, d1$MFL_percent_norm), na.rm = T)
+min_x <-  min_y <-  min(c(d1$rules_percent_norm, d1$MFL_percent_norm), na.rm = T)
+min_x <- min(c(d1$MFL_percent_norm), na.rm = T)
 
 
 
@@ -526,8 +528,8 @@ d1 |>
   #geom_smooth(method = "lm") + 
   geom_point() +    geom_label_repel(size =3,force_pull = 10, alpha = .5)  + 
   labs(title = "Racialized Attention as a Share of Total",
-       x = "Scaled Mandate for Leadership (Project 2025) Mentions",
-       y = "Scaled Rulemaking Mentions")
+       x = "Scaled Share of Mandate for Leadership",
+       y = "Scaled Share of Rules")
 
 cor_rules_v_mfl <- cor.test(d$MFL_percent_norm, d$rules_percent_norm)
 

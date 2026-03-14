@@ -10,8 +10,6 @@ abstract: |
 # [Draft paper](https://judgelord.github.io/racialization/racialization-paper.pdf) | [Slides](https://judgelord.github.io/racialization/mpsa-presentation.html#/title-slide) | [Replication code](https://judgelord.github.io/racialization/replication) | [Data](https://github.com/judgelord/racialization/tree/master/data)
 
 <!--
-[slides](https://judgelord.github.io/racialization/mpsa-presentation.html#/title-slide)
-
 
 ![The National Park Service (Interrior Department) removes displays on George Washington’s ownership of enslaved people](https://static01.nyt.com/images/2026/02/17/multimedia/17trump-news-reporter-updates-jfhc/17trump-news-reporter-updates-jfhc-jumbo.jpg)
 
