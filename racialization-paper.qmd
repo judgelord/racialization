@@ -221,7 +221,7 @@ Note that inner city and tough on crime are not in our terms
 
 These findings align with subsequent research by @tesler_spillover_2012, who demonstrates that Obama's association with healthcare policies, such as "Obamacare," and media coverage on these issues played a significant role in widening the gap between Black and White Americans' healthcare policy preferences. Using survey experiments, Tesler provides insights into why the racial divide on healthcare opinion grew by 20 percentage points, a larger divide than what was seen during the Clinton presidency. His findings support the argument that racial attitudes were a significant driver of this divide.
 
-Clinton’s rhetoric and framing around welfare, interestingly, were strategic in signaling his racial distancing from Black Americans while reinforcing stereotypes about them and their relationship with welfare. @smith_civic_2008 highlights how Clinton’s strategy reflected Thomas Edsall’s argument (Washington Post report) that the Democratic Party should shift focus from issues of racism, poverty, affirmative action, and civil rights to middle-class concerns, such as lower taxes and a tough approach to welfare. As part of this strategy, Clinton frequently used the phrase “opportunity plus responsibility” in 1992, subtly appealing to White voters' views that Black Americans were irresponsible, lazy, and preferred welfare over work. This illustrates how both Republican and Democratic administrations have used racialized language in framing policy issues, which influences public perceptions and garners media attention, underscoring the need to include racialization as a metric to fully grasp its impact on agency perceptions.
+Clinton’s rhetoric and framing around welfare, interestingly, were strategic in signaling his racial distancing from Black Americans while reinforcing stereotypes about them and their relationship with welfare. @smith_civic_2008 highlights how Clinton’s strategy reflected Thomas Edsall’s argument (Washington Post report) that the Democratic Party should shift focus from issues of racism, poverty, affirmative action, and civil rights to middle-class concerns, such as lower taxes and a tough approach to welfare. As part of this strategy, Clinton frequently used the phrase “opportunity plus responsibility” in 1992, subtly appealing to White voters' views that Black Americans were irresponsible, lazy, and preferred welfare over work. This illustrates how both Republican and Democratic administrations have used racialized language in framing policy issues, which influences public perceptions and garners media attention, underscoring the need to include racialization in quantitative policy research.
  
 Though @schneider_social_1993 does not fully engage with the nuances of systemic racism or critically examine how race is socially constructed, their analysis in "Social Construction of Target Populations: Implications for Politics and Policy" offers valuable insights into the role of language in policymaking. They highlight how policy recipients are categorized and treated differently based on constructed narratives. As they argue, “Citizens encounter and internalize the messages not only through observation of politics and media coverage but also through their direct, personal experiences with public policy. These experiences tell them whether they are viewed as 'clients' by government and bureaucracies or whether they are treated as objects.” Despite these limitations, their work contributes to understanding the role of language in policymaking and how policy shapes public perceptions. However, the framework falls short in addressing how anti-Blackness and racial hierarchies explicitly structure these categorizations, leaving room for expansion through insights from racial and critical policy studies.
 
@@ -550,7 +550,20 @@ knitr::include_graphics("docs/figs/ideo_v_score-2.png")
 ```
 
 
-\clearpage 
+
+## Next Steps:  Dynamic Racialization Scores
+
+In @sec-nyt and @sec-rules, we present over-time trends. Yet, the measures in @sec-compared and @sec-ideology average out these trends to arrive at one number for the 2005-2025 period. Calculating scores that vary across presidential administrations will allow comparisons of how relative racialization across sources has changed over time and facilitate comparison with dynamic ideology scores [@acs_mapping_2025].
+
+More systematic historical analysis could add context to how institutional histories shape contemporary patterns of racialization. For example, contemporary racialization may correlate with agencies’ resistance to or urgency in establishing and supporting civil rights reforms, such as the development and enforcement of Title VIII offices [@walton_when_1988]. Are agencies that were historically slower to adopt or implement civil rights protections more likely to be perceived as racialized in contemporary policy discourse? Likewise, agencies such as the Department of Homeland Security emerged from policy debates deeply shaped by racialized concerns about immigrants and muslims. Taken together, linking these historical patterns to our racialization scores will help us study the durability of racialization. To what extent do institutional histories continue to shape how they are understood and contested in public discourse? 
+
+<!--
+#### Economic Redistribution
+
+Moving forward, we aim to enhance our measure by incorporating economic redistribution, allowing us to better capture how racialization translates into tangible economic outcomes. By examining the disparate economic effects of policies, we can more accurately assess how racialization correlates to wealth distribution, access to resources, and broader economic inequalities. This addition will provide a more comprehensive understanding of how racialization intersects with economic disparities, offering a clearer picture of how policy decisions affect communities both racially and economically. This measure will enable us to further explore whether such perceptions align with measurable disparities in policy outcomes.
+
+
+--> 
 
 
 # Conclusion 
@@ -576,22 +589,6 @@ Another important extension of this measure is the ability to connect contempora
 
 This approach also opens the door to examining whether agencies with more racialized institutional histories are more likely to participate in contemporary racial discourse or attract media and political attention related to race. In turn, scholars could explore whether these historical patterns shape how agencies are perceived today and whether institutions with deeper histories of racial conflict or inequality remain more closely associated with debates about race and racial justice.
 
-## Next Steps
-
-
-#### Dynamic Racialization Scores
-
-In @sec-nyt and @sec-rules, we present over-time trends. Yet, the measures in @sec-compared and @sec-ideology average out these trends to arrive at one number for the 2005-2025 period. Calculating scores that vary across presidential administrations will allow comparisons of how relative racialization across sources has changed over time and facilitate comparison with dynamic ideology scores [@acs_mapping_2025].
-
-More systematic historical analysis could add context to how institutional histories shape contemporary patterns of racialization. For example, contemporary racialization may correlate with agencies’ resistance to or urgency in establishing and supporting civil rights reforms, such as the development and enforcement of Title VIII offices [@walton_when_1988]. Are agencies that were historically slower to adopt or implement civil rights protections more likely to be perceived as racialized in contemporary policy discourse? Likewise, agencies such as the Department of Homeland Security emerged from policy debates deeply shaped by racialized concerns about immigrants and muslims. Taken together, linking these historical patterns to our racialization scores will help us study the durability of racialization. To what extent do institutional histories continue to shape how they are understood and contested in public discourse? 
-
-<!--
-#### Economic Redistribution
-
-Moving forward, we aim to enhance our measure by incorporating economic redistribution, allowing us to better capture how racialization translates into tangible economic outcomes. By examining the disparate economic effects of policies, we can more accurately assess how racialization correlates to wealth distribution, access to resources, and broader economic inequalities. This addition will provide a more comprehensive understanding of how racialization intersects with economic disparities, offering a clearer picture of how policy decisions affect communities both racially and economically. This measure will enable us to further explore whether such perceptions align with measurable disparities in policy outcomes.
-
-
---> 
 
 \clearpage 
 
@@ -721,9 +718,19 @@ knitr::include_graphics("docs/figs/trends-rule-docs-groups-6.png") # hispanic
 
 In the paper, we show trends for mentions of all racialized terms combined. As a more conservative measure, we show trends just for articles using the word "racial." Of  `r n_nyt_articles` articles mentioning agencies from 2005 to 2025, `r n_nyt_racial` also mentioned the word "racial."
 
-### Over Time Trends 
 
 @fig-trends-nyt-racial shows the number of articles containing the word "racial" by year for selected agencies. @fig-trends-nyt-total-racial shows the same trend as @fig-trends-nyt-racial aggregated across agencies. Overall, the frequency of racialized articles mentioning agencies peaked in 2020, the end of the first Trump Administration, with 2021, the first year of the Biden administration, the second-highest. This likely reflects the larger national racial reckoning in US public discourse ignited by the police killings of Black individuals and subsequent racial justice protests.
+
+
+```{r}
+#| fig-cap: 'New York Times Total Articles Mentioning a Federal Agency and "Racial," 2005-2025'
+#| label: fig-trends-nyt-total-racial
+#| out-width: 50%
+
+knitr::include_graphics("docs/figs/trends-nyt-total-racial-1.png")
+```
+
+
 
 
 ```{r}
@@ -735,15 +742,6 @@ knitr::include_graphics("docs/figs/trends-nyt-racial-1.png")
 ```
 
 
-
-
-```{r}
-#| fig-cap: 'New York Times Total Articles Mentioning a Federal Agency and "Racial," 2005-2025'
-#| label: fig-trends-nyt-total-racial
-#| out-width: 50%
-
-knitr::include_graphics("docs/figs/trends-nyt-total-racial-1.png")
-```
 
 
 \clearpage 
