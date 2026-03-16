@@ -16,6 +16,12 @@ folder <- here::here("data", "ProQuest", "2026", "nyt racial counts" )
 files <-  list.files(folder)
 files
 
+d <- here::here(folder, file) |>
+  read_csv() |>
+  pull("Source Type") |>
+  unique() |>
+  paste()
+
 nyt_racial <- map_dfr(files, read)
 save(nyt_racial, file = here::here("data", "nyt_racial.rda"))
 
@@ -24,9 +30,6 @@ files <-  list.files(folder)
 files
 
 nyt_total <- map_dfr(files, read)
-
-
-
 save(nyt_total, file = here::here("data", "nyt_total.rda"))
 
 
