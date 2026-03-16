@@ -163,7 +163,7 @@ nyt_total |>
       group = president) +
   geom_point() +
   labs(#title = paste0('Articles Mentioning a\nFederal Agency and "', str_to_title(term),'"'),
-       y = paste0('NYT Aticles  ', str_to_title(term),'' ),
+       y = paste0('NYT Aticles with ', str_to_title(term),'' ),
        x = "",
        color = "") +
       geom_line() + 

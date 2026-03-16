@@ -22,7 +22,7 @@ library(scales)
 
 
 knitr::opts_chunk$set(echo = T, # code is folded 
-                      cache = F, # CACHE 
+                      cache = T, # CACHE 
                       fig.width = 6.5, 
                       fig.height = 6.5,
                       split = T,
@@ -151,7 +151,7 @@ df |>
   facet_wrap("agencyId",
              scales = "free_y") + 
   scale_color_viridis_d(option = "inferno", end = .8) + 
- scale_y_continuous(breaks = int_breaks) + 
+ scale_y_continuous(breaks = int_breaks, limits = c(0, NA) ) + 
   theme_minimal() + 
   theme(axis.text.x = element_text(angle = 45))
 ```
@@ -169,6 +169,8 @@ directory <- here::here("data", "search") |> str_replace("racialization", "regul
 # term <- terms[1]
 
 p <- function(term){
+  
+  print(term)
 
 path <- here::here(directory, term, paste0(term, "_documents.rda")) |> str_remove("racialization")
 
@@ -224,7 +226,7 @@ df |>
   facet_wrap("agencyId",
              scales = "free_y") + 
   scale_color_viridis_d(option = "inferno", end = .8) + 
- scale_y_continuous(breaks = int_breaks) + 
+ scale_y_continuous(breaks = int_breaks, limits = c(0, NA)) + 
   theme_minimal() + 
   theme(axis.text.x = element_text(angle = 45))
 

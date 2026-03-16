@@ -16,10 +16,10 @@ author:
       - name: University of Michigan
     #department: Ford School of Public Policy
 thanks: | 
- We will appreciate any comments on this very early and evolving draft. Slides, replication files, and the most recent draft are available at [judgelord.github.io/racialization](http://judgelord.github.io/racialization). We are grateful for comments from Alicia Barnes, Mallory Compton, and Vincent Hutchings. 
+ We welcome comments on this early and evolving draft. Slides, replication files, and the most recent draft are available at [judgelord.github.io/racialization](http://judgelord.github.io/racialization). We are grateful for comments from Alicia Barnes, Mallory Compton, and Vincent Hutchings. 
 date: today
 abstract: |
-  The extent to which public discourse about policymaking highlights the implications of policy for racial inequality varies across contexts and over time. While some institutions are inherently more central to reducing or maintaining racial inequality than others, policymakers, the media, and advocates discuss the aims and implications of policy in different ways over time. Some may downplay the racial implications of policy while others may emphasize race, either to reduce racial inequality or increase it. While qualitative scholarship highlights the importance of institutional racialization for policy outcomes and public opinion research finds that racialization affects public support, we lack systematic measures. Using text analysis of policy documents, media coverage, and advocacy agendas, we develop new measures for the racialization of federal agencies over time. We find that racialization is not correlated with perceived liberal or conservative ideology. However, agencies perceived as more ideological---whether liberal or conservative---tend to be more racialized. We also find significant variation in racialization over time, suggesting that efforts to reform institutions and to reframe policy debates affect racialization, even when the agency's mission and core functions largely remain the same. 
+  The extent to which public discourse about policymaking highlights the implications of policy for racial inequality varies across contexts and over time. While some institutions are inherently more central to reducing or maintaining racial inequality than others, policymakers, the media, and advocates may discuss the aims and implications of policy in different ways. Some may downplay the racial implications of policy while others may emphasize race, either to reduce racial inequality or increase it. While qualitative scholarship highlights the importance of institutional racialization for policy outcomes and public opinion research finds that racialization affects public support, we lack systematic measures. Using text analysis of policy documents, media coverage, and advocacy agendas, we develop new measures for the racialization of federal agencies over time. We find that racialization is not correlated with perceived liberal or conservative ideology. However, agencies perceived as more ideological---whether liberal or conservative---tend to be more racialized. We also find significant variation in racialization over time, suggesting that efforts to reform institutions and to reframe policy debates affect racialization, even when the agency's mission and core functions largely remain the same. 
 # abstract-extra: Racialization reflects an institution's perceived role in shaping racial inequality and political conflicts. Agencies involved in immigration enforcement are highly racialized and perceived as conservative. Others, like the Departments of Labor, Education, and Health and Human Services, are also racialized but perceived as liberal. 
 # dataverse: 
 keywords: "Racialization, bureaucracy, ideology, rhetoric, framing, institutions"
@@ -108,7 +108,7 @@ Racialization plays a key role in efforts to reshape government institutions. Fo
 
 In January 2025, the Trump Administration issued the "Ending Radical and Wasteful Government DEI Programs and Preferencing" executive order, initiating efforts to dismantle diversity, equity, inclusion, and accessibility (DEIA) in federal programs and practices. This executive order instructs agency heads to end efforts to reduce patterns of racial exclusion in the federal workforce. In tandem with this order, numerous federal employees whose jobs included attention to racial diversity, equity, or inclusion were targeted and abruptly dismissed. In parallel, significant budget cuts targeted programs and institutions researching racial inequalities and patterns of exclusion. Funding for initiatives promoting racial equity has been severely restricted, limiting their ability to function and fulfill their missions. These initiatives were largely aligned with the language and goals of the Heritage Foundation’s Project 2025, which outlined policies designed to reduce attention to racial inequity in the work of federal government institutions.
 
-In other ways, attention to race increased under the Trump administration. Departing from the longstanding practice of law enforcement denying accusations of racial profiling, the administration defended racial profiling as legal if related to immigrant capture and removal operations.<!--CITE--> At the same time, the US State Department and US Customs and Immigration Service (USCIS) justified prioritizing White South Africans because they allegedly face racial discrimination.<!--CITE--> Likewise, the Equal Employment Opportunity Commission (EEOC) invested resources in encouraging White Americans to bring claims of reverse discrimination.<!--CITE--> The EEOC also reclassified employer efforts to prevent discrimination and create inclusive workplaces as discrimination against White men.<!--CITE-->
+In other ways, attention to race increased under the Trump administration. Departing from the longstanding practice of law enforcement denying accusations of racial profiling, the administration defended racial profiling as legal if related to immigrant capture and removal operations.<!--CITE--> At the same time, the US State Department and US Citizenship and Immigration Services (USCIS) justified prioritizing White South Africans because they allegedly face racial discrimination.<!--CITE--> Likewise, the Equal Employment Opportunity Commission (EEOC) invested resources in encouraging White Americans to bring claims of reverse discrimination.<!--CITE--> The EEOC also reclassified employer efforts to prevent discrimination and create inclusive workplaces as discrimination against White men.<!--CITE-->
 
 <!--- TO ADVANCE THE ARGUMENT, THIS NEEDS TO TALK ABOUT RACIALIZATION OF THE DEPT OF EDUCATION, NOT THE RHETORIC OF STATES RIGHTS On March 20, 2025, the Trump administration issued another major executive order, "Improving Education Outcomes by Empowering Parents, States, and Communities." This order aims to dismantle the Department of Education, arguing that the federal education bureaucracy had failed and that authority over education should return to state control. 
 
@@ -121,7 +121,7 @@ EXAMPLES
 ^ ask Devin about this ^
 --->
 
-The common theme in these examples is reforms and scrutiny targeting specific federal agencies by framing the institution within the context of racial politics or by de-emphasizing that frame. The language used by policymakers, politicians, advocates, and the media to describe agencies highlights how specific agencies are racialized or deracialized to advance various policy goals. This raises important descriptive questions: *(1) How consistent is racialization in different contexts (e.g., the media, advocacy, and policymaking), (2) How consistent is racialization over time? (3) Do perceptions of racialization differ across agencies typically seen as either conservative or liberal?*
+The common theme in these examples is reforms and scrutiny targeting specific federal agencies by framing the institution within the context of racial politics or by de-emphasizing that frame. The language used by policymakers, politicians, advocates, and the media to describe agencies highlights how specific agencies are racialized or deracialized to advance various policy goals. This raises important descriptive questions: *(1) How consistent is racialization in different contexts (e.g., the media, advocacy, and policymaking)? (2) How consistent is racialization over time? (3) Do perceptions of racialization differ across agencies typically seen as either conservative or liberal?*
 
 To help scholars address these questions, this paper develops measures of institutional racialization, capturing when race becomes a salient dimension of discourse surrounding federal agencies and their work. Using a large corpus of media coverage, policy documents, and advocacy agendas, the measure captures when agencies are discussed in racialized language. By identifying these moments, the paper provides a way to observe how bureaucratic institutions become embedded in broader political conversations over race.
 
@@ -277,7 +277,9 @@ load(here::here("data", "rules_terms.rda"))
 
 > `r terms |> paste0(collapse = "; ")`
 
-We validated these terms by searching the text of Mandate for Leadership reports, news articles, and regulation.gov for candidate terms and inspecting the documents returned. We excluded candidate terms that returned a significant share of documents where the term was not used with a racialized meaning. 
+We validated terms by searching the text of Mandate for Leadership reports, news articles, and regulation.gov for candidate terms and inspecting the documents returned. We excluded candidate terms that returned a significant share of documents where the term was not used with a racialized meaning. 
+
+For each source, we have two counts: $r_{i}$ (the **count of racialized** documents/articles/sentences about agency $i$) and $y_{i}$ (the **total** document/article/sentence about agency $i$). The **Racialization Score** is then calculated as $z_{i} = \frac{x_i - \bar{x}}{sd(x)}$ (standardized, mean 0, standard deviation 1). Where  $x_i = \frac{\sqrt{r_{i}}}{\sqrt{y_{i}}}$  to stabilize the variance. This results in a score transforming the percent of racialized documents/articles/sentences about agency $i$ to have a mean of 0, standard deviation of 1. 
 
 ##  Mandate For Leadership Reports {#sec-mfl}
 
@@ -286,13 +288,14 @@ We validated these terms by searching the text of Mandate for Leadership reports
 
 <!-- expand more here -->
 
-The Heritage Foundation gained media attention and shaped public discussions of institutional reform with its recent *Project 2025* report, published in 2024. This report is part of their broader Mandate for Leadership series, which began in 1981 to provide policy recommendations for incoming Republican administrations. The structure of these reports has remained consistent over the years: they offer policy suggestions organized by targeting specific federal agencies. According to the Heritage Foundation's website, the Mandate for Leadership "is an agenda prepared by and for conservatives who will be ready on Day One of the next administration to save our country".
+The Heritage Foundation gained media attention and shaped public discussions of institutional reform with its recent *Project 2025* report, published in 2024. This report is part of their broader Mandate for Leadership series, which began in 1981 to provide policy recommendations for incoming Republican administrations. The structure of these reports has remained consistent over the years: they offer policy suggestions for specific federal agencies. According to the Heritage Foundation's website, the Mandate for Leadership "is an agenda prepared by and for conservatives who will be ready on Day One of the next administration to save our country".
 
-The Mandate for Leadership series has significantly shaped conservative policy. For example, @horton_race_2005 documents how the Heritage Foundation had an influential role in attacking affirmative action. 
+The Mandate for Leadership series has significantly shaped conservative policy. For example, @horton_race_2005 documents how the Heritage Foundation had an influential role in attacking affirmative actions to increase racial diversity at various institutions. 
 
 > "Ten days after President Ronald Reagan assumed ofﬁce,... a report entitled Mandate for Leadership: Policy Management in a Conservative Administration...which detailed recommendations for virtually every federal agency, *including those responsible for civil rights policy*. This work, along with its later companion volume, Mandate for Leadership II: Continuing the Conservative Revolution, represented, according to one highly placed journalist, one of the most *'widely circulated'* documents in Washington during the early to mid-1980s."
 
-The impact of the Mandate for Leadership on the second Trump administration is evident in executive orders, budget cuts, firing patterns, and rhetoric targeting federal agencies that Project 2025 accused of advancing the so-called "woke" agenda. 
+The impact of the Mandate for Leadership on the second Trump administration is evident in executive orders, budget cuts, firing patterns, and rhetoric targeting federal agencies that Project 2025 accused of advancing a "woke" (i.e., racially inclusive) agenda. 
+
 
 ### Data
 
@@ -353,11 +356,12 @@ Of these articles mentioning federal agencies, we then identified all articles t
 
 #### Over Time Trends 
 
-@fig-trends-nyt shows the number of articles containing racialized terms by year for selected agencies. @fig-trends-nyt-total shows the same trend as @fig-trends-nyt aggregated across agencies. Overall, the frequency of racialized articles mentioning agencies peaked in 2025, with the second highest being in 2020, the end of the first Trump Administration. The peak in 2025 reflects news coverage of the administration's aggressive policy agenda targeting immigrants and non-white Americans and policies encouraging racial diversity, equity, and inclusion.  The peak in 2020 likely reflects the larger national racial reckoning in US public discourse ignited by the police killings of Black individuals and subsequent racial justice protests.
+@fig-trends-nyt shows the number of articles^[
+Including articles in newspapers, blogs, websites, magazines, as well as podcasts and other audio and video publications available on ProQuest. ] containing racialized terms by year for selected agencies. @fig-trends-nyt-total shows the same trend as @fig-trends-nyt aggregated across agencies. Overall, the frequency of racialized articles mentioning agencies peaked in 2025, with the second highest being in 2020, the end of the first Trump Administration. The peak in 2025 reflects news coverage of the administration's aggressive policy agenda targeting immigrants and non-white Americans and policies encouraging racial diversity, equity, and inclusion.  The peak in 2020 likely reflects the larger national racial reckoning in US public discourse ignited by the police killings of Black individuals and subsequent racial justice protests.
 
 
 ```{r}
-#| fig-cap: 'New York Times Articles Mentioning Racialized Terms By Agency, 2005-2025'
+#| fig-cap: 'New York Times Articles With Racialized Words By Agency, 2005-2025'
 #| label: fig-trends-nyt
 #| out-width: 100%
 
@@ -368,16 +372,27 @@ knitr::include_graphics("docs/figs/trends-nyt-1.png")
 
 
 ```{r}
-#| fig-cap: 'New York Times Total Articles Mentioning a Federal Agency and Racialized Words 2005-2025'
+#| fig-cap: 'New York Times Articles Mentioning a Federal Agency and Racialized Words 2005-2025'
 #| label: fig-trends-nyt-total
-#| out-width: 50%
+#| out-width: 100%
+#| layout-ncol: 2
+#| fig-subcap: 
+#|   - "Number of Articles"
+#|   - "Share of Articles"
 
 knitr::include_graphics("docs/figs/trends-nyt-total-1.png")
+knitr::include_graphics("docs/figs/trends-nyt-total-2.png")
 ```
 
 #### Aggregated Measures of Racialization
 
-We further aggregate all articles from 2005 to 2025 to create two measures of racialization. The first measure of racialized attention is the count of the number of articles mentioning racialized words. @fig-nyt-data shows these counts. The second measures the share of articles using racial terms by dividing this count by the total number of articles mentioning each agency. Both of these measures are rescaled by taking the square root of the count (to stabilize the variance), subtracting the mean (to make the scale mean 0), and dividing by the standard deviation (to make the standard deviation 1). 
+We further aggregate all articles from 2005 to 2025 to create a measure of racialization. We measure the share of articles using racial terms by dividing the number of articles mentioning each agency with racialized words by the total number of articles mentioning each agency.^
+An alternative approach, measuring the volume of racialized attention, would use only the count of the number of articles mentioning racialized words as shown in @fig-nyt-data. We show results with this alternative measure in the supplementary replication materials.] 
+This share is rescaled by taking the square root (to stabilize the variance), subtracting the mean (to make the scale mean 0), and dividing by the standard deviation (to make the standard deviation 1). 
+
+
+
+
 
 ```{r}
 #| fig-cap: "Racialized Words in New York Times Articles, 2005-2025"
@@ -409,11 +424,11 @@ Using the regulation.gov API, we pull all rulemaking documents, subset to propos
 
 #### Over Time Trends 
 
-@fig-trends-rules-terms shows trends over time in mentions of racial terms in agency rules for select agencies. They show attention to race and racial disparities in policy increased at some agencies and decreased at others over time. For example, attention to "racial" and "ethnic" disparities follow similar patterns across the Centers for Medicaid Services (CMS) and Department of Education (ED), Environmental Protection Agency (EPA) and Department of Health and Human Services (DHHS), both peaking at ED during the Obama administration, but peaking during the Biden administration for the others. Attention to Diversity Equity and Inclusion received attention at CMS and ED during the Obama administration, but did only at the EPA and FCC under the Biden administration. 
+@fig-trends-rules-terms shows trends over time in mentions of racial terms in agency rules for select agencies. They show attention to race and racial disparities in policy increased at some agencies and decreased at others over time. For example, attention to "racial" and "ethnic" disparities follows similar patterns across the Centers for Medicaid Services (CMS) and Department of Education (ED), Environmental Protection Agency (EPA), and Department of Health and Human Services (DHHS), both peaking at ED during the Obama administration, but peaking during the Biden administration for the others. Attention to Diversity, Equity, and Inclusion received attention at CMS and ED during the Obama administration, but only at the EPA and FCC under the Biden administration. 
 
-More patterns can be seen in appendix figures: more Department of Transportation (DOT) rules mentioned Affirmative Action and Asian Americans in the second Bush administration than in any subsequent administration. <!--The DOT Federal Highway Administration
+More patterns can be seen in the appendix figures: more Department of Transportation (DOT) rules mentioned Affirmative Action and Asian Americans in the second Bush administration than in any subsequent administration. <!--The DOT Federal Highway Administration
 (FHWA) and--> 
-The Federal Aviation Administration (FAA) also saw a massive spike in orders mentioning "Citizenship" related to a post-9/11 policy requiring owners of U.S.-based air carriers, including shipping companies and air taxis (small planes for hire), to prove that they were owned and effectively controlled by US citizens. This resulted in many businesses losing licenses and investigations into ownership and control, including DHL and Virgin America. Many DOT agencies, including the Federal Highway Administration
+The Federal Aviation Administration (FAA) also saw a massive spike in orders mentioning "Citizenship" related to a post-9/11 policy requiring owners of U.S.-based air carriers, including shipping companies and air taxis (small planes for hire), to prove that they were owned and effectively controlled by US citizens. This resulted in many businesses losing licenses and investigations into ownership and control, including DHL and Virgin America. Many DOT agencies, including the Federal Highway Administration,
 have seen a decrease in attention to racial minorities since the Bush administration. In contrast, the EPA increased its use of nearly all racialized terms over the past 20 years (until 2025), from near zero at the beginning of the Obama Administration to much higher levels, especially during the Biden administration, likely reflecting increased attention to Environmental Justice and attention to racial disparities in public health. @fig-trends-rules shows the time trend aggregated across all agencies. 
 
 ```{r}
@@ -448,8 +463,9 @@ knitr::include_graphics("docs/figs/trends-rules-groups-6.png") # hispanic
 #| label: fig-trends-rules
 #| out-width: 50%
 
-
 knitr::include_graphics("docs/figs/trends-rules-1.png") 
+
+#TODO include total data in rules counts and make a share figure
 ```
 
 #### Aggregated Measures of Racialization
@@ -476,7 +492,7 @@ knitr::include_graphics("docs/figs/rules_data-2.png")
 
 ##  Comparing Racialization Across Contexts {#sec-compared}
 
-We now turn to comparing racialization in the media, advocacy reports, and policy documents. Because each source includes data for a different set of agency, only agencies present in both datasets show up in the figures below.
+We now turn to comparing racialization in the media, advocacy reports, and policy documents. Because each source includes data for a different set of agencies, only agencies present in both datasets show up in the figures below.
 @fig-v compares (a) racialization scores from New York Times (NYT) articles and from the Mandate for Leadership (MFL) reports. Agencies above the red diagonal line have higher scores for the NYT measure. Agencies below the line have higher scores from the MFL measure. The correlation between the NYT and MFL measures is `r cor_nyt_v_mfl$estimate` (p = `r cor_nyt_v_mfl$p.value`).  The largest outlier is the Department of Housing and Urban Development, which is discussed in more racialized terms in NYT articles. Most agencies have higher scores on the MFL measure. 
 
 @fig-v compares (b) racialization scores from rulemaking documents and from NYT articles. Agencies above the red diagonal line have higher scores for the NYT measure. Agencies below the line have higher scores from the MFL measure. The correlation between the RULES and NYT measures is `r cor_rules_v_nyt$estimate` (p = `r cor_rules_v_nyt$p.value`).  One of the largest outliers is again the Department of Housing and Urban Development (HUD), which is discussed in more racialized terms in NYT articles. The Department of State (DOS) publishes rules that contain racialized language much more frequently than the NYT coverage of DOS uses racialized language. The Departments of Education (ED), Justice (DOJ), Homeland Security (DHS), and Labor (DOL) are fairly high on both measures.  Most agencies have slightly higher scores on the rulemaking measure. 
@@ -567,7 +583,7 @@ This approach also opens the door to examining whether agencies with more racial
 
 In @sec-nyt and @sec-rules, we present over-time trends. Yet, the measures in @sec-compared and @sec-ideology average out these trends to arrive at one number for the 2005-2025 period. Calculating scores that vary across presidential administrations will allow comparisons of how relative racialization across sources has changed over time and facilitate comparison with dynamic ideology scores [@acs_mapping_2025].
 
-More systematic historical analysis could add context to how institutional histories shape contemporary patterns of racialization. For example, contemporary racialization may correlate with agencies’ resistance to or urgency in establishing and supporting civil rights reforms, such as the development and enforcement of Title VIII offices [@walton_when_1988]. Were agencies that were historically slower to adopt or implement civil rights protections aremore likely to be perceived as racialized in contemporary policy discourse? Likewise, agencies such as the Department of Homeland Security emerged from policy debates deeply shaped by racialized concerns about immigrants and muslims. Taken together, linking these historical patterns to our racialization scores will help study the durability of racialization. To what extent do institutional histories continue to shape how they are understood and contested in public discourse? 
+More systematic historical analysis could add context to how institutional histories shape contemporary patterns of racialization. For example, contemporary racialization may correlate with agencies’ resistance to or urgency in establishing and supporting civil rights reforms, such as the development and enforcement of Title VIII offices [@walton_when_1988]. Are agencies that were historically slower to adopt or implement civil rights protections more likely to be perceived as racialized in contemporary policy discourse? Likewise, agencies such as the Department of Homeland Security emerged from policy debates deeply shaped by racialized concerns about immigrants and muslims. Taken together, linking these historical patterns to our racialization scores will help us study the durability of racialization. To what extent do institutional histories continue to shape how they are understood and contested in public discourse? 
 
 <!--
 #### Economic Redistribution
@@ -593,7 +609,45 @@ Moving forward, we aim to enhance our measure by incorporating economic redistri
 
 # Overall Rulemaking Frequency
 
-Our racialization scores use the share of rules with racialized language, so they are not affected by overall volume. However, the low frequency of racialized rules in 2025 seen in the figures in @sec-rules are partially due to historic low levels of rulemaking in 2025. 
+Our racialization scores use the share of rules with racialized language from agencies that published at least 10 rules, so they are not affected by overall volume. 
+However, the low frequency of racialized rules in 2025, seen in the figures in @sec-rules are partially due to historic low levels of rulemaking in 2025. 
+For example, the US Citizenship and Immigration Services (USCIS) published 
+nine final rules (488 documents total) in the first year of the Obama administration, 
+four final rules (285 documents total) in the first year of the first Trump administration, 
+and 16 final rules (354 documents total) in the first year of the Biden Administration. 
+USCIS published only one rule (12 documents total) in the first year of the second Trump Administration. This short rule loosened restrictions on immigration officers' searchers, use of force, and carrying firearms.  Similarly, Immigration and Customs Enforcement only published one rule (5 documents total), much less than prior administrations. 
+
+<!--
+Notice (9)
+Proposed Rule (2)
+Rule (1)
+
+BIDEN YEAR ONE 
+Supporting & Related Material (236)
+Notice (93)
+Rule (16)
+Proposed Rule (9)
+
+TRUMP ONE 
+Supporting & Related Material (206)
+Notice (75)
+Rule (4)
+
+
+OBAMA 
+Supporting & Related Material (340)
+Notice (138)
+Rule (9)
+Proposed Rule (1)
+
+
+
+BIDENT FULL 
+Supporting & Related Material (1,388)
+Notice (357)
+Rule (45)
+Proposed Rule (17)
+--> 
 
 ```{r}
 #| fig-cap: 'Total Number of Final Rules, 2005-2025'
@@ -605,6 +659,63 @@ knitr::include_graphics("docs/figs/rules.png")
 
 
 
+
+# A Broader Scope of Policy Documents
+
+In the paper, we focus on proposed and final rules. We get similar results for racialization scores if we include other policy documents, but over-time trends for some agencies on some terms look different. This appendix section shows trends for all rulemaking documents from 2005-2025.
+
+
+```{r}
+#| fig-cap: 'Agency Rulemaking Documents with Racialized Language, 2005-2025'
+#| label: fig-trends-rule-docs
+#| out-width: 100%
+#| layout-ncol: 2
+#| fig-subcap: 
+#|   - ""
+#|   - ""
+
+knitr::include_graphics("docs/figs/trends-rule-docs-1.png") 
+knitr::include_graphics("docs/figs/trends-rule-docs-2.png") 
+```
+
+
+
+```{r}
+#| fig-cap: 'Agency Rulemaking Documents with Racialized Language, by Agency, 2005-2025'
+#| label: fig-trends-rule-docs-terms
+#| out-width: 100%
+#| layout-ncol: 3
+#| fig-subcap: 
+#|   - ""
+#|   - ""
+#|   - ""
+#|   - ""
+#|   - ""
+#|   - ""
+#|   - ""
+#|   - ""
+#|   - ""
+
+
+knitr::include_graphics("docs/figs/trends-rule-docs-racial-1.png") # racial 
+knitr::include_graphics("docs/figs/trends-rule-docs-racial-2.png") # racial 
+knitr::include_graphics("docs/figs/trends-rule-docs-racial-1.png") # racial 
+knitr::include_graphics("docs/figs/trends-rule-docs-civil-rights-1.png") #affirmative action 
+# knitr::include_graphics("docs/figs/trends-rule-docs-term-33.png") # communitis of color
+knitr::include_graphics("docs/figs/trends-rule-docs-term-36.png") # 
+knitr::include_graphics("docs/figs/trends-rule-docs-term-55.png") # ethnic
+knitr::include_graphics("docs/figs/trends-rule-docs-term-49.png") # DEI
+knitr::include_graphics("docs/figs/trends-rule-docs-term-90.png") # minority pop
+#knitr::include_graphics("docs/figs/trends-rule-docs-groups-1.png") # ethnicity 
+knitr::include_graphics("docs/figs/trends-rule-docs-groups-10.png") # Muslim 
+knitr::include_graphics("docs/figs/trends-rule-docs-groups-2.png") # asian
+knitr::include_graphics("docs/figs/trends-rule-docs-groups-5.png") # african american 
+knitr::include_graphics("docs/figs/trends-rule-docs-groups-6.png") # hispanic
+```
+
+
+
+\clearpage 
 
 # NYT mentions of "Racial"
 
