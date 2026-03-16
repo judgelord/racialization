@@ -386,8 +386,8 @@ knitr::include_graphics("docs/figs/trends-nyt-total-2.png")
 
 #### Aggregated Measures of Racialization
 
-We further aggregate all articles from 2005 to 2025 to create a measure of racialization. We measure the share of articles using racial terms by dividing the number of articles mentioning each agency with racialized words by the total number of articles mentioning each agency.^
-An alternative approach, measuring the volume of racialized attention, would use only the count of the number of articles mentioning racialized words as shown in @fig-nyt-data. We show results with this alternative measure in the supplementary replication materials.] 
+We further aggregate all articles from 2005 to 2025 to create a measure of racialization. @fig-nyt-data (a) shows counts per agency of articles mentioning racialized words. @fig-nyt-data (b) shows the share of articles using racial terms---the racialized count divided by the total number of articles mentioning each agency.^[
+An alternative approach, measuring the volume of racialized attention, would use only the count of the number of articles mentioning racialized words. We show results with this alternative measure in the supplementary replication materials.] 
 This share is rescaled by taking the square root (to stabilize the variance), subtracting the mean (to make the scale mean 0), and dividing by the standard deviation (to make the standard deviation 1). 
 
 
@@ -427,8 +427,8 @@ Using the regulation.gov API, we pull all rulemaking documents, subset to propos
 @fig-trends-rules-terms shows trends over time in mentions of racial terms in agency rules for select agencies. They show attention to race and racial disparities in policy increased at some agencies and decreased at others over time. For example, attention to "racial" and "ethnic" disparities follows similar patterns across the Centers for Medicaid Services (CMS) and Department of Education (ED), Environmental Protection Agency (EPA), and Department of Health and Human Services (DHHS), both peaking at ED during the Obama administration, but peaking during the Biden administration for the others. Attention to Diversity, Equity, and Inclusion received attention at CMS and ED during the Obama administration, but only at the EPA and FCC under the Biden administration. 
 
 More patterns can be seen in the appendix figures: more Department of Transportation (DOT) rules mentioned Affirmative Action and Asian Americans in the second Bush administration than in any subsequent administration. <!--The DOT Federal Highway Administration
-(FHWA) and--> 
-The Federal Aviation Administration (FAA) also saw a massive spike in orders mentioning "Citizenship" related to a post-9/11 policy requiring owners of U.S.-based air carriers, including shipping companies and air taxis (small planes for hire), to prove that they were owned and effectively controlled by US citizens. This resulted in many businesses losing licenses and investigations into ownership and control, including DHL and Virgin America. Many DOT agencies, including the Federal Highway Administration,
+(FHWA) and
+The Federal Aviation Administration (FAA) also saw a massive spike in orders mentioning "Citizenship" related to a post-9/11 policy requiring owners of U.S.-based air carriers, including shipping companies and air taxis (small planes for hire), to prove that they were owned and effectively controlled by US citizens. This resulted in many businesses losing licenses and investigations into ownership and control, including DHL and Virgin America.--> Many DOT agencies, including the Federal Highway Administration,
 have seen a decrease in attention to racial minorities since the Bush administration. In contrast, the EPA increased its use of nearly all racialized terms over the past 20 years (until 2025), from near zero at the beginning of the Obama Administration to much higher levels, especially during the Biden administration, likely reflecting increased attention to Environmental Justice and attention to racial disparities in public health. @fig-trends-rules shows the time trend aggregated across all agencies. 
 
 ```{r}
@@ -470,8 +470,8 @@ knitr::include_graphics("docs/figs/trends-rules-1.png")
 
 #### Aggregated Measures of Racialization
 
-As with the NYT data, we aggregate all proposed and final rules from 2005 to 2025 to create two measures of racialization. The first measure is the count of proposed and final rules using one or more racialized words. 
-@fig-rules-data shows these counts. Because some agencies make more policies per year than others, the second measures the share of proposed and final rules by dividing this count by the total number of proposed and final rules published by the agency. As with the other measures, both of these measures are rescaled by taking the square root of the count (to stabilize the variance), subtracting the mean (to make the scale mean 0), and dividing by the standard deviation (to make the standard deviation 1). 
+As with the NYT data, we aggregate all proposed and final rules from 2005 to 2025 to the agency level.
+@fig-rules-data (a) shows counts of proposed and final rules using one or more racialized words. Because some agencies make more policies per year than others, @fig-rules-data (b) shows the share of proposed and final rules by dividing the racialized count by the total number of proposed and final rules published by the agency. As with the other measures, both of these measures are rescaled by taking the square root of the count (to stabilize the variance), subtracting the mean (to make the scale mean 0), and dividing by the standard deviation (to make the standard deviation 1). 
 
 
 ```{r}
@@ -524,10 +524,9 @@ knitr::include_graphics(here::here("docs/figs/rules_v_mfl-2.png"))
 
 To create a single measure of racialization, we take the average of racialization scores from each context (advocacy agendas, policy documents, media coverage). While many studies will want to use or compare racialization in particular contexts, this combined racialization scale offers a single number, similar to perceived ideology scales (e.g., @richardson_politicization_2019). One combined scale allows for comparisons with other scales, like perceived ideology shown in @fig-ideo_v_score.
 
-Racialization is not significantly correlated with perceived ideology. Instead, some highly racialized agencies are perceived as "liberal" (most prominently, the Departments of Education and Housing and Urban Development) while others are perceived as "conservative" (mostly parts of the Department of Homeland Security).  Other parts of Homeland Security that are perceived as more centrist, including FEMA and USCIS, are nevertheless strongly racialized. The Department of Justice, Federal Highway Administration (FHWA), and Food and Drug Administration (FDA) are also racialized while being perceived as fairly moderate. 
+Racialization is not significantly correlated with perceived ideology. Instead, some highly racialized agencies are perceived as "liberal"---most prominently, the Department of Education's Office of Elementary and Secondary Education (OESE)---while others are perceived as "conservative"---mostly parts of the Department of Homeland Security(DHS).  Other parts of Homeland Security that are perceived as more centrist, including FEMA and USCIS, are nevertheless strongly racialized. The Department of Justice, Bureau of Reclamation, and  Federal Highway Administration (FHWA) are also racialized while being perceived as fairly moderate. 
 
-Interestingly, agencies like the Department of Defense and the Environmental Protection Agency are rarely discussed in racialized terms in the media and advocacy agendas, despite being perceived as highly polarized and making policies with racial implications. For example, EPA has long led the government's work on environmental racism and environmental justice. As a large employer of low-income Americans, the Department of Defense's policy has racialized consequences. Despite being perceived as having strong conservative or liberal associations, their programs are not usually discussed in racialized terms.  
-
+Interestingly, agencies like the Department of Defense and the Environmental Protection Agency are rarely discussed in racialized terms in the media and advocacy agendas, despite being perceived as highly polarized and making policies with racial implications. For example, EPA has long led the government's work on environmental racism and environmental justice. As a large employer of low-income Americans, the Department of Defense's policy has racialized consequences. Despite being perceived as having strong liberal or conservative associations, their programs are not usually discussed in racialized terms.  
 
 ```{r}
 #| fig-cap: "Correlation Between Racialization and Perceived Ideology"
@@ -537,6 +536,7 @@ Interestingly, agencies like the Department of Defense and the Environmental Pro
 knitr::include_graphics("docs/figs/ideo_v_score-1.png")
 ```
 
+Racialization can help distinguish the politics surrounding different agencies with similar perceived levels of liberalism or conservatism. For example, ICE is slightly less conservative than the Army, Navy, Air Force, and other parts of the Department of Defense (DOD). However, DOD agencies, especially the Navy and Air Force, are less racialized than average, whereas Department of Homeland Security agencies are much more racialized. Likewise, the Peace Corps is perceived as more liberal than AmeriCorps (CNCS), but AmeriCorps is more racialized. 
 
 Racialization is positively correlated with perceived ideological extremism (p < 0.05), but this correlation is not strong (`r cor_ido_abs$estimate`). This relationship is statistically significant in the Project 2025 Mandate for Leadership context, not for policy documents or media coverage.
  @fig-ext_v_score shows the absolute value of the @richardson_politicization_2019 score on the x-axis and our combined score on the y-axis. Agencies in the upper left have high racialization scores by ideology scores near zero (the mean of all of these scales). Agencies in the upper right have high racialization scores and strong "liberal" or strong "conservative" perceptions. Agencies at the bottom vary in perceived ideology but are all low in racialization.  
@@ -692,22 +692,170 @@ knitr::include_graphics("docs/figs/trends-rule-docs-2.png")
 #|   - ""
 #|   - ""
 #|   - ""
-
-
-knitr::include_graphics("docs/figs/trends-rule-docs-racial-1.png") # racial 
-knitr::include_graphics("docs/figs/trends-rule-docs-racial-2.png") # racial 
-knitr::include_graphics("docs/figs/trends-rule-docs-racial-1.png") # racial 
-knitr::include_graphics("docs/figs/trends-rule-docs-civil-rights-1.png") #affirmative action 
-# knitr::include_graphics("docs/figs/trends-rule-docs-term-33.png") # communitis of color
-knitr::include_graphics("docs/figs/trends-rule-docs-term-36.png") # 
-knitr::include_graphics("docs/figs/trends-rule-docs-term-55.png") # ethnic
-knitr::include_graphics("docs/figs/trends-rule-docs-term-49.png") # DEI
-knitr::include_graphics("docs/figs/trends-rule-docs-term-90.png") # minority pop
-#knitr::include_graphics("docs/figs/trends-rule-docs-groups-1.png") # ethnicity 
-knitr::include_graphics("docs/figs/trends-rule-docs-groups-10.png") # Muslim 
-knitr::include_graphics("docs/figs/trends-rule-docs-groups-2.png") # asian
-knitr::include_graphics("docs/figs/trends-rule-docs-groups-5.png") # african american 
-knitr::include_graphics("docs/figs/trends-rule-docs-groups-6.png") # hispanic
+here::here("docs", "figs",
+ paste0("trends-rule-docs-term-", 
+         c(
+1, # "Affirmative Action"                       
+#2, # "African American"                         
+3, # "African Americans"                        
+#4, # "Africans"                                 
+#5, # "Alaskan Native"                           
+#6, # "Alien"                                    
+#7, # "American Indian"                          
+#8, # "Anti-discrimination"                      
+#9, # "Anti-racism"                              
+#10, # "Anti-racist"                              
+#11, # "Antidiscrimination"                       
+#12, # "Antiracism"                               
+#13, # "Antiracist"                               
+#14, # "Arab American"                            
+#15, # "Arabs"                                    
+#16, # "Asian American"                           
+17, # "Asians"                                   
+#18, # "BIPOC"                                    
+#19, # "Biracial"                                 
+#20, # "Black American"                           
+#21, # "Black Americans"                          
+#22, # "Black children"                           
+#23, # "Black lives"                              
+#24, # "Black Man"                                
+#25, # "Black Men"                                
+#26, # "Black People"                             
+#27, # "Black Person"                             
+#28, # "Black Students"                           
+#29, # "Black Woman"                              
+#30, # "Black Women"                              
+#31, # "Border Crisis"                            
+32, # "Citizenship"                              
+33, # "Civil Rights"                             
+#34, # "Color of their skin"                      
+#35, # "Colorism"                                 
+#36, # "Communities of Color"                     
+#37, # "Critical Race Theory"                     
+#38, # "Cultural competence"                      
+#39, # "Culturally competent"                     
+#40, # "D.E.I."                                   
+#41, # "DACA"                                     
+#42, # "DEI"                                      
+#43, # "Diversity and inclusion"                  
+#44, # "Diversity Equity"                         
+#45, # "Diversity lottery"                        
+#46, # "Diversity objectives"                     
+#47, # "Diversity officer"                        
+#48, # "Diversity visa"                           
+49, # "Diversity, Equity"                        
+#50, # "Diversity, Equity, and Inclusion"         
+#51, # "Drug Cartel"                              
+#52, # "Enslavement"                              
+#53, # "Equal Opportunity"                        
+#54, # "Equity agenda"                            
+55, # "Ethnic"                                   
+#56, # "Ethnic Diversity"                         
+#57, # "Ethnicity"                                
+#58, # "Gang"                                     
+#59, # "HBCU"                                     
+60, # "Hispanic"                                 
+#61, # "Historically Black College and University"
+#62, # "Illegal Alien"                            
+#63, # "Illegal aliens"                           
+#64, # "Illegal Immigrant"                        
+#65, # "Illegal immigrants"                       
+#66, # "Illegal immigration"                      
+#67, # "Illegal migration"                        
+#68, # "Immigrant"                                
+#69, # "Immigration"                              
+#70, # "Indian Education"                         
+#71, # "Indigenous groups"                        
+#72, # "Indigenous people"                        
+73, # "Indigenous peoples"                       
+#74, # "Indigenous person"                        
+#75, # "Inequality"                               
+#76, # "Inequitable"                              
+#77, # "Intersectionality"                        
+#78, # "Latina"                                   
+#79, # "Latinas"                                  
+#80, # "Latino"                                   
+#81, # "Latinos"                                  
+#82, # "Latinx"                                   
+#83, # "Men of Color"                             
+#84, # "Meritocracy"                              
+#85, # "Mexican Cartel"                           
+#86, # "Mexican Drug Cartel"                      
+#87, # "Mexicans"                                 
+#88, # "Middle Eastern or North African Ancestry" 
+#89, # "Migrant"                                  
+90, # "Minority Populations"                     
+#91, # "Minority status"                          
+#92, # "Minority-Serving"                         
+#93, # "Mixed race"                               
+#94, # "Mixed-race"                               
+#95, # "Multicultural"                            
+#96, # "Multiracial"                              
+#97, # "Muslim"                                   
+#98, # "Nationality"                              
+#99, # "Native American"                          
+#100, # "Native-Serving"                           
+#101, # "Non-white"                                
+#102, # "Nonminority"                              
+#103, # "Oppression"                               
+#104, # "Oppressors"                               
+#105, # "Pacific Islander"                         
+#106, # "People of Color"                          
+#107, # "People of Minority Status"                
+#108, # "Person of Color"                          
+#109, # "Predominately white"                      
+#110, # "Prejudice"                                
+#111, # "Puerto Ricans"                            
+112, # "Racial"                                   
+#113, # "Racial Diversity"                         
+#114, # "Racial Identity"                          
+#115, # "Racial Inequality"                        
+#116, # "Racial Inequities"                        
+#117, # "Racial Injustices"                        
+#118, # "Racial Justice"                           
+#119, # "Racially"                                 
+#120, # "Racism"                                   
+#121, # "Racist"                                   
+#122, # "Secure Border"                            
+#123, # "Secure the Border"                        
+#124, # "Securing the Border"                      
+#125, # "Skin color"                               
+#126, # "Slavery"                                  
+#127, # "Social Justice"                           
+128 # "Socioeconomic"                            
+#129, # "Socioeconomically"                        
+#130, # "South Asian American"                     
+#131, # "South Asians"                             
+#132, # "Stereotypes"                              
+#133, # "Structural Racism"                        
+#134, # "Systemic Racism"                          
+#135, # "Tribal"                                   
+#136, # "Tribe"                                    
+#137, # "Tribes"                                   
+#138, # "Unaccompanied Alien Children"             
+#139, # "Underrepresented Communities"             
+#140, # "Underrepresented Minorities"              
+#141, # "Underserved Communities"                  
+#142, # "Underserved Populations"                  
+#143, # "Vulnerable  populations"                  
+#144, # "White American"                           
+#145, # "White Americans"                          
+#146, # "White institutions"                       
+#147, # "White People"                             
+#148, # "White Person"                             
+#149, # "White Privilege"                          
+#150, # "White students"                           
+#151, # "White supremacist"                        
+#152, # "White supremacy"                          
+#153, # "Woke"                                     
+#154, # "Wokeism"                                  
+#155, # "Women of Color"                           
+#156, # "Xenophobia"                               
+#157, # "Xenophobic" 
+         ) , 
+         ".png")
+) |> 
+  knitr::include_graphics()
 ```
 
 
