@@ -129,7 +129,7 @@ nyt |>
       group = president) +
   geom_point() +
   labs(#title = paste0('Articles Mentioning Each Federal Agency and "', str_to_title(term),'"'),
-       y = paste0('Share of Articles with ', str_to_title(term),'' ),
+       y = paste0('Share with ', str_to_title(term),'' ),
        x = "",
        color = "") +
      geom_line() + 
@@ -180,8 +180,8 @@ nyt_total |>
       color = president,
       group = president) +
   geom_point() +
-  labs(#title = paste0('Share of Articles Mentioning\na Federal Agency and "', str_to_title(term),'"'),
-       y = paste0('Share of Articles with ', str_to_title(term),'' ),
+  labs(#title = paste0('Share Mentioning\na Federal Agency and "', str_to_title(term),'"'),
+       y = paste0('Share with ', str_to_title(term),'' ),
        x = "",
        color = "") +
       geom_line() + 

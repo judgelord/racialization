@@ -50,7 +50,7 @@ n_racial <- sum(n_mfl_racial,n_rules_racial, n_nyt_racial)
 
 # {background-image=https://static01.nyt.com/images/2026/02/17/multimedia/17trump-news-reporter-updates-jfhc/17trump-news-reporter-updates-jfhc-jumbo.jpg}
 
-`The National Park Service (Department of the Interior) removes displays on George Washington’s ownership of enslaved people`
+`The National Park Service display on George Washington’s ownership of enslaved people`
 
 ## {data-background-image="figs/NYT_Words_Disappear.jpg" data-background-size="contain" data-background-position="center" data-background-opacity="1" data-menu-title="Banned Words"}
 
@@ -388,7 +388,7 @@ knitr::include_graphics(here::here("docs/figs/trends-rules-1.png") )
 
 For each source, we have two counts: $r_{i}$ (the **count of racialized** documents/articles/sentences about agency $i$) and $y_{i}$ (the **total** document/article/sentence about agency $i$).
 
-Percent Racialized $x_i = \frac{\sqrt{r_{i}}}{\sqrt{y_{i}}}$ (variance stabilized)
+Share Racialized $x_i = \frac{\sqrt{r_{i}}}{\sqrt{y_{i}}}$ (variance stabilized)
 
 Racialization Score $z_{i} = \frac{x_i - \bar{x}}{sd(x)}$ (standardized, mean 0, standard deviation 1)
 
@@ -450,7 +450,7 @@ knitr::include_graphics(here::here("docs/figs/ideo_v_score-1.png"))
 ```
 
 
-## Racialization and Perceived Centrism {#ideology}
+## Racialization and Perceived Centrism {#Centrism}
 
 ```{r}
 #| fig-cap: "Racialization and Perceived Centrism"
@@ -460,34 +460,33 @@ knitr::include_graphics(here::here("docs/figs/ideo_v_score-1.png"))
 knitr::include_graphics(here::here("docs/figs/ideo_v_score-2.png"))
 ```
 
-## Next Steps 
 
-- Time series 
-- Dynamic racialization scores
-- Compare with other agency ideology/partisanship (e.g. Chen Johnson 2015, Acs 2025, etc.)
-<!--- Examine whether agencies’ origins and post–Civil Rights compliance/resistance predict their racialization trajectories.-->
+## To Conclude {.nonincremental}
 
-
-## Key Takeaways 
-
+::: {.nonincremental}
 - Racialization varies over time, despite stable core missions
-- Racialization is tied to perceived ideological extremism
-  - perceived "centrist" agencies received less racialized attention.
+- Perceived "centrist" agencies received less racialized attention
 
-## Feedback
+**Next Steps**
 
-**How can we make these measures useful?**  
+- Time series data for advocacy reports $\rightarrow$ Dynamic scores
+- Compare with other agency ideology/partisanship measures (e.g., Chen Johnson 2015, Acs 2025, etc.)
+<!--- Examine whether agencies’ origins and post–Civil Rights compliance/resistance predict their racialization trajectories.-->
+<!--
+
+**Use cases**  
+--> 
 
 - Effects of leadership race on discourse 
-- Bureaucratic responsiveness 
+- Effects on bureaucratic responsiveness 
 
-- **Comments:** kmagana@umich.edu | judgelor@umich.edu  
-
+**Comments:** kmagana@umich.edu | judgelor@umich.edu  
+:::
 
 # Extra
 
 
-## {#mfl-data}
+## {#mfl-data data-menu-title="MFL counts"}
 
 ```{r}
 #| fig-cap: "Distribution of Racialized Words in Mandate For Leadership (Project 2025)"
@@ -498,7 +497,7 @@ knitr::include_graphics(here::here("docs/figs/mfl_data-1.png"))
 ```
 
 
-##  {#nyt-data}
+##  {#nyt-data data-menu-title="NYT counts"}
 
 ```{r}
 #| fig-cap: "Distribution of Racialized Words in New York Times Articles, 2005-2025"
@@ -509,7 +508,7 @@ knitr::include_graphics(here::here("docs/figs/nyt_data-1.png"))
 ```
 
 
-##  {#rules-data}
+##  {#rules-data data-menu-title="Rule Counts"}
 
 ```{r}
 #| fig-cap: "Distribution of Racialized Words in Proposed and Final Rules, 2005-2025"

@@ -245,7 +245,7 @@ nyt |>
   aes(x = percent, 
       y = reorder(department, percent) ) + 
   geom_col() + 
-  labs(x = "Share of Articles with Racial Words", 
+  labs(x = "Share with Racial Words", 
        y = "")
 
 nyt %<>% select(-percent)
@@ -548,6 +548,8 @@ d <- d |>
                               rules_percent_norm),
                               trim = 0,
                               na.rm = TRUE))
+racialization_scores <- d
+save(racialization_scores, file = here::here("data", "racialization_scores.rda"))
 
 d  |> 
   select(agency = department_agency_acronym, racialization, ends_with("percent_norm")) |>

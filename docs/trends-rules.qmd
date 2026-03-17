@@ -139,12 +139,13 @@ df |>
   aes(x = year, 
       y = n, 
       color = president,
-      shape = documentType) +
+      shape = documentType, alpha = documentType) +
   geom_point() +
   labs(title = paste0('Policies with Racialized Terms'),
        y = "Policy Documents (Rules)",
        x = "",
        color = "",
+       alpha = "", 
        shape = "") +
   geom_line() + 
   #geom_smooth(#method = "lm", se = F) +
@@ -152,6 +153,7 @@ df |>
              scales = "free_y") + 
   scale_color_viridis_d(option = "inferno", end = .8) + 
  scale_y_continuous(breaks = int_breaks, limits = c(0, NA) ) + 
+  scale_alpha_discrete(range = c(.4, 1)) + 
   theme_minimal() + 
   theme(axis.text.x = element_text(angle = 45))
 ```
@@ -170,7 +172,7 @@ directory <- here::here("data", "search") |> str_replace("racialization", "regul
 
 p <- function(term){
   
-  print(term)
+#  print(term)
 
 path <- here::here(directory, term, paste0(term, "_documents.rda")) |> str_remove("racialization")
 
@@ -237,8 +239,9 @@ df |>
 
 
 # ALL TERMS 
-map(terms, possibly(p))
-
+plots <- map(terms, possibly(p))
+names(plots) <- paste(seq(1,length(terms)), terms) 
+plots
 ```
 
 
