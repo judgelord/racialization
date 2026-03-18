@@ -54,30 +54,6 @@ n_racial <- sum(n_mfl_racial,n_rules_racial, n_nyt_racial)
 
 ## {data-background-image="figs/NYT_Words_Disappear.jpg" data-background-size="contain" data-background-position="center" data-background-opacity="1" data-menu-title="Banned Words"}
 
-## Institutional Racialization 
-
-Racialization is the level to which the public and elite language used to describe an institution and its actions evoke race and thus make relevant and highlight debates around racial inequality or racial resentments.
-
-::: {.nonincremental}
-- A legacy of civil-rights era reforms? Evidence of compliance, resistance, or erosion? 
-- Affected by non-white agency leaders or employees? 
-- Affects responsive to racial justice claims? 
-- Affects the careers of bureaucrats?
-:::
-
-::: {.notes}
-But we lack a quantitative measures! 
-:::
-<!---alternatively, lead with theory slide--> 
-
-## This Paper's Research Questions 
-
-How consistent is racialization...
-
-- in different contexts (e.g., the media, advocacy, and policymaking)? 
-- over time?
-- with perceived conservative or liberal ideology?
-
 ## Theory
 
 
@@ -124,11 +100,37 @@ How consistent is racialization...
 - Agencies often become focal points of racialized policy conflict, especially in areas like civil rights and immigration  
 --> 
 
-<span style="font-style: italic; font-size: 12px; color: #333;">(Clinton and Lewis, 2008; Richardson et al., 2019; Richardson et al., 2024; Epstein, 1999; Nixon, 2004; Chen and Johnson, 2014; Maranto, 2005; Maranto and Hult, 2004; Bertelli and Grose, 2011; Acs, 2025)</span>
+<span style="font-style: italic; font-size: 12px; color: #333;">(Clinton and Lewis, 2008; Richardson et al., 2019; Richardson et al., 2024; Epstein, 1999; Nixon, 2004; Chen and Johnson, 2014; Bonica et al., 2015; Maranto, 2005; Maranto and Hult, 2004; Bertelli and Grose, 2011; Acs, 2025)</span>
 </div>
 :::
 
 :::
+
+## Institutional Racialization 
+
+Racialization is the level to which the public and elite language used to describe an institution and its actions evoke race and thus make it relevant and highlight debates around racial inequality or racial resentments.
+
+. . . 
+
+::: {.nonincremental}
+- A legacy of civil-rights era reforms? Evidence of compliance, resistance, or erosion? 
+- Affected by non-white agency leaders or employees? 
+- Affects responsive to racial justice claims? 
+- Affects the careers of bureaucrats?
+:::
+
+::: {.notes}
+But we lack a quantitative measures! 
+:::
+<!---alternatively, lead with theory slide--> 
+
+## This Paper's Research Questions 
+
+How consistent is racialization...
+
+- in different contexts (e.g., the media, advocacy, and policymaking)? 
+- over time?
+- with perceived conservative or liberal ideology?
 
 ## Data 
 <!-- {data-background-image="https://ids.si.edu/ids/deliveryService?id=SAAM-2022.34_34&max=960" data-background-size="cover" data-background-opacity=".1"} -->
@@ -157,7 +159,7 @@ load(here::here("data", "numbers-for-paper.Rdata"))
 - Perceived Agency Ideology (Richardson et al., 2019)
 
 
-##  Racialized Language  {#rules}
+##  Racialized Language  {#terms}
 
 ```{r}
 load(here::here("data", "rules_terms.rda"))
@@ -166,7 +168,7 @@ load(here::here("data", "rules_terms.rda"))
 > `r terms |> paste0(collapse = "; ")`
 
 
-## NYT Articles 2005-2025 {#trends-nyt}
+## New York Times Articles, 2005-2025 {#trends-nyt}
 
 ```{r}
 #| fig-cap: 'New York Times Articles With Racialized Words By Agency, 2005-2025'
@@ -176,8 +178,7 @@ load(here::here("data", "rules_terms.rda"))
 knitr::include_graphics(here::here("docs/figs/trends-nyt-1.png"))
 ```
 
-
-## {#trends-nyt-total data-menu-title="NYT Total"}
+## New York Times Articles, 2005-2025 {#trends-nyt-total}
 
 ```{r}
 #| fig-cap: 'New York Times Articles With Racialized Words, 2005-2025'
@@ -382,18 +383,8 @@ knitr::include_graphics(here::here("docs/figs/trends-rules-1.png") )
 ```
 
 
-# Comparing across contexts 
 
-<!-- {data-background-image="https://ids.si.edu/ids/deliveryService?id=SAAM-2022.34_34&max=960" data-background-size="cover" data-background-opacity=".1"} -->
-
-For each source, we have two counts: $r_{i}$ (the **count of racialized** documents/articles/sentences about agency $i$) and $y_{i}$ (the **total** document/article/sentence about agency $i$).
-
-Share Racialized $x_i = \frac{\sqrt{r_{i}}}{\sqrt{y_{i}}}$ (variance stabilized)
-
-Racialization Score $z_{i} = \frac{x_i - \bar{x}}{sd(x)}$ (standardized, mean 0, standard deviation 1)
-
-
-##  Mandate For Leadership Reports {#mfl}
+## Project 2025 Mandate For Leadership Report {#mfl}
 
 
 ```{r}
@@ -405,7 +396,18 @@ knitr::include_graphics(here::here("docs/figs/mfl_data-2.png"))
 
 ```
 
-## {#rules_v_mfl  data-menu-title="Rules v MFL"} 
+# Comparing Aross Contexts 
+
+<!-- {data-background-image="https://ids.si.edu/ids/deliveryService?id=SAAM-2022.34_34&max=960" data-background-size="cover" data-background-opacity=".1"} -->
+
+For each source, we count $r_{i}$ (**racialized** documents/articles/sentences about agency $i$) and $y_{i}$ (the **total** documents/articles/sentences about agency $i$).
+
+Share Racialized $x_i = \frac{\sqrt{r_{i}}}{\sqrt{y_{i}}}$ (variance stabilized)
+
+Racialization Score $z_{i} = \frac{x_i - \bar{x}}{sd(x)}$ (standardized, mean 0, standard deviation 1)
+
+
+## {#rules_v_mfl  data-menu-title="Rules v. MFL"} 
 
 
 ```{r}
@@ -417,7 +419,7 @@ knitr::include_graphics(here::here("docs/figs/rules_v_mfl-2.png"))
 ```
 
 
-## {#nyt-v-mfl data-menu-title="NYT v MFL"} 
+## {#nyt-v-mfl data-menu-title="NYT v. MFL"} 
 
 ```{r}
 #| fig-cap: "Racialization in Project 2025 vs. New York Times"
@@ -428,7 +430,7 @@ knitr::include_graphics(here::here("docs/figs/nyt_v_mfl-2.png"))
 ```
 
 
-## {#nyt_v_rules data-menu-title="Rules v NYT"}
+## {#nyt_v_rules data-menu-title="Rules v. NYT"}
 
 ```{r}
 #| fig-cap: "Racialization in Rulemaking vs. New York Times"
@@ -438,6 +440,7 @@ knitr::include_graphics(here::here("docs/figs/nyt_v_mfl-2.png"))
 knitr::include_graphics(here::here("docs/figs/nyt_v_rules-2.png"))
 ```
 
+# Comparing with ideology scores
 
 ## Racialization and Perceived Ideology {#ideology}
 
@@ -460,12 +463,21 @@ knitr::include_graphics(here::here("docs/figs/ideo_v_score-1.png"))
 knitr::include_graphics(here::here("docs/figs/ideo_v_score-2.png"))
 ```
 
+::: {.notes}
+in MFL. FPPO should use "government contracts to push back against woke
+policies in corporate America."
+
+"This office should be engaged early and often in OMB’s effort to drive
+policy, including by obtaining transparency about entities that are awarded federal
+contracts and grants and by using government contracts to push back against woke
+policies in corporate America."
+::: 
 
 ## To Conclude {.nonincremental}
 
 ::: {.nonincremental}
-- Racialization varies over time, despite stable core missions
-- Perceived "centrist" agencies received less racialized attention
+- Racialization varies massively over time, despite stable core missions
+- Radicalized agencies are perceived as more ideological
 
 **Next Steps**
 
@@ -477,8 +489,8 @@ knitr::include_graphics(here::here("docs/figs/ideo_v_score-2.png"))
 **Use cases**  
 --> 
 
-- Effects of leadership race on discourse 
-- Effects on bureaucratic responsiveness 
+- Examine the effects of leadership's race on discourse 
+- Examine the effects on bureaucratic responsiveness 
 
 **Comments:** kmagana@umich.edu | judgelor@umich.edu  
 :::
