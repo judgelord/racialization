@@ -635,6 +635,27 @@ geom_smooth(method = "lm") +
   labs(title = "",
        x = "Perceived Ideological Distance from Center",
        y = "Racialization Score")
+
+d |> 
+  drop_na(perceived_ideology_estimate) |> 
+  mutate(side = ifelse(perceived_ideology_estimate<0, "Liberal", "Conservative")) |> 
+  ggplot() + 
+  aes(x = abs(perceived_ideology_estimate), 
+      y = racialization,
+      label = department_agency_acronym |> str_remove(".*_")) + 
+    #geom_line(aes(y = perceived_ideology_estimate), color = "red")  + 
+  geom_label_repel(size =3, force_pull = 10, alpha = .5)  + 
+  annotate(x =0, y = max_y, geom = "text", label = 'Racialized\n"Moderate"', color = "red", hjust = 0) + 
+    annotate(x =2, y = max_y, geom = "text", label = 'Racialized\n"Ideological"', color = "red", hjust = 1) + 
+  geom_vline(xintercept = 0, color = "gray60", linetype = "dashed") +
+    geom_hline(yintercept = 0, color = "gray60", linetype = "dashed") +
+geom_smooth(method = "lm") + 
+  facet_wrap("side") + 
+  theme_bw() +
+  geom_point() +    
+  labs(title = "",
+       x = "Perceived Ideological Distance from Center",
+       y = "Racialization Score")
 ```
 
 

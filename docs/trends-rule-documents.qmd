@@ -199,7 +199,6 @@ directory <- here::here("data", "search") |> str_replace("racialization", "regul
 
 p <- function(term){
   
-    print(term)
 
 path <- here::here(directory, term, paste0(term, "_documents.rda")) |> str_remove("racialization")
 
@@ -266,7 +265,9 @@ df |>
 
 
 # ALL TERMS 
-map(terms, possibly(p))
+plots <- map(terms, possibly(p))
+names(plots) <- paste(seq(1,length(terms)), terms) 
+plots
 
 ```
 

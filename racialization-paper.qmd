@@ -76,6 +76,7 @@ Feedback on framing: the main thing is that we want to focus on how racializatio
 
 <!--EXAMPLES (if we need more)
 https://www.nytimes.com/2026/03/07/arts/humanities-endowment-doge-trump.html?searchResultPosition=1
+https://judgelord.github.io/PP510/stone4#/6/20
 
 
 Environmental Justice is not yet included.
@@ -108,7 +109,7 @@ Racialization plays a key role in efforts to reshape government institutions. Fo
 
 In January 2025, the Trump Administration issued the "Ending Radical and Wasteful Government DEI Programs and Preferencing" executive order, initiating efforts to dismantle diversity, equity, inclusion, and accessibility (DEIA) in federal programs and practices. This executive order instructs agency heads to end efforts to reduce patterns of racial exclusion in the federal workforce. In tandem with this order, numerous federal employees whose jobs included attention to racial diversity, equity, or inclusion were targeted and abruptly dismissed. In parallel, significant budget cuts targeted programs and institutions researching racial inequalities and patterns of exclusion. Funding for initiatives promoting racial equity has been severely restricted, limiting their ability to function and fulfill their missions. These initiatives were largely aligned with the language and goals of the Heritage Foundation’s Project 2025, which outlined policies designed to reduce attention to racial inequity in the work of federal government institutions.
 
-In other ways, attention to race increased under the Trump administration. Departing from the longstanding practice of law enforcement denying accusations of racial profiling, the administration defended racial profiling as legal if related to immigrant capture and removal operations [@Savage2025]. At the same time, the US State Department and US Citizenship and Immigration Services (USCIS) justified prioritizing White South Africans because they allegedly face racial discrimination [@USMissionSouthAfrica2025]. Likewise, the Equal Employment Opportunity Commission (EEOC) invested resources in encouraging White Americans to bring claims of reverse discrimination [@Savage2025APEEOCWhiteMenDiscrimination]. The EEOC also reclassified employer efforts to prevent discrimination and create inclusive workplaces as discrimination against White men [@VinsonElkins2025]
+In other ways, attention to race increased under the Trump administration. Departing from the longstanding practice of law enforcement denying accusations of racial profiling, the administration defended racial profiling as legal if related to immigrant capture and removal operations [@Savage2025profiling]. At the same time, the US State Department and US Citizenship and Immigration Services (USCIS) justified prioritizing White South Africans because they allegedly face racial discrimination [@USMissionSouthAfrica2025]. Likewise, the Equal Employment Opportunity Commission (EEOC) invested resources in encouraging White Americans to bring claims of reverse discrimination [@Savage2025employment]. The EEOC also reclassified employer efforts to prevent discrimination and create inclusive workplaces as discrimination against White men [@VinsonElkins2025]
 
 <!--- TO ADVANCE THE ARGUMENT, THIS NEEDS TO TALK ABOUT RACIALIZATION OF THE DEPT OF EDUCATION, NOT THE RHETORIC OF STATES RIGHTS On March 20, 2025, the Trump administration issued another major executive order, "Improving Education Outcomes by Empowering Parents, States, and Communities." This order aims to dismantle the Department of Education, arguing that the federal education bureaucracy had failed and that authority over education should return to state control. 
 
@@ -1049,8 +1050,44 @@ knitr::include_graphics("docs/figs/trends-nyt-total-racial-1.png")
 knitr::include_graphics("docs/figs/trends-nyt-racial-1.png")
 ```
 
+<!--
+FMC 
+
+Nationality        158
+ 2 Arabs              140
+ 3 Oppression          78
+ 4 Prejudice           40
+ 5 Pacific Islander    26
+ 6 DEI                 12
+ 7 Africans             6
+ 8 Asians               6
+ 
+ 
+ 
+# Over and under inclusiveness 
+
+While we did extensive validation of our search terms, our dictionary approach does not perfectly capture racial content. For example the Federal Maritime Commission occasionally uses "affirmative action" in a non-racialized context, artifically inflating its score: 
+
+>  This SNPRM includes greater specificity and strives to better delineate each party's duties when communicating with each other about vessel space accommodations. The Commission's NPRM included some of the factors USDA discussed, and it does not absolve problematic practices based upon just a few factors or certain affirmative actions. - FMC-2023-0010-0032
 
 
+At other times racialization is ambiguous. "Oppression" may or may not refer to race 
+
+> (j) Protective orders. (1) In general. A party or any person from whom discovery is sought may move for a protective order. The motion must include a certification that the movant has in good faith conferred or attempted to confer with other affected parties in an effort to resolve the dispute without Commission or presiding officer action. The Commission or presiding officer may, for good cause, issue an order to protect a party or person from annoyance, embarrassment, oppression, or undue burden or expense, including one or more of the following:
+(i) Forbidding the disclosure or discovery;
+(ii) Specifying terms, including time and place, for the disclosure or discovery;
+(iii) Prescribing a discovery method other than the one selected by the party seeking discovery;
+(iv) Forbidding inquiry into certain matters, or limiting the scope of disclosure or discovery to certain matters;
+(v) Designating the persons who may be present while the discovery is conducted;
+(vi) Requiring that a deposition be sealed and opened only on Commission or presiding officer order;
+(vii) Requiring that a trade secret or other confidential research, development, or commercial information not be disclosed or be disclosed only in a specified way; or
+(viii) Requiring that the parties simultaneously file specified documents or information in sealed envelopes, to be opened as the Commission or presiding officer directs. https://www.regulations.gov/document/FMC-2012-0137-0001
+
+
+Alien registration numbers refer to non-citizens, but not alwasy in a particularly racialized way, for example FMC: 
+
+> The System contains ocean transportation intermediaries (OTIs) names, addresses and taxpayer identification numbers (which may be the Social Security Numbers), as well as the names, addresses, and Social Security Numbers (or alternatively, driver's license numbers, passport numbers or alien registration numbers) of the stockholders, officers, and directors of individual OTIs - FMC-2008-0081-0001
+--> 
 
 \clearpage 
 

@@ -12,7 +12,26 @@ searchTerms = read_sheet("1LLKWDHiwnVEpvlqurI1t7NNHmdrk2liXPd-FZkNrvW0", sheet =
   unique()
 
 # temp fixes
-terms <- searchTerms[!searchTerms %in% c("Heritage American", "Reverse discrimination")]
+terms <- searchTerms[!searchTerms %in% c(
+  "Heritage American",
+  "Reverse discrimination",
+    "Nationality", # 585034
+    "Tribal", #, #130833
+    "colorism", # 115697
+    "Colorism", # 112507
+    "Africans", # 106919
+    "Arabs", #     93252
+    "Tribe", #        82678
+    "Tribes", #       82678
+    "tribe", #        77362
+    "Oppression", #   36322,
+    "Citizenship",
+  "Mexicans",
+  "mexicans",
+  "Asians" # FIXME this is a word boundary thing
+  )]
+
+save(terms, file=here::here("data", "rules_terms.rda"))
 
 
 # collected
@@ -69,6 +88,17 @@ d <- map_dfr(terms, p)
 # crosswalk
 load(here::here("data", "crosswalk.rda"))
 
+rules_term_count <- d |> count(searchTerm, sort = T)
+save(rules_term_count, file = here::here("data", "rules_term_count.rda"))
+
+rules_term_agency_count <- d |> count(agencyId, searchTerm, sort = T)
+save(rules_term_agency_count, file = here::here("data", "rules_term_agency_count.rda"))
+
+d |>
+  filter(searchTerm == "mexicans",
+         nchar(highlightedContent) > 0) |>
+  pull(highlightedContent)
+
 rules_racial_all <- d |>
   # CORRECTIONS DUE TO DUPLICATE IDS IN REGULATIONS DOT GOV
   mutate(agencyId = agencyId |>
@@ -90,10 +120,18 @@ inspect <- rules_racial_all |>
 save(rules_racial_all,
      file = here::here("data", "rules_racial_all.rda"))
 
+load(here::here("data", "rules_racial_all.rda"))
 
 rules_racial_distinct <- rules_racial_all |>
-  distinct(id, agencyId, department_agency_acronym, postedDate, documentType, docketId) |>
+  group_by(id, agencyId, department_agency_acronym, postedDate, documentType, docketId) |>
+  summarise(searchTerms = searchTerm |> unique() |> paste(collapse = ";"),
+            searchTerms_n = searchTerm |> unique() |> length(),
+            searchTerm_count_per_document = n() ) |>
+  ungroup() |>
   drop_na(agencyId)
+
+
+
 
 save(rules_racial_distinct,
      file = here::here("data", "rules_racial_distinct.rda"))
@@ -108,9 +146,6 @@ rules_racial_distinct_totals <- rules_racial_distinct |>
 
 save(rules_racial_distinct_totals,
      file = here::here("data", "rules_racial_distinct_totals.rda"))
-
-
-save(terms, file=here::here("data", "rules_terms.rda"))
 
 
 
