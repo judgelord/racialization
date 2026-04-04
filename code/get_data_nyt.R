@@ -61,5 +61,26 @@ nyt %<>% mutate(agency = agency |>
                 department_agency_acronym = agency,
                 agency = str_remove(agency, "_.*"))
 
+# Save by year data for trends
+nyt_year <- nyt
+
+save(nyt_year, file = here::here("data", "nyt_year.rda"))
+
+# overall
+nyt %<>%
+  group_by(department_agency_acronym, agency) %>%
+  summarise(total = sum(total, na.rm = T),
+            term_count = sum(term_count, na.rm = T)) %>%
+  ungroup() %>%
+  mutate(
+    total = sqrt(total),
+    NYT_n = term_count,
+    n = sqrt(term_count),
+    NYT_norm = (n - mean(n))/sd(n),
+    percent = n/total,
+    NYT_percent_norm =  (percent - mean(percent))/sd(percent)) %>%
+  select(agency, NYT_n, percent, NYT_norm, NYT_percent_norm, department_agency_acronym) %>%
+  ungroup()
+
 save(nyt, file = here::here("data", "nyt.rda"))
 

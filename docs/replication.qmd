@@ -142,7 +142,7 @@ crosswalk |> kablebox()
 
 <https://github.com/judgelord/2025>
 
-"mfl_data"
+"mfl_data" in order of most racialized 
 
 ```{r }
 #| fig-width: 5.1
@@ -154,7 +154,7 @@ crosswalk |> kablebox()
 # modified with code/get_data_2025.R
 load(here::here("data", "mfl.rda"))
 
-mfl |> kablebox()
+mfl |> arrange(-MFL_percent_norm) |> kablebox()
 
 mfl %<>% left_join(crosswalk)
 
@@ -191,7 +191,7 @@ mfl |>
 
 From ProQuest
 
-"nyt_data"
+"nyt_data" in order of most racialized 
 
 ```{r}
 #| fig-width: 5.3
@@ -203,28 +203,11 @@ From ProQuest
 # + docs/trends-nyt.qmd
 load(here::here("data", "nyt.rda") ) 
 
-nyt  |> kablebox()
+nyt  |> arrange(-NYT_percent_norm) |> kablebox()
 
 n_nyt_articles <- sum(nyt$total)
 n_nyt_racial <- sum(nyt$term_count)
 n_nyt_agencies <- length(unique(nyt$department_agency_acronym))
-
-#FIXME BRING BACK A BY-YEAR VERSION AT SOME POINT 
-nyt %<>% 
-  group_by(department_agency_acronym, agency) %>% 
-  summarise(total = sum(total, na.rm = T),
-            term_count = sum(term_count, na.rm = T)) %>%
-  ungroup() %>% 
-  mutate(
-    total = sqrt(total), 
-    NYT_n = term_count,
-                n = sqrt(term_count),
-                NYT_norm = (n - mean(n))/sd(n),
-                  percent = n/total,
-                  NYT_percent_norm =  (percent - mean(percent))/sd(percent)) %>%
-  select(agency, NYT_n, percent, NYT_norm, NYT_percent_norm, department_agency_acronym) %>% 
-  ungroup()
-
 
 nyt %<>% left_join(crosswalk)
 
@@ -255,7 +238,7 @@ nyt %<>% select(-percent)
 
 <https://github.com/judgelord/regulationsdotgov>
 
-"rules_data"
+"rules_data" in order of most racialized 
 
 ```{r}
 #| fig-width: 6
@@ -268,7 +251,7 @@ nyt %<>% select(-percent)
 # FIXME - include the total so that we can make the summary stats here and load just one dataframe, rules.rda
 load(here::here("data", "rules.Rdata"))
 
-rules  |> kablebox()
+rules  |> arrange(-rules_percent_norm) |>  kablebox()
 
 # add vars from crosswalk 
 rules %<>% left_join(crosswalk)
@@ -636,10 +619,14 @@ geom_smooth(method = "lm") +
        x = "Perceived Ideological Distance from Center",
        y = "Racialization Score")
 
+
+# split 
 d |> 
   drop_na(perceived_ideology_estimate) |> 
   mutate(side = ifelse(perceived_ideology_estimate<0, "Liberal", "Conservative")) |> 
   ggplot() + 
+    facet_wrap("side") + 
+    theme_bw() +
   aes(x = abs(perceived_ideology_estimate), 
       y = racialization,
       label = department_agency_acronym |> str_remove(".*_")) + 
@@ -650,8 +637,6 @@ d |>
   geom_vline(xintercept = 0, color = "gray60", linetype = "dashed") +
     geom_hline(yintercept = 0, color = "gray60", linetype = "dashed") +
 geom_smooth(method = "lm") + 
-  facet_wrap("side") + 
-  theme_bw() +
   geom_point() +    
   labs(title = "",
        x = "Perceived Ideological Distance from Center",
@@ -690,7 +675,7 @@ d |>
 
 max_y = max(d$MFL_percent_norm, na.rm = T)
 
-
+# share 
 d |> 
   ggplot() + 
   aes(x = perceived_ideology_estimate, 
@@ -705,6 +690,44 @@ d |>
        x = "Perceived Ideological Leaning\n.     ← More Liberal                More Conservative →",
        y = "Racialized Share of Project 2025 Sentences")
 
+
+# abs(share)  
+d |> 
+  ggplot() + 
+  aes(x = abs(perceived_ideology_estimate), 
+      y = MFL_percent_norm,
+      label = department_agency_acronym |> str_remove(".*_")) + 
+  geom_label_repel(size =3,force_pull = 10, alpha = .5)  + 
+annotate(x =0, y = max_y, geom = "text", label = 'Racialized\n"Moderate"', color = "red", hjust = 0) + 
+    annotate(x =2, y = max_y, geom = "text", label = 'Racialized\n"Ideological"', color = "red", hjust = 1) + 
+  geom_vline(xintercept = 0, color = "gray60", linetype = "dashed") +
+    geom_hline(yintercept = 0, color = "gray60", linetype = "dashed") +
+geom_smooth(method = "lm") + 
+  geom_point() +    
+  labs(title = "",
+       x = "Perceived Ideological Distance from Center",
+       y = "Racialized Share of Project 2025 Sentences")
+
+# split 
+d |> 
+  drop_na(perceived_ideology_estimate) |> 
+  mutate(side = ifelse(perceived_ideology_estimate<0, "Liberal", "Conservative")) |> 
+  ggplot() + 
+    facet_wrap("side") + 
+    theme_bw() +
+  aes(x = abs(perceived_ideology_estimate), 
+      y = MFL_percent_norm,
+      label = department_agency_acronym |> str_remove(".*_")) + 
+  geom_label_repel(size =3,force_pull = 10, alpha = .5)  + 
+annotate(x =0, y = max_y, geom = "text", label = 'Racialized\n"Moderate"', color = "red", hjust = 0) + 
+    annotate(x =2, y = max_y, geom = "text", label = 'Racialized\n"Ideological"', color = "red", hjust = 1) + 
+  geom_vline(xintercept = 0, color = "gray60", linetype = "dashed") +
+    geom_hline(yintercept = 0, color = "gray60", linetype = "dashed") +
+geom_smooth(method = "lm") + 
+  geom_point() +    
+  labs(title = "",
+       x = "Perceived Ideological Distance from Center",
+       y = "Racialized Share of Project 2025 Sentences")
 ```
 
 
@@ -720,6 +743,7 @@ d |>
 
 max_y = max(d$NYT_percent_norm, na.rm = T)
 
+# count 
 d |> 
   ggplot() + 
   aes(x = perceived_ideology_estimate, 
@@ -738,6 +762,7 @@ d |>
 
 max_y = max(d$NYT_percent_norm, na.rm = T)
 
+# share 
 d |> 
   ggplot() + 
   aes(x = perceived_ideology_estimate, 
@@ -750,6 +775,44 @@ d |>
   geom_point() +   
   labs(title = "Racialized Attention as a Share of Total",
        x = "Perceived Ideological Leaning\n.     ← More Liberal                More Conservative →",
+       y = "Share of NYT Articles with Racial Language")
+
+# abs share 
+d |> 
+  ggplot() + 
+  aes(x = abs(perceived_ideology_estimate), 
+      y = NYT_percent_norm,
+      label = department_agency_acronym |> str_remove(".*_")) + 
+   geom_label_repel(size =3,force_pull = 10, alpha = .5)  + 
+annotate(x =0, y = max_y, geom = "text", label = 'Racialized\n"Moderate"', color = "red", hjust = 0) + 
+    annotate(x =2, y = max_y, geom = "text", label = 'Racialized\n"Ideological"', color = "red", hjust = 1) + 
+  geom_vline(xintercept = 0, color = "gray60", linetype = "dashed") +
+    geom_hline(yintercept = 0, color = "gray60", linetype = "dashed") +
+geom_smooth(method = "lm") + 
+  geom_point() +    
+  labs(title = "",
+       x = "Perceived Ideological Distance from Center",
+       y = "Share of NYT Articles with Racial Language")
+
+# split abs share 
+d |> 
+  drop_na(perceived_ideology_estimate) |> 
+  mutate(side = ifelse(perceived_ideology_estimate<0, "Liberal", "Conservative")) |> 
+  ggplot() + 
+    facet_wrap("side") + 
+    theme_bw() +
+  aes(x = abs(perceived_ideology_estimate), 
+      y = NYT_percent_norm,
+      label = department_agency_acronym |> str_remove(".*_")) + 
+   geom_label_repel(size =3,force_pull = 10, alpha = .5)  + 
+annotate(x =0, y = max_y, geom = "text", label = 'Racialized\n"Moderate"', color = "red", hjust = 0) + 
+    annotate(x =2, y = max_y, geom = "text", label = 'Racialized\n"Ideological"', color = "red", hjust = 1) + 
+  geom_vline(xintercept = 0, color = "gray60", linetype = "dashed") +
+    geom_hline(yintercept = 0, color = "gray60", linetype = "dashed") +
+geom_smooth(method = "lm") + 
+  geom_point() +    
+  labs(title = "",
+       x = "Perceived Ideological Distance from Center",
        y = "Share of NYT Articles with Racial Language")
 
 ```
@@ -800,6 +863,43 @@ d |>
        x = "Perceived Ideological Leaning\n.     ← More Liberal                More Conservative →",
        y = "Share of Rules with Racial Language")
 
+# ABS PERCENT 
+d |>
+  ggplot() +
+  aes(x = abs(perceived_ideology_estimate),
+      y = rules_percent_norm,
+      label = department_agency_acronym |> str_remove(".*_")) +
+  geom_label_repel(size =3,force_pull = 10, alpha = .5)  +
+    annotate(x =0, y = max_y, geom = "text", label = 'Racialized\n"Moderate"', color = "red", hjust = 0) + 
+    annotate(x =2, y = max_y, geom = "text", label = 'Racialized\n"Ideological"', color = "red", hjust = 1) + 
+  geom_vline(xintercept = 0, color = "gray60", linetype = "dashed") +
+    geom_hline(yintercept = 0, color = "gray60", linetype = "dashed") +
+geom_smooth(method = "lm") + 
+  geom_point() +    
+  labs(title = "",
+       x = "Perceived Ideological Distance from Center",
+       y = "Share of Rules with Racial Language")
+
+# ABS PERCENT SPLIT 
+d |> 
+  drop_na(perceived_ideology_estimate) |> 
+  mutate(side = ifelse(perceived_ideology_estimate<0, "Liberal", "Conservative")) |> 
+  ggplot() + 
+    facet_wrap("side") + 
+    theme_bw() +
+  aes(x = abs(perceived_ideology_estimate),
+      y = rules_percent_norm,
+      label = department_agency_acronym |> str_remove(".*_")) +
+  geom_label_repel(size =3,force_pull = 10, alpha = .5)  +
+    annotate(x =0, y = max_y, geom = "text", label = 'Racialized\n"Moderate"', color = "red", hjust = 0) + 
+    annotate(x =2, y = max_y, geom = "text", label = 'Racialized\n"Ideological"', color = "red", hjust = 1) + 
+  geom_vline(xintercept = 0, color = "gray60", linetype = "dashed") +
+    geom_hline(yintercept = 0, color = "gray60", linetype = "dashed") +
+geom_smooth(method = "lm") + 
+  geom_point() +    
+  labs(title = "",
+       x = "Perceived Ideological Distance from Center",
+       y = "Share of Rules with Racial Language")
 ```
 
 

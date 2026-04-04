@@ -158,7 +158,8 @@ int_breaks <- function(x, n = 5) {
 
 
 # save(nyt, file = here::here("data", "nyt.rda"))
-load(file = here::here("data", "nyt.rda"))
+load(file = here::here("data", "nyt_year.rda"))
+nyt <- nyt_year
 ```
 
 
