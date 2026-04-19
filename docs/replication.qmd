@@ -591,8 +591,8 @@ d |>
   annotate(x = 2, y = max_y, geom = "text", label = 'Racialized\n"Conservative"', color = "red", hjust = 1) + 
     annotate(x =-2, y = max_y, geom = "text", label = 'Racialized\n"Liberal"', color = "red", hjust = 0) + 
   geom_vline(xintercept = 0, color = "gray60", linetype = "dashed") +
-    geom_hline(yintercept = 0, color = "gray60", linetype = "dashed") +
-geom_smooth(method = "lm") + 
+    geom_hline(yintercept = 0, color = "gray60", linetype = "dashed") +  
+  geom_smooth() + 
   #geom_smooth(method = "lm") + 
   geom_point() +    geom_label_repel(size =3,force_pull = 10, alpha = .5)  + 
   labs(title = "",
@@ -611,9 +611,8 @@ d |>
   annotate(x =0, y = max_y, geom = "text", label = 'Racialized\n"Moderate"', color = "red", hjust = 0) + 
     annotate(x =2, y = max_y, geom = "text", label = 'Racialized\n"Ideological"', color = "red", hjust = 1) + 
   geom_vline(xintercept = 0, color = "gray60", linetype = "dashed") +
-    geom_hline(yintercept = 0, color = "gray60", linetype = "dashed") +
-geom_smooth(method = "lm") + 
-  #geom_smooth(method = "lm") + 
+    geom_hline(yintercept = 0, color = "gray60", linetype = "dashed") +  
+  geom_smooth() + 
   geom_point() +    
   labs(title = "",
        x = "Perceived Ideological Distance from Center",
@@ -666,7 +665,8 @@ d |>
   annotate(x =2, y = max_y, geom = "text", 
            label = 'Racialized\n"Conservative"', color = "red", hjust = 1) + 
     annotate(x =-2, y = max_y, geom = "text", 
-             label = 'Racialized\n"Liberal"', color = "red", hjust = 0) +   #geom_smooth(method = "lm") + 
+             label = 'Racialized\n"Liberal"', color = "red", hjust = 0) +   
+  geom_smooth() + 
   geom_point() +    
   
   labs(title = "Racialized Attention",
@@ -684,7 +684,8 @@ d |>
   geom_label_repel(size =3,force_pull = 10, alpha = .5)  + 
     #geom_line(aes(y = perceived_ideology_estimate), color = "red")  + 
   annotate(x =2, y =max_y, geom = "text", label = 'Racialized\n"Conservative"', color = "red", hjust = 1) + 
-    annotate(x =-2, y =max_y, geom = "text", label = 'Racialized\n"Liberal"', color ="red", hjust = 0) +   # geom_smooth(method = "lm") + 
+    annotate(x =-2, y =max_y, geom = "text", label = 'Racialized\n"Liberal"', color ="red", hjust = 0) +  
+  geom_smooth() + 
   geom_point() +    
   labs(title = "Racialized Attention as a Share of Total",
        x = "Perceived Ideological Leaning\n.     ← More Liberal                More Conservative →",
@@ -754,7 +755,8 @@ d |>
   annotate(x =2, y= max_y, geom = "text", 
            label = 'Racialized\n"Conservative"', color = "red", hjust = 1) + 
     annotate(x =-2, y = max_y, geom = "text", 
-             label = 'Racialized\n"Liberal"', color = "red", hjust = 0) +   #geom_smooth(method = "lm") + 
+             label = 'Racialized\n"Liberal"', color = "red", hjust = 0) +     
+  geom_smooth() + 
   geom_point() +    
   labs(title = "Racialized Attention",
        x = "Perceived Ideological Leaning\n.     ← More Liberal                More Conservative →",
@@ -771,7 +773,8 @@ d |>
    geom_label_repel(size =3,force_pull = 10, alpha = .5)  + 
     #geom_line(aes(y = perceived_ideology_estimate), color = "red")  + 
   annotate(x =2, y = max_y, geom = "text", label = 'Racialized\n"Conservative"', color = "red", hjust = 1) + 
-    annotate(x =-2, y = max_y, geom = "text", label = 'Racialized\n"Liberal"', color = "red", hjust = 0) +   # geom_smooth(method = "lm") + 
+    annotate(x =-2, y = max_y, geom = "text", label = 'Racialized\n"Liberal"', color = "red", hjust = 0) +  
+  geom_smooth() + 
   geom_point() +   
   labs(title = "Racialized Attention as a Share of Total",
        x = "Perceived Ideological Leaning\n.     ← More Liberal                More Conservative →",
@@ -839,7 +842,8 @@ d |>
   annotate(x =2, y= max_y, geom = "text", 
            label = 'Racialized\n"Conservative"', color = "red", hjust = 1) + 
     annotate(x =-2, y = max_y, geom = "text", 
-             label = 'Racialized\n"Liberal"', color = "red", hjust = 0) +   #geom_smooth(method = "lm") + 
+             label = 'Racialized\n"Liberal"', color = "red", hjust = 0) +     
+  geom_smooth() + 
   geom_point() +    
   labs(title = "Racialized Attention",
        x = "Perceived Ideological Leaning\n.     ← More Liberal                More Conservative →",
@@ -857,7 +861,8 @@ d |>
   geom_label_repel(size =3,force_pull = 10, alpha = .5)  +
     #geom_line(aes(y = perceived_ideology_estimate), color = "red")  +
   annotate(x =2, y = max_y, geom = "text", label = 'Racialized\n"Conservative"', color = "red", hjust = 1) +
-    annotate(x =-2, y = max_y, geom = "text", label = 'Racialized\n"Liberal"', color = "red", hjust = 0) +   # geom_smooth(method = "lm") +
+    annotate(x =-2, y = max_y, geom = "text", label = 'Racialized\n"Liberal"', color = "red", hjust = 0) +  
+  geom_smooth() + 
   geom_point() +    
   labs(title = "Racialized Attention as a Share of Total",
        x = "Perceived Ideological Leaning\n.     ← More Liberal                More Conservative →",
