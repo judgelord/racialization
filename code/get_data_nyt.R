@@ -79,7 +79,7 @@ nyt %<>%
     NYT_norm = (n - mean(n))/sd(n),
     percent = n/total,
     NYT_percent_norm =  (percent - mean(percent))/sd(percent)) %>%
-  select(agency, NYT_n, percent, NYT_norm, NYT_percent_norm, department_agency_acronym) %>%
+  select(-n) %>%
   ungroup()
 
 save(nyt, file = here::here("data", "nyt.rda"))

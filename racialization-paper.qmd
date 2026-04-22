@@ -150,7 +150,7 @@ By identifying these moments, the paper provides a way to observe how bureaucrat
 
 <!-- DATA -->
 We use data from advocacy groups, news media, and policy documents from agencies themselves.
-We identify `r n_racial` instances of agencies using or being discussed with racial language, including `r n_mfl_racial` paragraphs in the Heritage Foundation's Project 2025 Mandate for Leadership report, `r n_nyt_racial` articles in the New York Times, and `r n_rules_racial` agency rules.
+Accross `r n_total` documents, we identify `r n_racial` instances of agencies using or being discussed with racial language, including `r n_mfl_racial` paragraphs in the Heritage Foundation's Project 2025 Mandate for Leadership report, `r n_nyt_racial` articles in the New York Times, and `r n_rules_racial` agency rules.
 By scaling the relative frequency that each source does and does not use racialized language when talking about an agency or its policies, we show which agencies are relatively more racialized within and across realms of public discourse.
 
 Our new measures also offer a temporal lens through which to understand how both liberal and conservative institutions are perceived as racialized, particularly in the framing of agencies in terms that reflect racial tension, mitigation, or attention.
@@ -201,7 +201,7 @@ Subsequent research reinforces the importance of this multidimensional structure
 
 <!--
 Building on these insights, we argue that existing ideological measures of federal agencies may similarly obscure a cross-cutting dimension rooted in racialization and the racial history of federal agencies.
-We extend this literature by conceptualizing race not as a secondary or purely descriptive characteristic, but as an independent-->
+We extend this literature by conceptualizing race not as a secondary or purely descriptive characteristic, but as an independent
 
 Racialization is an axis that can be used to explain how it shapes how agencies are perceived, constrained, and how they respond to policy demands.
 --> 
