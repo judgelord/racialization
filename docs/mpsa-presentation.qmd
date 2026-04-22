@@ -40,7 +40,6 @@ knitr::knit_hooks$set(inline = function(x) {
 
 # numbers cited in the paper that may change
 load(here::here("data", "numbers-for-paper.Rdata"))
-n_racial <- sum(n_mfl_racial,n_rules_racial, n_nyt_racial)
 ```
 
 
@@ -442,6 +441,37 @@ knitr::include_graphics(here::here("docs/figs/nyt_v_rules-2.png"))
 
 # Comparing with ideology scores
 
+## NYT Racialization and Perceived Ideology {#ideology}
+
+```{r}
+#| fig-cap: "Racialization and Perceived Ideology"
+#| label: fig-ideo_v_nyt
+#| out-width: 100%
+
+knitr::include_graphics(here::here("docs/figs/ideo_v_nyt-2.png"))
+```
+
+## MFL Racialization and Perceived Ideology {#ideology}
+
+```{r}
+#| fig-cap: "Racialization and Perceived Ideology"
+#| label: fig-ideo_v_mfl
+#| out-width: 100%
+
+knitr::include_graphics(here::here("docs/figs/ideo_v_mfl-2.png"))
+```
+
+## Rules Racialization and Perceived Ideology {#ideology}
+
+```{r}
+#| fig-cap: "Racialization and Perceived Ideology"
+#| label: fig-ideo_v_rules
+#| out-width: 100%
+
+knitr::include_graphics(here::here("docs/figs/ideo_v_rules-2.png"))
+```
+
+
 ## Racialization and Perceived Ideology {#ideology}
 
 ```{r}
@@ -452,16 +482,6 @@ knitr::include_graphics(here::here("docs/figs/nyt_v_rules-2.png"))
 knitr::include_graphics(here::here("docs/figs/ideo_v_score-1.png"))
 ```
 
-
-## Racialization and Perceived Centrism {#Centrism}
-
-```{r}
-#| fig-cap: "Racialization and Perceived Centrism"
-#| label: fig-ext_v_score
-#| out-width: 100%
-
-knitr::include_graphics(here::here("docs/figs/ideo_v_score-2.png"))
-```
 
 ::: {.notes}
 in MFL. FPPO should use "government contracts to push back against woke
@@ -530,6 +550,16 @@ knitr::include_graphics(here::here("docs/figs/nyt_data-1.png"))
 knitr::include_graphics(here::here("docs/figs/rules_data-1.png"))
 ```
 
+
+## Racialization and Perceived Centrism {#Centrism}
+
+```{r}
+#| fig-cap: "Racialization and Perceived Centrism"
+#| label: fig-ext_v_score
+#| out-width: 100%
+
+knitr::include_graphics(here::here("docs/figs/ideo_v_score-2.png"))
+```
 
 ## Racialization & DOGE Layoffs
 
