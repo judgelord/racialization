@@ -115,13 +115,13 @@ Racialization is the level to which the public and elite language used to descri
 ::: {.nonincremental}
 For example, racialization may
 
-- Affect the legacy of civil-rights era reforms
+- Affect the legacy of civil rights era reforms
 - Affect the responsiveness to racial justice claims
 - Be affected by non-white agency leaders or employees
 :::
 
 ::: {.notes}
-But we lack a quantitative measures! 
+But we lack quantitative measures! 
 :::
 <!---alternatively, lead with theory slide--> 
 
@@ -399,7 +399,7 @@ knitr::include_graphics(here::here("docs/figs/mfl_data-2.png"))
 
 ```
 
-# Comparing Aross Contexts 
+# Comparing Across Contexts 
 
 <!-- {data-background-image="https://ids.si.edu/ids/deliveryService?id=SAAM-2022.34_34&max=960" data-background-size="cover" data-background-opacity=".1"} -->
 
