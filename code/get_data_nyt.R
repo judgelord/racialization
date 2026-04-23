@@ -73,13 +73,13 @@ nyt %<>%
             term_count = sum(term_count, na.rm = T)) %>%
   ungroup() %>%
   mutate(
-    total = sqrt(total),
+    sqrt_total = sqrt(total),
     NYT_n = term_count,
-    n = sqrt(term_count),
-    NYT_norm = (n - mean(n))/sd(n),
-    percent = n/total,
+    sqrt_n = sqrt(term_count),
+    NYT_norm = (sqrt_n - mean(sqrt_n))/sd(sqrt_n),
+    percent = sqrt_n/sqrt_total,
     NYT_percent_norm =  (percent - mean(percent))/sd(percent)) %>%
-  select(-n) %>%
+  select(-contains("sqrt")) %>%
   ungroup()
 
 save(nyt, file = here::here("data", "nyt.rda"))
