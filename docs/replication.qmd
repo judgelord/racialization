@@ -199,8 +199,7 @@ From ProQuest
 #| layout-ncol: 1
 #| label: nyt_data
 
-# from code/get_data_nyt.R
-# + docs/trends-nyt.qmd
+# from code/get_data_nyt.R  + docs/trends-nyt.qmd
 load(here::here("data", "nyt.rda") ) 
 
 nyt  |> arrange(-NYT_percent_norm) |> kablebox()

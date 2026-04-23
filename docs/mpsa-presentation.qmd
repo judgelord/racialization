@@ -47,9 +47,11 @@ load(here::here("data", "numbers-for-paper.Rdata"))
 
 `"Diversity has been removed from the FBI's list of organizational Core Values. Visual and informational materials promoting Diversity as a Core Value are being removed from FBI space." - FBI`
 
+<!--
 # {background-image=https://static01.nyt.com/images/2026/02/17/multimedia/17trump-news-reporter-updates-jfhc/17trump-news-reporter-updates-jfhc-jumbo.jpg}
 
 `The National Park Service display on George Washington’s ownership of enslaved people`
+--> 
 
 ## {data-background-image="figs/NYT_Words_Disappear.jpg" data-background-size="contain" data-background-position="center" data-background-opacity="1" data-menu-title="Banned Words"}
 
@@ -108,14 +110,14 @@ load(here::here("data", "numbers-for-paper.Rdata"))
 ## Institutional Racialization 
 
 Racialization is the level to which the public and elite language used to describe an institution and its actions evoke race and thus make it relevant and highlight debates around racial inequality or racial resentments.
-
 . . . 
 
 ::: {.nonincremental}
-- A legacy of civil-rights era reforms? Evidence of compliance, resistance, or erosion? 
-- Affected by non-white agency leaders or employees? 
-- Affects responsive to racial justice claims? 
-- Affects the careers of bureaucrats?
+For example, racialization may
+
+- Affect the legacy of civil-rights era reforms
+- Affect the responsiveness to racial justice claims
+- Be affected by non-white agency leaders or employees
 :::
 
 ::: {.notes}
@@ -165,6 +167,8 @@ load(here::here("data", "rules_terms.rda"))
 ```
 
 > `r terms |> paste0(collapse = "; ")`
+
+# Findings
 
 
 ## New York Times Articles, 2005-2025 {#trends-nyt}
@@ -441,7 +445,7 @@ knitr::include_graphics(here::here("docs/figs/nyt_v_rules-2.png"))
 
 # Comparing with ideology scores
 
-## NYT Racialization and Perceived Ideology {#ideology}
+## NYT {#ideology}
 
 ```{r}
 #| fig-cap: "Racialization and Perceived Ideology"
@@ -451,7 +455,7 @@ knitr::include_graphics(here::here("docs/figs/nyt_v_rules-2.png"))
 knitr::include_graphics(here::here("docs/figs/ideo_v_nyt-2.png"))
 ```
 
-## MFL Racialization and Perceived Ideology {#ideology}
+## MFL {#ideology}
 
 ```{r}
 #| fig-cap: "Racialization and Perceived Ideology"
@@ -461,7 +465,7 @@ knitr::include_graphics(here::here("docs/figs/ideo_v_nyt-2.png"))
 knitr::include_graphics(here::here("docs/figs/ideo_v_mfl-2.png"))
 ```
 
-## Rules Racialization and Perceived Ideology {#ideology}
+## Rules {#ideology}
 
 ```{r}
 #| fig-cap: "Racialization and Perceived Ideology"
@@ -503,14 +507,10 @@ policies in corporate America."
 
 - Time series data for advocacy reports $\rightarrow$ Dynamic scores
 - Compare with other agency ideology/partisanship measures (e.g., Chen Johnson 2015, Acs 2025, etc.)
-<!--- Examine whether agencies’ origins and post–Civil Rights compliance/resistance predict their racialization trajectories.-->
-<!--
-
-**Use cases**  
---> 
-
 - Examine the effects of leadership's race on discourse 
 - Examine the effects on bureaucratic responsiveness 
+<!-- Examine whether agencies’ origins and post–Civil Rights compliance/resistance predict their racialization trajectories.-->
+<!-- *Use cases** --> 
 
 **Comments:** kmagana@umich.edu | judgelor@umich.edu  
 :::
